@@ -4,6 +4,7 @@ import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { StatusIndicator } from "@/components/ui/StatusIndicator";
 import { SKILLS } from "@/lib/constants/skills";
+import Example from "../ui/Status";
 
 export function About() {
   const { t } = useLanguage();
@@ -58,8 +59,8 @@ export function About() {
               </h3>
               <div className="flex flex-wrap gap-3">
                 {SKILLS.map((skill, index) => (
-                  <span 
-                    key={index} 
+                  <span
+                    key={index}
                     className="px-3 py-2 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 font-medium text-sm rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/40 transition-colors duration-200"
                   >
                     {skill}
@@ -68,12 +69,7 @@ export function About() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-              <StatusIndicator />
-              <span className="font-medium text-green-700 dark:text-green-400">
-                {t("about.status")}
-              </span>
-            </div>
+            <Example>{t("about.status")}</Example>
           </div>
         </motion.div>
       </div>

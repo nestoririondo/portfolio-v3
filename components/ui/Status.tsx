@@ -1,0 +1,20 @@
+"use client";
+
+import {
+  Status,
+  StatusIndicator,
+  StatusLabel,
+} from "@/components/ui/shadcn-io/status";
+
+const Example = ({children}: {children: React.ReactNode}) => (
+  <Status
+    className="gap-4 rounded-full px-6 py-2 text-sm"
+    status="online"
+    variant="outline"
+  >
+    <StatusIndicator />
+    <StatusLabel className="font-mono">{children}</StatusLabel>
+  </Status>
+);
+
+export default Example;

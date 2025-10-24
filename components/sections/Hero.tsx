@@ -3,17 +3,18 @@
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
-import { StatusIndicator } from "@/components/ui/StatusIndicator";
 import { scrollToContact } from "@/lib/utils/scroll";
 import SplitText from "@/components/ui/SplitText";
+import { StatusIndicator } from "../ui/shadcn-io/status";
+import Example from "../ui/Status";
 
 export function Hero() {
   const { t, language } = useLanguage();
 
   return (
     <div className="bg-grid-small-black/[0.05] dark:bg-grid-small-white/[0.05]">
-      <section 
-        id="hero" 
+      <section
+        id="hero"
         className="h-screen snap-start flex flex-col justify-center items-start relative max-w-6xl mx-auto px-4 md:px-0"
       >
         <div className="w-full">
@@ -55,8 +56,8 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
           >
-            <button 
-              onClick={scrollToContact} 
+            <button
+              onClick={scrollToContact}
               className="group bg-black text-white px-12 py-6 font-mono text-base font-extrabold uppercase tracking-wider border-3 border-black hover:border-blue-600 cursor-pointer inline-flex items-center gap-4 transition-all duration-200 shadow-[6px_6px_0_#0066cc] hover:shadow-[3px_3px_0_#0066cc] hover:translate-x-[3px] hover:translate-y-[3px] hover:bg-blue-600 hover:text-black active:translate-x-[6px] active:translate-y-[6px] active:shadow-none min-w-[250px] justify-center"
             >
               <MessageCircle className="w-6 h-6 transition-transform duration-300 group-hover:scale-125" />
@@ -70,8 +71,7 @@ export function Hero() {
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1, ease: "backIn" }}
             >
-              <StatusIndicator />
-              {t("hero.status")}
+              <Example>{t("hero.status")}</Example>
             </motion.div>
           </motion.div>
         </div>

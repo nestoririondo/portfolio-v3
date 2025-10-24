@@ -28,7 +28,7 @@ export function Header() {
           className="font-mono text-base md:text-xl font-black cursor-pointer transition-all duration-200 uppercase tracking-wider hover:transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-shadow-[2px_2px_0_#0066cc]"
           onClick={scrollToTop}
         >
-          <span className="text-black dark:text-white">nestor</span>
+          <span className="text-black dark:text-white">néstor</span>
           <span className="text-blue-600">iriondo</span>
         </div>
 
@@ -50,7 +50,7 @@ export function Header() {
 
           <button 
             onClick={scrollToContact} 
-            className="bg-gray-100 dark:bg-white dark:text-black text-black border-none px-4 md:px-6 py-3 md:py-4 font-mono text-[0.75rem] md:text-xs font-semibold uppercase tracking-wider cursor-pointer flex items-center gap-2 transition-all duration-200 hover:bg-black dark:hover:bg-black hover:text-white dark:hover:text-white hover:transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_#0066cc] active:bg-black dark:active:bg-black active:text-white dark:active:text-white active:transform active:translate-x-0 active:translate-y-0 active:shadow-none"
+            className="bg-gray-100 dark:bg-zinc-900 dark:text-white text-black border-none px-4 md:px-6 py-3 md:py-4 font-mono text-[0.75rem] md:text-xs font-semibold uppercase tracking-wider cursor-pointer flex items-center gap-2 transition-all duration-200 hover:bg-black dark:hover:bg-black hover:text-white dark:hover:text-white hover:transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_#0066cc] active:bg-black dark:active:bg-black active:text-white dark:active:text-white active:transform active:translate-x-0 active:translate-y-0 active:shadow-none"
           >
             <MessageCircle className="w-3.5 h-3.5 md:w-[1.125rem] md:h-[1.125rem] transition-transform duration-200" />
             <div className="hidden md:block font-extrabold relative">

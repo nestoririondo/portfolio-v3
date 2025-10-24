@@ -4,7 +4,7 @@ import { Hero, ProblemRecognition, Services, Approach, CaseStudy, About, Contact
 
 export function MainContent() {
   return (
-    <div className="pt-[70px] md:pt-20">
+    <div className="pt-[70px] md:pt-20 flex flex-col gap-[20rem]">
       <Hero />
       <ProblemRecognition />
       <Services />

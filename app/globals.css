@@ -127,40 +127,46 @@
       linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
     background-size: 60px 60px;
   }
-  
+
   .dark .bg-grid-small-white\/\[0\.05\] {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px
+      ),
       linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: 60px 60px;
   }
-  
+
   .border-3 {
     border-width: 3px;
   }
-  
+
   .font-heading {
     font-family: var(--font-geist-sans);
   }
-  
+
   .font-body {
     font-family: var(--font-geist-sans);
   }
-  
+
   .font-mono {
     font-family: var(--font-geist-mono);
   }
-  
+
   .animate-shake {
     animation: shake 0.5s ease-in-out;
   }
-  
+
   @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-  }
-  
-  .section {
-    padding: 6rem 0;
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    75% {
+      transform: translateX(5px);
+    }
   }
 }
