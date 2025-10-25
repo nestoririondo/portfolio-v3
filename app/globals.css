@@ -14,6 +14,13 @@
   --color-popover: var(--popover);
 }
 
+html {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -21,6 +28,8 @@
   --popover-foreground: oklch(0.145 0 0);
   --border: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
+  --accent1: #e4defc;
+  --accent2: #7e62ee;
 }
 
 .dark {
@@ -30,6 +39,8 @@
   --popover-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --ring: oklch(0.556 0 0);
+  --accent1: #5227ff;
+  --accent2: #00ffff;
 }
 
 @layer base {
@@ -42,21 +53,6 @@
 }
 
 @layer utilities {
-  .bg-grid-small-black\/\[0\.05\] {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
-  .dark .bg-grid-small-white\/\[0\.05\] {
-    background-image: linear-gradient(
-        rgba(255, 255, 255, 0.05) 1px,
-        transparent 1px
-      ),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
   .border-3 {
     border-width: 3px;
   }
@@ -89,4 +85,48 @@
       transform: translateX(5px);
     }
   }
+
+  .btn-primary {
+    background-color: rgb(243 244 246);
+    border: none;
+    border-right: 2px solid black;
+    color: black;
+    padding: 12px 12px;
+    font-family: var(--font-geist-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    min-width: 60px;
+    justify-content: center;
+  }
+
+  .btn-primary:hover {
+    background-color: black;
+    color: white;
+    transform: translate(-2px, -2px);
+    box-shadow: 2px 2px 0 #0066cc;
+  }
+
+  .btn-primary:active {
+    transform: translate(0, 0);
+    box-shadow: none;
+  }
+
+  .dark .btn-primary {
+    background-color: rgb(24 24 27);
+    border-right-color: white;
+    color: white;
+  }
+
+  .dark .btn-primary:hover {
+    background-color: white;
+    color: black;
+  }
+
 }

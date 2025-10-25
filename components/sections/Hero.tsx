@@ -11,8 +11,8 @@ import { useTheme } from "@/lib/contexts/ThemeContext";
 
 export function Hero() {
   const { t, language } = useLanguage();
-  const { theme } = useTheme()
-  
+  const { theme } = useTheme();
+
   console.log("Current theme in Hero:", theme);
 
   return (
@@ -31,14 +31,14 @@ export function Hero() {
       />
       <section
         id="hero"
-        className="absolute inset-0 h-screen flex flex-col justify-center items-start max-w-6xl mx-auto px-4 md:px-4 z-20"
+        className="absolute inset-0 h-full flex flex-col justify-center items-start max-w-6xl mx-auto px-4 md:px-4 z-20"
       >
         <div className="w-full relative z-30">
           <SplitText
             key={`hero-title-${language}`}
             text={t("hero.title")}
             tag="h1"
-            className="font-heading text-6xl md:text-8xl font-extrabold leading-tight text-black dark:text-white mb-8 tracking-tight uppercase relative z-30"
+            className="font-heading text-5xl sm:text-6xl md:text-7xl font-extrabold leading-tight text-black dark:text-white mb-8 tracking-tight uppercase relative z-30"
             delay={100}
             duration={0.8}
             ease="power3.out"
@@ -56,17 +56,14 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
           >
-            <button
-              onClick={scrollToContact}
-              className="w-100 group bg-black text-white px-12 py-6 font-mono text-base font-extrabold uppercase tracking-wider border-3 border-black hover:border-blue-600 cursor-pointer inline-flex items-center gap-4 transition-all duration-200 shadow-[6px_6px_0_#0066cc] hover:shadow-[3px_3px_0_#0066cc] hover:translate-x-[3px] hover:translate-y-[3px] hover:bg-blue-600 hover:text-black active:translate-x-[6px] active:translate-y-[6px] active:shadow-none justify-center"
-            >
+            <button onClick={scrollToContact} className="btn-primary !px-8 !py-6 !text-lg !min-w-[200px]">
               <MessageCircle className="w-6 h-6 transition-transform duration-300 group-hover:scale-125" />
               <span className="font-bold relative">{t("hero.subtitle")}</span>
               <ArrowRight className="w-6 h-6 flex-shrink-0 transition-transform duration-300 group-hover:scale-125" />
             </button>
 
             <motion.div
-              className="flex mx-auto md:mx-0 gap-3 font-mono text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wider"
+              className="flex md:mx-0 gap-3 font-mono text-sm text-gray-600 dark:text-gray-400 uppercase"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1, ease: "backIn" }}
