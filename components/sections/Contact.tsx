@@ -196,7 +196,7 @@ export function Contact() {
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      <section id="contact" className="section">
+      <section id="contact" className="mt-10">
         <div className="max-w-4xl mx-auto px-4">
           <motion.div
             className="text-center mb-12"

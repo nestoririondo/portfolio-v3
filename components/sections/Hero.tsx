@@ -16,7 +16,7 @@ export function Hero() {
   console.log("Current theme in Hero:", theme);
 
   return (
-    <div className="relative h-screen">
+    <div className="relative h-screen outline outline-1 outline-green-500 overflow-hidden">
       <DotGrid
         dotSize={8}
         gap={15}
@@ -38,7 +38,7 @@ export function Hero() {
             key={`hero-title-${language}`}
             text={t("hero.title")}
             tag="h1"
-            className="font-heading text-5xl sm:text-6xl md:text-7xl font-extrabold leading-tight text-black dark:text-white mb-8 tracking-tight uppercase relative z-30"
+            className="font-heading text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight text-black dark:text-white mb-8 tracking-tight uppercase relative z-30"
             delay={100}
             duration={0.8}
             ease="power3.out"

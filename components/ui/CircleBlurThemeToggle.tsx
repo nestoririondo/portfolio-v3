@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Moon, Sun } from "lucide-react";
 import { useCallback } from "react";
@@ -83,11 +83,15 @@ export function CircleBlurThemeToggle({
   return (
     <button
       onClick={handleClick}
-      className={`p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${className || ""}`}
+      className={className}
       title={title}
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
     >
-      {theme === "light" ? <Moon className="w-3.5 h-3.5 md:w-4 md:h-4" /> : <Sun className="w-3.5 h-3.5 md:w-4 md:h-4" />}
+      {theme === "light" ? (
+        <Moon className="w-3.5 h-3.5 md:w-[1.125rem] md:h-[1.125rem]" />
+      ) : (
+        <Sun className="w-3.5 h-3.5 md:w-[1.125rem] md:h-[1.125rem]" />
+      )}
     </button>
   );
 }

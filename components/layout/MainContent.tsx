@@ -4,7 +4,7 @@ import { Hero, ProblemRecognition, Services, Approach, CaseStudy, About, Contact
 
 export function MainContent() {
   return (
-    <div className="pt-[70px] flex flex-col gap-[20rem] outline outline-1 outline-red-500">
+    <div className="flex flex-col gap-[20rem]">
       <Hero />
       <ProblemRecognition />
       <Services />

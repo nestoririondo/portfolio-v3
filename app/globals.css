@@ -12,6 +12,9 @@
   --color-border: var(--border);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
+  --font-size-8xl: 8rem;
+  --font-size-9xl: 10rem;
+  --font-size-10xl: 12rem;
 }
 
 html {
