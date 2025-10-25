@@ -18,7 +18,7 @@ export function Header() {
 
   return (
     <motion.header
-      className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-black border-b-2 md:border-b-4 border-black dark:border-white h-[70px] md:h-20 shadow-none"
+      className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-black/90 border-b-2 md:border-b-4 border-black dark:border-white h-[70px] md:h-20 shadow-none"
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
