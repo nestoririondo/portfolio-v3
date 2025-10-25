@@ -5,10 +5,11 @@ export const es = {
   "nav.approach": "Enfoque",
 
   // Hero Section
-  "hero.title":
-    "Sitios web personalizados que realmente funcionan para tu negocio",
-  "hero.subtitle":
-    "Cuando las plantillas no pueden manejar lo que necesitas—integraciones de API, características personalizadas y soluciones reales",
+  "hero.title": "Sitios web Que Hacen Crecer Tu Negocio en Berlín",
+  "hero.title.part1": "Sitios web Que Hacen Crecer Tu Negocio en",
+  "hero.title.part2": "Berlín",
+  "hero.title.part3": "",
+  "hero.subtitle": "Construyamos el Tuyo",
   "hero.cta": "Hablemos sobre tu proyecto",
   "hero.status": "Actualmente disponible para proyectos",
 

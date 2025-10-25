@@ -34,7 +34,8 @@ export function Contact() {
     const newErrors: Record<string, boolean> = {};
 
     if (!formData.name.trim()) newErrors.name = true;
-    if (!formData.email.trim()) newErrors.email = true;
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = true;
     if (!formData.message.trim()) newErrors.message = true;
 
     // Clear any existing timeouts before setting new ones
@@ -222,7 +223,10 @@ export function Contact() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className={`space-y-2 ${errors.name ? "animate-shake" : ""}`}>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 {t("contact.form.name")}
               </label>
               <input
@@ -232,15 +236,18 @@ export function Contact() {
                 onChange={handleChange}
                 required
                 className={`w-full px-4 py-3 border-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  errors.name 
-                    ? "border-red-500 bg-red-50 dark:bg-red-900/20" 
+                  errors.name
+                    ? "border-red-500 bg-red-50 dark:bg-red-900/20"
                     : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
                 } text-gray-900 dark:text-white`}
               />
             </div>
 
             <div className={`space-y-2 ${errors.email ? "animate-shake" : ""}`}>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 {t("contact.form.email")}
               </label>
               <input
@@ -251,15 +258,18 @@ export function Contact() {
                 onChange={handleChange}
                 required
                 className={`w-full px-4 py-3 border-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  errors.email 
-                    ? "border-red-500 bg-red-50 dark:bg-red-900/20" 
+                  errors.email
+                    ? "border-red-500 bg-red-50 dark:bg-red-900/20"
                     : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
                 } text-gray-900 dark:text-white`}
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="company" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="company"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 {t("contact.form.company")}
               </label>
               <input
@@ -271,8 +281,13 @@ export function Contact() {
               />
             </div>
 
-            <div className={`space-y-2 ${errors.message ? "animate-shake" : ""}`}>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <div
+              className={`space-y-2 ${errors.message ? "animate-shake" : ""}`}
+            >
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 {t("contact.form.message")}
               </label>
               <textarea
@@ -283,8 +298,8 @@ export function Contact() {
                 onChange={handleChange}
                 required
                 className={`w-full px-4 py-3 border-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none ${
-                  errors.message 
-                    ? "border-red-500 bg-red-50 dark:bg-red-900/20" 
+                  errors.message
+                    ? "border-red-500 bg-red-50 dark:bg-red-900/20"
                     : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
                 } text-gray-900 dark:text-white`}
                 placeholder={t("contact.form.placeholder")}
@@ -349,20 +364,20 @@ export function Contact() {
                 >
                   {t("nav.home")}
                 </button>
-                <a 
-                  href="#services" 
+                <a
+                  href="#services"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
                 >
                   {t("footer.nav.services")}
                 </a>
-                <a 
-                  href="#approach" 
+                <a
+                  href="#approach"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
                 >
                   {t("nav.approach")}
                 </a>
-                <a 
-                  href="#about" 
+                <a
+                  href="#about"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
                 >
                   {t("footer.nav.about")}

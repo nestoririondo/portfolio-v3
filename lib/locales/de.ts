@@ -5,10 +5,11 @@ export const de = {
   "nav.approach": "Ansatz",
 
   // Hero Section
-  "hero.title":
-    "Maßgeschneiderte Websites, die für dein Unternehmen funktionieren",
-  "hero.subtitle":
-    "Wenn Templates nicht ausreichen—API-Integrationen, individuelle Features und echte Lösungen",
+  "hero.title": "Websites, die dein Berliner Unternehmen wachsen lassen",
+  "hero.title.part1": "Websites, die dein",
+  "hero.title.part2": "Berliner",
+  "hero.title.part3": "Unternehmen wachsen lassen",
+  "hero.subtitle": "Lass uns deine bauen",
   "hero.cta": "Lass uns über dein Projekt sprechen",
   "hero.status": "Derzeit verfügbar für Projekte",
 

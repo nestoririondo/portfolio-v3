@@ -5,9 +5,11 @@ export const en = {
   "nav.approach": "Approach",
 
   // Hero Section
-  "hero.title": "Custom websites that actually work for your business",
-  "hero.subtitle":
-    "When templates can't handle what you need—API integrations, custom features, and real solutions",
+  "hero.title": "Websites That Make Your Berlin Business Grow",
+  "hero.title.part1": "Websites That Make Your",
+  "hero.title.part2": "Berlin",
+  "hero.title.part3": "Business Grow",
+  "hero.subtitle": "Let's Build Yours",
   "hero.cta": "Let's talk about your project",
   "hero.status": "Currently available for projects",
 
