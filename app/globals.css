@@ -33,10 +33,11 @@ html {
   --ring: oklch(0.708 0 0);
   --accent1: #e4defc;
   --accent2: #7e62ee;
+  --primary: #0066cc;
 }
 
 .dark {
-  --background: #090909;
+  --background: #0e0e0e;
   --foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
@@ -44,6 +45,7 @@ html {
   --ring: oklch(0.556 0 0);
   --accent1: #5227ff;
   --accent2: #00ffff;
+  --primary: #00ffff;
 }
 
 @layer base {

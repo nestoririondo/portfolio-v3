@@ -13,10 +13,8 @@ export function Hero() {
   const { t, language } = useLanguage();
   const { theme } = useTheme();
 
-  console.log("Current theme in Hero:", theme);
-
   return (
-    <div className="relative h-screen outline outline-1 outline-green-500 overflow-hidden">
+    <div className="relative h-screen">
       <DotGrid
         dotSize={8}
         gap={15}
@@ -56,7 +54,10 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
           >
-            <button onClick={scrollToContact} className="btn-primary !px-8 !py-6 !text-lg !min-w-[200px]">
+            <button
+              onClick={scrollToContact}
+              className="btn-primary group !px-8 !py-6 !text-lg !min-w-[200px]"
+            >
               <MessageCircle className="w-6 h-6 transition-transform duration-300 group-hover:scale-125" />
               <span className="font-bold relative">{t("hero.subtitle")}</span>
               <ArrowRight className="w-6 h-6 flex-shrink-0 transition-transform duration-300 group-hover:scale-125" />

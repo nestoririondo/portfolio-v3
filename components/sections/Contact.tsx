@@ -10,6 +10,7 @@ const DEFAULT_STATE = {
   name: "",
   email: "",
   company: "",
+  projectType: "",
   message: "",
   price: "",
 };
@@ -36,6 +37,7 @@ export function Contact() {
     if (!formData.name.trim()) newErrors.name = true;
     if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = true;
+    if (!formData.projectType.trim()) newErrors.projectType = true;
     if (!formData.message.trim()) newErrors.message = true;
 
     // Clear any existing timeouts before setting new ones
@@ -95,6 +97,7 @@ export function Contact() {
           name: formData.name,
           email: formData.email,
           company: formData.company,
+          projectType: formData.projectType,
           message: formData.message,
           budget: formData.price ? t(formData.price) : "",
           _subject: `New contact form submission from ${formData.name}`,
@@ -176,14 +179,25 @@ export function Contact() {
     }
   }, []);
 
-  const PRICE_OPTIONS = useMemo(
+  const PROJECT_TYPES = useMemo(
     () => [
-      "contact.form.price.option1",
-      "contact.form.price.option2",
-      "contact.form.price.option3",
-      "contact.form.price.option4",
+      { value: "website", label: t("contact.form.project.website"), price: "$2K - $8K" },
+      { value: "webapp", label: t("contact.form.project.webapp"), price: "$5K - $15K" },
+      { value: "ecommerce", label: t("contact.form.project.ecommerce"), price: "$3K - $12K" },
+      { value: "api", label: t("contact.form.project.api"), price: "$1K - $5K" },
+      { value: "maintenance", label: t("contact.form.project.maintenance"), price: "$500 - $2K" },
+      { value: "other", label: t("contact.form.project.other"), price: t("contact.form.project.discuss") },
     ],
-    []
+    [t]
+  );
+
+  const REASONS = useMemo(
+    () => [
+      t("contact.form.benefit.consultation"),
+      t("contact.form.benefit.response"),
+      t("contact.form.benefit.flexible"),
+    ],
+    [t]
   );
 
   return (
@@ -205,12 +219,30 @@ export function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-8">
               {t("contact.title")}
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              {t("contact.subtitle")}
-            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-6">
+              {REASONS.map((reason, index) => (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: .2, delay: .5 + index * .5 }}
+                  key={reason}
+                  className="flex items-center gap-2"
+                >
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  {reason}
+                </motion.div>
+              ))}
+            </div>
+            
+            <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4 text-center">
+              <p className="text-orange-800 dark:text-orange-200 text-sm font-medium">
+                🔥 {t("contact.form.availability")}
+              </p>
+            </div>
           </motion.div>
 
           <motion.form
@@ -227,7 +259,7 @@ export function Contact() {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.name")}
+                {t("contact.form.name")} <span className="text-red-500">*</span>
               </label>
               <input
                 id="name"
@@ -248,7 +280,7 @@ export function Contact() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.email")}
+                {t("contact.form.email")} <span className="text-red-500">*</span>
               </label>
               <input
                 id="email"
@@ -270,7 +302,7 @@ export function Contact() {
                 htmlFor="company"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.company")}
+                {t("contact.form.company")} <span className="text-gray-400 text-xs">({t("contact.form.optional")})</span>
               </label>
               <input
                 id="company"
@@ -281,6 +313,37 @@ export function Contact() {
               />
             </div>
 
+            <div className={`space-y-3 ${errors.projectType ? "animate-shake" : ""}`}>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                {t("contact.form.projectType")} <span className="text-red-500">*</span>
+              </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {PROJECT_TYPES.map((type) => (
+                  <button
+                    key={type.value}
+                    type="button"
+                    className={`p-4 rounded-lg border-2 transition-all duration-200 text-left ${
+                      formData.projectType === type.value
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-500"
+                    }`}
+                    onClick={() =>
+                      setFormData((prev) => ({ ...prev, projectType: type.value }))
+                    }
+                  >
+                    <div className="font-medium">{type.label}</div>
+                    <div className={`text-sm ${
+                      formData.projectType === type.value 
+                        ? "text-blue-100" 
+                        : "text-gray-500 dark:text-gray-400"
+                    }`}>
+                      {type.price}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div
               className={`space-y-2 ${errors.message ? "animate-shake" : ""}`}
             >
@@ -288,7 +351,7 @@ export function Contact() {
                 htmlFor="message"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.message")}
+                {t("contact.form.message")} <span className="text-red-500">*</span>
               </label>
               <textarea
                 ref={textareaRef}
@@ -307,39 +370,21 @@ export function Contact() {
               />
             </div>
 
-            <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                {t("contact.form.price")}
-              </label>
-              <div className="flex flex-wrap gap-3">
-                {PRICE_OPTIONS.map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    className={`px-4 py-2 rounded-lg border-2 transition-all duration-200 font-medium ${
-                      formData.price === option
-                        ? "bg-blue-500 text-white border-blue-500"
-                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-500 hover:text-blue-500"
-                    }`}
-                    onClick={() =>
-                      setFormData((prev) => ({ ...prev, price: option }))
-                    }
-                  >
-                    {t(option)}
-                  </button>
-                ))}
-              </div>
-            </div>
 
-            <button
-              type="submit"
-              className="w-full bg-black text-white px-8 py-4 font-mono text-base font-bold uppercase tracking-wider border-3 border-black hover:border-blue-600 cursor-pointer flex items-center justify-center gap-4 transition-all duration-200 shadow-[6px_6px_0_#0066cc] hover:shadow-[3px_3px_0_#0066cc] hover:translate-x-[3px] hover:translate-y-[3px] hover:bg-blue-600 hover:text-black active:translate-x-[6px] active:translate-y-[6px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-[6px_6px_0_#0066cc]"
-              disabled={isSubmitting}
-            >
-              {isSubmitting
-                ? t("contact.form.sending")
-                : t("contact.form.submit")}
-            </button>
+            <div className="space-y-3">
+              <button
+                type="submit"
+                className="w-full bg-black text-white px-8 py-4 font-mono text-base font-bold uppercase tracking-wider border-3 border-black hover:border-blue-600 cursor-pointer flex items-center justify-center gap-4 transition-all duration-200 shadow-[6px_6px_0_#0066cc] hover:shadow-[3px_3px_0_#0066cc] hover:translate-x-[3px] hover:translate-y-[3px] hover:bg-blue-600 hover:text-black active:translate-x-[6px] active:translate-y-[6px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-[6px_6px_0_#0066cc]"
+                disabled={isSubmitting}
+              >
+                {isSubmitting
+                  ? t("contact.form.sending")
+                  : "Get Free Consultation"}
+              </button>
+              <p className="text-xs text-center text-gray-500 dark:text-gray-400">
+                🔒 {t("contact.form.privacy")}
+              </p>
+            </div>
           </motion.form>
         </div>
 

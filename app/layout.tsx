@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/lib/contexts/ThemeContext";
 import { LanguageProvider } from "@/lib/contexts/LanguageContext";
 import { Header } from "@/components/layout/Header";
+import { FloatingContactButton } from "@/components/ui/FloatingContactButton";
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
@@ -46,6 +47,7 @@ export default function RootLayout({
             <main className="min-h-screen">
               {children}
             </main>
+            <FloatingContactButton />
             <Toaster />
           </LanguageProvider>
         </ThemeProvider>

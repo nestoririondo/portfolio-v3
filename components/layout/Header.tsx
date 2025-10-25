@@ -23,7 +23,7 @@ export function Header() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
     >
-      <div className="max-w-6xl mx-auto px-2 md:px-8 h-full flex justify-between items-center overflow-hidden">
+      <div className="max-w-6xl mx-auto px-8 h-full flex justify-between items-center overflow-hidden">
         <div
           className="font-mono text-xl md:text-xl font-black cursor-pointer transition-all duration-200 uppercase tracking-wider hover:transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-shadow-[2px_2px_0_#0066cc] "
           onClick={scrollToTop}

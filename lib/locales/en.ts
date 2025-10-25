@@ -89,6 +89,24 @@ export const en = {
   "contact.form.success": "Message sent! I'll respond within 24 hours.",
   "contact.form.error": "Failed to send message. Please try again.",
   "contact.form.validation": "Please fill in all required fields.",
+  "contact.form.optional": "optional",
+  "contact.form.projectType": "Project Type",
+  "contact.form.availability": "Limited Availability: Only accepting 3 new projects for Q1 2025",
+  "contact.form.privacy": "Your information is secure and never shared. No spam, ever.",
+  
+  // Project Types
+  "contact.form.project.website": "Website Development",
+  "contact.form.project.webapp": "Web Application", 
+  "contact.form.project.ecommerce": "E-commerce Store",
+  "contact.form.project.api": "API Development",
+  "contact.form.project.maintenance": "Website Maintenance",
+  "contact.form.project.other": "Other/Custom",
+  "contact.form.project.discuss": "Let's discuss",
+  
+  // Benefits
+  "contact.form.benefit.consultation": "30 minutes Free consultation",
+  "contact.form.benefit.response": "Response within 24 hours", 
+  "contact.form.benefit.flexible": "Multilingual communication",
 
   // Footer
   "footer.copyright": "Professional Web Development Services",

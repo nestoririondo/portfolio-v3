@@ -93,6 +93,24 @@ export const de = {
   "contact.form.error":
     "Fehler beim Senden der Nachricht. Bitte versuche es erneut.",
   "contact.form.validation": "Bitte fülle alle Pflichtfelder aus.",
+  "contact.form.optional": "optional",
+  "contact.form.projectType": "Projekttyp",
+  "contact.form.availability": "Begrenzte Verfügbarkeit: Nehme nur 3 neue Projekte für Q1 2025 an",
+  "contact.form.privacy": "Deine Daten sind sicher und werden niemals geteilt. Kein Spam, niemals.",
+  
+  // Project Types
+  "contact.form.project.website": "Website-Entwicklung",
+  "contact.form.project.webapp": "Web-Anwendung",
+  "contact.form.project.ecommerce": "E-Commerce-Shop",
+  "contact.form.project.api": "API-Entwicklung",
+  "contact.form.project.maintenance": "Website-Wartung",
+  "contact.form.project.other": "Sonstiges/Individuell",
+  "contact.form.project.discuss": "Lass uns sprechen",
+  
+  // Benefits
+  "contact.form.benefit.consultation": "30 Minuten Gratis-Beratung",
+  "contact.form.benefit.response": "Antwort innerhalb von 24 Stunden",
+  "contact.form.benefit.flexible": "Mehrsprachige Kommunikation",
 
   // Footer
   "footer.copyright": "Professionelle Webentwicklungs-Dienstleistungen",
