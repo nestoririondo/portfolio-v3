@@ -75,17 +75,11 @@ export const de = {
 
   // Contact
   "contact.title": "Lass uns über dein Projekt sprechen",
-  "contact.subtitle": "Ich antworte normalerweise innerhalb von 24 Stunden",
   "contact.form.name": "Name",
   "contact.form.email": "E-Mail",
   "contact.form.company": "Unternehmen",
   "contact.form.message": "Erzähl mir von deinem Projekt",
-  "contact.form.placeholder": "Beschreibe deine aktuellen Website-Herausforderungen und wie Erfolg aussehen würde",
-  "contact.form.price": "Budget-Bereich",
-  "contact.form.price.option1": "Unter €1.000",
-  "contact.form.price.option2": "€1.000 - €3.000",
-  "contact.form.price.option3": "€3.000 - €8.000",
-  "contact.form.price.option4": "Über €8.000",
+  "contact.form.placeholder": "Beschreibe deine aktuellen Herausforderungen und wie Erfolg aussehen würde",
   "contact.form.submit": "Nachricht senden",
   "contact.form.sending": "Wird gesendet...",
   "contact.form.success":

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { CheckCircle } from "lucide-react";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
+import { scrollToContact } from "@/lib/utils/scroll";
 
 const DEFAULT_STATE = {
   name: "",
@@ -21,15 +22,6 @@ export function Contact() {
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [timeouts, setTimeouts] = useState<Record<string, NodeJS.Timeout>>({});
   const { t } = useLanguage();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const scrollToHome = () => {
-    const heroElement = document.getElementById("hero");
-    if (heroElement) {
-      heroElement.scrollIntoView({ behavior: "smooth" });
-    }
-    window.history.pushState(null, "", window.location.pathname);
-  };
 
   const validateForm = () => {
     const newErrors: Record<string, boolean> = {};
@@ -48,6 +40,7 @@ export function Contact() {
 
     // Auto-clear errors after 3 seconds
     if (Object.keys(newErrors).length > 0) {
+      scrollToContact()
       const newTimeouts: Record<string, NodeJS.Timeout> = {};
 
       Object.keys(newErrors).forEach((fieldName) => {
@@ -70,15 +63,11 @@ export function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted with data:", formData);
 
     if (!validateForm()) {
-      console.log("Validation failed");
       toast.error(t("contact.form.validation"));
       return;
     }
-
-    console.log("Validation passed");
 
     setIsSubmitting(true);
 
@@ -108,7 +97,7 @@ export function Contact() {
         toast.custom(() => (
           <div className="flex items-center gap-3 bg-white dark:bg-gray-800 p-4 rounded-lg border border-green-200 dark:border-green-800 shadow-lg">
             <div className="flex-shrink-0">
-              <CheckCircle className="w-6 h-6 text-green-500" />
+              <CheckCircle className="w-6 h-6 text-[var(--checkmark)]" />
             </div>
             <span className="text-gray-900 dark:text-white font-medium">
               {t("contact.form.success")}
@@ -125,17 +114,6 @@ export function Contact() {
       console.error("Form submission error:", error);
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const autoResizeTextarea = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "60px";
-      const scrollHeight = textareaRef.current.scrollHeight;
-      const minHeight = 60;
-      const maxHeight = 300;
-      const newHeight = Math.max(Math.min(scrollHeight, maxHeight), minHeight);
-      textareaRef.current.style.height = `${newHeight}px`;
     }
   };
 
@@ -167,29 +145,19 @@ export function Contact() {
         return newErrors;
       });
     }
-
-    if (name === "message") {
-      setTimeout(autoResizeTextarea, 0);
-    }
   };
-
-  useEffect(() => {
-    if (formData.message) {
-      autoResizeTextarea();
-    }
-  }, []);
 
   const PROJECT_TYPES = useMemo(
     () => [
       {
         value: "website",
         label: t("contact.form.project.website"),
-        price: "€2K - €8K",
+        price: "€2K - €5K",
       },
       {
         value: "webapp",
         label: t("contact.form.project.webapp"),
-        price: "€5K - €15K",
+        price: "€5K - €12K",
       },
       {
         value: "ecommerce",
@@ -257,17 +225,11 @@ export function Contact() {
                   key={reason}
                   className="flex items-center gap-2"
                 >
-                  <CheckCircle className="w-4 h-4 text-green-300" />
+                  <CheckCircle className="w-4 h-4 text-[var(--checkmark)]" />
                   {reason}
                 </motion.div>
               ))}
             </div>
-            {/* 
-            <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4 text-center">
-              <p className="text-orange-800 dark:text-orange-200 text-sm font-medium">
-                🔥 {t("contact.form.availability")}
-              </p>
-            </div> */}
           </motion.div>
 
           <motion.form
@@ -284,7 +246,7 @@ export function Contact() {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.name")} <span className="text-red-900">*</span>
+                {t("contact.form.name")} <span>*</span>
               </label>
               <input
                 id="name"
@@ -305,8 +267,7 @@ export function Contact() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.email")}{" "}
-                <span className="text-red-500">*</span>
+                {t("contact.form.email")} <span>*</span>
               </label>
               <input
                 id="email"
@@ -348,8 +309,7 @@ export function Contact() {
               }`}
             >
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                {t("contact.form.projectType")}{" "}
-                <span className="text-red-500">*</span>
+                {t("contact.form.projectType")} <span>*</span>
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {PROJECT_TYPES.map((type) => (
@@ -360,7 +320,13 @@ export function Contact() {
                       formData.projectType === type.value
                         ? "bg-blue-500 text-white border-blue-500"
                         : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400"
-                    }`}
+                    }
+                       ${
+                         errors.projectType
+                           ? "border-red-500 bg-red-50 dark:bg-red-900/20"
+                           : ""
+                       }
+                      `}
                     onClick={() =>
                       setFormData((prev) => ({
                         ...prev,
@@ -390,23 +356,20 @@ export function Contact() {
                 htmlFor="message"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.message")}{" "}
-                <span className="text-red-500">*</span>
+                {t("contact.form.message")} <span>*</span>
               </label>
               <textarea
-                ref={textareaRef}
                 id="message"
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
                 required
-                className={`w-full px-4 py-3 border-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none ${
+                className={`w-full h-30 px-4 py-3 border-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none ${
                   errors.message
                     ? "border-red-500 bg-red-50 dark:bg-red-900/20"
                     : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
                 } text-gray-900 dark:text-white`}
                 placeholder={t("contact.form.placeholder")}
-                style={{ minHeight: "60px" }}
               />
             </div>
 
@@ -429,7 +392,7 @@ export function Contact() {
 
         {/* Footer */}
         <motion.footer
-          className="mt-20 border-t border-gray-200 dark:border-gray-800 pt-12"
+          className="mt-20 border-t border-gray-200 dark:border-gray-800 pt-12 pb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -441,13 +404,13 @@ export function Contact() {
                 © {new Date().getFullYear()} {t("footer.copyright")}
               </div>
 
-              <div className="flex flex-wrap gap-6">
-                <button
-                  onClick={scrollToHome}
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium border-2 border-gray-300 dark:border-gray-600 px-4 py-2 rounded-lg hover:border-gray-500"
+              <div className="flex flex-wrap gap-6 items-center">
+                <a
+                  href="#"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
                 >
                   {t("nav.home")}
-                </button>
+                </a>
                 <a
                   href="#services"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
