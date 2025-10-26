@@ -78,7 +78,7 @@ export const de = {
   "contact.subtitle": "Ich antworte normalerweise innerhalb von 24 Stunden",
   "contact.form.name": "Name",
   "contact.form.email": "E-Mail",
-  "contact.form.company": "Unternehmen (Optional)",
+  "contact.form.company": "Unternehmen",
   "contact.form.message": "Erzähl mir von deinem Projekt",
   "contact.form.placeholder": "Beschreibe deine aktuellen Website-Herausforderungen und wie Erfolg aussehen würde",
   "contact.form.price": "Budget-Bereich",
@@ -108,7 +108,7 @@ export const de = {
   "contact.form.project.discuss": "Lass uns sprechen",
   
   // Benefits
-  "contact.form.benefit.consultation": "30 Minuten Gratis-Beratung",
+  "contact.form.benefit.consultation": "Kostenlose Beratung",
   "contact.form.benefit.response": "Antwort innerhalb von 24 Stunden",
   "contact.form.benefit.flexible": "Mehrsprachige Kommunikation",
 

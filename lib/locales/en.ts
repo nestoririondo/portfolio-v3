@@ -76,7 +76,7 @@ export const en = {
   "contact.subtitle": "I typically respond within 24 hours",
   "contact.form.name": "Name",
   "contact.form.email": "Email",
-  "contact.form.company": "Company (Optional)",
+  "contact.form.company": "Company",
   "contact.form.message": "Tell me about your project",
   "contact.form.placeholder": "Describe your current website challenges and what success would look like",
   "contact.form.price": "Budget Range",
@@ -104,7 +104,7 @@ export const en = {
   "contact.form.project.discuss": "Let's discuss",
   
   // Benefits
-  "contact.form.benefit.consultation": "30 minutes Free consultation",
+  "contact.form.benefit.consultation": "Free consultation",
   "contact.form.benefit.response": "Response within 24 hours", 
   "contact.form.benefit.flexible": "Multilingual communication",
 

@@ -88,9 +88,9 @@ export function CircleBlurThemeToggle({
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
     >
       {theme === "light" ? (
-        <Moon className="w-3.5 h-3.5 md:w-[1.125rem] md:h-[1.125rem]" />
+        <Moon className="w-5 h-5 md:w-[1.125rem] md:h-[1.125rem]" />
       ) : (
-        <Sun className="w-3.5 h-3.5 md:w-[1.125rem] md:h-[1.125rem]" />
+        <Sun className="w-5 h-5 md:w-[1.125rem] md:h-[1.125rem]" />
       )}
     </button>
   );

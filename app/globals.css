@@ -25,12 +25,12 @@ html {
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --border: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --background: #ffffff;
+  --foreground: #24292f;
+  --popover: #ffffff;
+  --popover-foreground: #24292f;
+  --border: #f5f5f5;
+  --ring: #a1a1a1;
   --accent1: #e4defc;
   --accent2: #7e62ee;
   --primary: #0066cc;
@@ -38,14 +38,14 @@ html {
 
 .dark {
   --background: #0e0e0e;
-  --foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --ring: oklch(0.556 0 0);
+  --foreground: #f0f0f0;
+  --popover: #1e1e1e;
+  --popover-foreground: #f0f0f0;
+  --border: #333333;
+  --ring: #444444;
   --accent1: #5227ff;
   --accent2: #00ffff;
-  --primary: #00ffff;
+  --primary: #0066cc;
 }
 
 @layer base {
@@ -92,9 +92,10 @@ html {
   }
 
   .btn-primary {
-    background-color: rgb(243 244 246);
+    background-color: var(--border);
     border: none;
-    border-right: 2px solid black;
+    border-right: 4px solid black;
+    border-bottom: 4px solid black;
     color: black;
     padding: 12px 12px;
     font-family: var(--font-geist-mono);
@@ -115,7 +116,7 @@ html {
     background-color: black;
     color: white;
     transform: translate(-2px, -2px);
-    box-shadow: 2px 2px 0 #0066cc;
+    box-shadow: 4px 4px 0 #0066cc;
   }
 
   .btn-primary:active {
@@ -126,6 +127,7 @@ html {
   .dark .btn-primary {
     background-color: rgb(24 24 27);
     border-right-color: white;
+    border-bottom-color: white;
     color: white;
   }
 
@@ -134,4 +136,42 @@ html {
     color: black;
   }
 
+  .btn-secondary {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+    border: 2px solid var(--primary);
+    color: rgb(31 41 55);
+    padding: 12px;
+    border-radius: 9999px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-secondary:hover {
+    transform: scale(1.1);
+    background-color: white;
+    border-color: var(--primary);
+    box-shadow: 0 25px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.95);
+  }
+
+  .dark .btn-secondary {
+    background-color: rgba(31, 41, 55, 0.8);
+    border-color: rgb(75 85 99);
+    color: rgb(229 231 235);
+  }
+
+  .dark .btn-secondary:hover {
+    background-color: rgb(55 65 81);
+    border-color: var(--primary);
+  }
 }

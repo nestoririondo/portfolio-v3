@@ -181,12 +181,36 @@ export function Contact() {
 
   const PROJECT_TYPES = useMemo(
     () => [
-      { value: "website", label: t("contact.form.project.website"), price: "$2K - $8K" },
-      { value: "webapp", label: t("contact.form.project.webapp"), price: "$5K - $15K" },
-      { value: "ecommerce", label: t("contact.form.project.ecommerce"), price: "$3K - $12K" },
-      { value: "api", label: t("contact.form.project.api"), price: "$1K - $5K" },
-      { value: "maintenance", label: t("contact.form.project.maintenance"), price: "$500 - $2K" },
-      { value: "other", label: t("contact.form.project.other"), price: t("contact.form.project.discuss") },
+      {
+        value: "website",
+        label: t("contact.form.project.website"),
+        price: "€2K - €8K",
+      },
+      {
+        value: "webapp",
+        label: t("contact.form.project.webapp"),
+        price: "€5K - €15K",
+      },
+      {
+        value: "ecommerce",
+        label: t("contact.form.project.ecommerce"),
+        price: "€3K - €12K",
+      },
+      {
+        value: "api",
+        label: t("contact.form.project.api"),
+        price: "€1K - €5K",
+      },
+      {
+        value: "maintenance",
+        label: t("contact.form.project.maintenance"),
+        price: "€500 - €2K",
+      },
+      {
+        value: "other",
+        label: t("contact.form.project.other"),
+        price: t("contact.form.project.discuss"),
+      },
     ],
     [t]
   );
@@ -210,7 +234,7 @@ export function Contact() {
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      <section id="contact" className="pt-[100px] md:pt-[120px]">
+      <section id="contact" className="pt-8">
         <div className="max-w-4xl mx-auto px-4">
           <motion.div
             className="text-center mb-12"
@@ -228,21 +252,22 @@ export function Contact() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: .2, delay: .5 + index * .5 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.2, delay: 0.5 + index * 0.5 }}
                   key={reason}
                   className="flex items-center gap-2"
                 >
-                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <CheckCircle className="w-4 h-4 text-green-300" />
                   {reason}
                 </motion.div>
               ))}
             </div>
-            
+            {/* 
             <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4 text-center">
               <p className="text-orange-800 dark:text-orange-200 text-sm font-medium">
                 🔥 {t("contact.form.availability")}
               </p>
-            </div>
+            </div> */}
           </motion.div>
 
           <motion.form
@@ -259,7 +284,7 @@ export function Contact() {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.name")} <span className="text-red-500">*</span>
+                {t("contact.form.name")} <span className="text-red-900">*</span>
               </label>
               <input
                 id="name"
@@ -280,7 +305,8 @@ export function Contact() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.email")} <span className="text-red-500">*</span>
+                {t("contact.form.email")}{" "}
+                <span className="text-red-500">*</span>
               </label>
               <input
                 id="email"
@@ -302,7 +328,10 @@ export function Contact() {
                 htmlFor="company"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.company")} <span className="text-gray-400 text-xs">({t("contact.form.optional")})</span>
+                {t("contact.form.company")}{" "}
+                <span className="text-gray-400 text-xs">
+                  ({t("contact.form.optional")})
+                </span>
               </label>
               <input
                 id="company"
@@ -313,30 +342,40 @@ export function Contact() {
               />
             </div>
 
-            <div className={`space-y-3 ${errors.projectType ? "animate-shake" : ""}`}>
+            <div
+              className={`space-y-3 ${
+                errors.projectType ? "animate-shake" : ""
+              }`}
+            >
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                {t("contact.form.projectType")} <span className="text-red-500">*</span>
+                {t("contact.form.projectType")}{" "}
+                <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {PROJECT_TYPES.map((type) => (
                   <button
                     key={type.value}
                     type="button"
-                    className={`p-4 rounded-lg border-2 transition-all duration-200 text-left ${
+                    className={`p-4 rounded-lg border-2 transition-all duration-200 text-left cursor-pointer ${
                       formData.projectType === type.value
                         ? "bg-blue-500 text-white border-blue-500"
-                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-500"
+                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400"
                     }`}
                     onClick={() =>
-                      setFormData((prev) => ({ ...prev, projectType: type.value }))
+                      setFormData((prev) => ({
+                        ...prev,
+                        projectType: type.value,
+                      }))
                     }
                   >
                     <div className="font-medium">{type.label}</div>
-                    <div className={`text-sm ${
-                      formData.projectType === type.value 
-                        ? "text-blue-100" 
-                        : "text-gray-500 dark:text-gray-400"
-                    }`}>
+                    <div
+                      className={`text-sm ${
+                        formData.projectType === type.value
+                          ? "text-blue-100"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                    >
                       {type.price}
                     </div>
                   </button>
@@ -351,7 +390,8 @@ export function Contact() {
                 htmlFor="message"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                {t("contact.form.message")} <span className="text-red-500">*</span>
+                {t("contact.form.message")}{" "}
+                <span className="text-red-500">*</span>
               </label>
               <textarea
                 ref={textareaRef}
@@ -370,16 +410,15 @@ export function Contact() {
               />
             </div>
 
-
             <div className="space-y-3">
               <button
                 type="submit"
-                className="w-full bg-black text-white px-8 py-4 font-mono text-base font-bold uppercase tracking-wider border-3 border-black hover:border-blue-600 cursor-pointer flex items-center justify-center gap-4 transition-all duration-200 shadow-[6px_6px_0_#0066cc] hover:shadow-[3px_3px_0_#0066cc] hover:translate-x-[3px] hover:translate-y-[3px] hover:bg-blue-600 hover:text-black active:translate-x-[6px] active:translate-y-[6px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-[6px_6px_0_#0066cc]"
+                className="btn-primary w-full h-16 !text-lg font-semibold"
                 disabled={isSubmitting}
               >
                 {isSubmitting
                   ? t("contact.form.sending")
-                  : "Get Free Consultation"}
+                  : t("contact.form.benefit.consultation")}
               </button>
               <p className="text-xs text-center text-gray-500 dark:text-gray-400">
                 🔒 {t("contact.form.privacy")}

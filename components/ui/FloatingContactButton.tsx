@@ -14,14 +14,13 @@ export function FloatingContactButton() {
       className="fixed bottom-6 right-6 z-40"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.5, delay: 1 }}
+      transition={{ duration: 0.5, delay: 1, type: "spring", stiffness: 100 }}
     >
-      <ShinyButton
-        onClick={scrollToContact}
-        className="p-4 rounded-full "
-        whileHover={{ scale: 1.1, background: "linear-gradient(45deg, #3b82f6, #8b5cf6)" }}
+      <ShinyButton 
+        onClick={scrollToContact} 
+        className="btn-secondary !p-4"
       >
-        <MessageCircle className="w-6 h-6" />
+        <MessageCircle className="w-8 h-8" />
       </ShinyButton>
     </motion.div>
   );

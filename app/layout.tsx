@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/contexts/ThemeContext";
 import { LanguageProvider } from "@/lib/contexts/LanguageContext";
-import { Header } from "@/components/layout/Header";
 import { FloatingContactButton } from "@/components/ui/FloatingContactButton";
+import { FloatingControls } from "@/components/ui/FloatingControls";
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
@@ -43,10 +43,10 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <LanguageProvider>
-            <Header />
             <main className="min-h-screen">
               {children}
             </main>
+            <FloatingControls />
             <FloatingContactButton />
             <Toaster />
           </LanguageProvider>

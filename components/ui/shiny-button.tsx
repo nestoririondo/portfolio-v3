@@ -9,6 +9,7 @@ const animationProps: MotionProps = {
   initial: { "--x": "100%", scale: 0.8 },
   animate: { "--x": "-100%", scale: 1 },
   whileTap: { scale: 0.95 },
+  whileHover: { scale: 1.1 },
   transition: {
     repeat: Infinity,
     repeatType: "loop",
@@ -19,7 +20,7 @@ const animationProps: MotionProps = {
     mass: 2,
     scale: {
       type: "spring",
-      stiffness: 200,
+      stiffness: 100,
       damping: 5,
       mass: 0.5,
     },
