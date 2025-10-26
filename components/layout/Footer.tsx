@@ -6,7 +6,7 @@ export const Footer = () => {
 
   return (
     <motion.footer
-      className="mt-20 border-t border-gray-200 dark:border-gray-800 pt-12 pb-12"
+      className="mt-20 border-t border-gray-200 dark:border-gray-800 pt-6 pb-6"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -14,32 +14,37 @@ export const Footer = () => {
     >
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="text-gray-600 dark:text-gray-400 font-mono text-sm">
-            © {new Date().getFullYear()} {t("footer.copyright")}
+          <div className="flex flex-col items-center md:items-start md:text-left">
+            <div className="text-gray-600 dark:text-gray-400 font-mono text-sm">
+              © {new Date().getFullYear()} {t("footer.copyright")}
+            </div>
+            <div className="text-gray-600 dark:text-gray-400 font-mono text-[.6rem]">
+              Made in Berlin with ❤️
+            </div>
           </div>
 
           <div className="flex flex-wrap gap-6 items-center">
             <a
               href="#"
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
+              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95 active:bg-gray-200 dark:active:bg-gray-700"
             >
               {t("nav.home")}
             </a>
             <a
               href="#services"
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
+              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95 active:bg-gray-200 dark:active:bg-gray-700"
             >
               {t("footer.nav.services")}
             </a>
             <a
               href="#approach"
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
+              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95 active:bg-gray-200 dark:active:bg-gray-700"
             >
               {t("nav.approach")}
             </a>
             <a
               href="#about"
-              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
+              className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95 active:bg-gray-200 dark:active:bg-gray-700"
             >
               {t("footer.nav.about")}
             </a>

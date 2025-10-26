@@ -77,7 +77,8 @@ export const en = {
   "contact.form.email": "Email",
   "contact.form.company": "Company",
   "contact.form.message": "Tell me about your project",
-  "contact.form.placeholder": "Describe your current challenge and what success would look like",
+  "contact.form.placeholder":
+    "Describe your current challenge and what success would look like",
   "contact.form.submit": "Send Message",
   "contact.form.sending": "Sending...",
   "contact.form.success": "Message sent! I'll respond within 24 hours.",
@@ -85,25 +86,29 @@ export const en = {
   "contact.form.validation": "Please fill in all required fields.",
   "contact.form.optional": "optional",
   "contact.form.projectType": "Project Type",
-  "contact.form.availability": "Limited Availability: Only accepting 3 new projects for Q1 2025",
-  "contact.form.privacy": "Your information is secure and never shared. No spam, ever.",
-  
+  "contact.form.availability":
+    "Limited Availability: Only accepting 3 new projects for Q1 2025",
+  "contact.form.privacy":
+    "Your information is secure and never shared. No spam, ever.",
+
   // Project Types
   "contact.form.project.website": "Website Development",
-  "contact.form.project.webapp": "Web Application", 
+  "contact.form.project.webapp": "Web Application",
   "contact.form.project.ecommerce": "E-commerce Store",
-  "contact.form.project.api": "API Development",
   "contact.form.project.maintenance": "Website Maintenance",
-  "contact.form.project.other": "Other/Custom",
+  "contact.form.project.other": "Other",
   "contact.form.project.discuss": "Let's discuss",
-  
+  "contact.form.estimatedRange": "Estimated range:",
+
+  // WhatsApp
+  "contact.whatsapp.button": "Message on WhatsApp",
+  "contact.form.orDetailed": "Or send detailed project information",
+
   // Benefits
-  "contact.form.benefit.consultation": "Free consultation",
-  "contact.form.benefit.response": "Response within 24 hours", 
-  "contact.form.benefit.flexible": "Multilingual communication",
+  "contact.form.benefit.consultation": "Request Free Consultation",
 
   // Footer
-  "footer.copyright": "Professional Web Development Services",
+  "footer.copyright": "Néstor Iriondo",
   "footer.nav.services": "Services",
   "footer.nav.about": "About",
 

@@ -5,7 +5,6 @@ import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { scrollToContact } from "@/lib/utils/scroll";
 import SplitText from "@/components/ui/SplitText";
-import Example from "../ui/Status";
 import DotGrid from "../ui/DotGrid";
 import { useTheme } from "@/lib/contexts/ThemeContext";
 import CurrentStatus from "../ui/Status";
@@ -14,13 +13,16 @@ export function Hero() {
   const { t, language } = useLanguage();
   const { theme } = useTheme();
 
+  const baseColor = theme === "dark" ? "#0066cc" : "#98c6f5";
+  const activeColor = theme === "dark" ? "#00FFF7" : "#001eff";
+
   return (
     <div className="relative h-screen">
       <DotGrid
         dotSize={8}
         gap={15}
-        baseColor={theme === "dark" ? "#5227FF" : "#e4defc"}
-        activeColor={theme === "dark" ? "#00FFFF" : "#7e62ee"}
+        baseColor={baseColor}
+        activeColor={activeColor}
         proximity={200}
         shockRadius={300}
         shockStrength={5}
@@ -60,7 +62,9 @@ export function Hero() {
               className="btn-primary group px-8! py-6!"
             >
               <MessageCircle className="w-6 h-6 transition-transform duration-300 group-hover:scale-125" />
-              <span className="font-bold text-[.8rem] relative text-">{t("hero.subtitle")}</span>
+              <span className="font-bold text-[.8rem] relative text-">
+                {t("hero.subtitle")}
+              </span>
               <ArrowRight className="w-6 h-6 shrink-0 transition-transform duration-300 group-hover:scale-125" />
             </button>
 
@@ -70,7 +74,7 @@ export function Hero() {
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1, ease: "backIn" }}
             >
-              <CurrentStatus>{t("hero.status")}</CurrentStatus>
+              <CurrentStatus>{t("about.status")}</CurrentStatus>
             </motion.div>
           </motion.div>
         </div>

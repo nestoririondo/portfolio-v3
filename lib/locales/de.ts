@@ -96,18 +96,20 @@ export const de = {
   "contact.form.project.website": "Website-Entwicklung",
   "contact.form.project.webapp": "Web-Anwendung",
   "contact.form.project.ecommerce": "E-Commerce-Shop",
-  "contact.form.project.api": "API-Entwicklung",
   "contact.form.project.maintenance": "Website-Wartung",
-  "contact.form.project.other": "Sonstiges/Individuell",
+  "contact.form.project.other": "Sonstiges",
   "contact.form.project.discuss": "Lass uns sprechen",
+  "contact.form.estimatedRange": "Geschätzter Bereich:",
+
+  // WhatsApp
+  "contact.whatsapp.button": "Nachricht über WhatsApp",
+  "contact.form.orDetailed": "Oder detaillierte Projektinformationen senden",
   
   // Benefits
-  "contact.form.benefit.consultation": "Kostenlose Beratung",
-  "contact.form.benefit.response": "Antwort innerhalb von 24 Stunden",
-  "contact.form.benefit.flexible": "Mehrsprachige Kommunikation",
+  "contact.form.benefit.consultation": "Kostenlose Beratung anfragen",
 
   // Footer
-  "footer.copyright": "Professionelle Webentwicklungs-Dienstleistungen",
+  "footer.copyright": "Néstor Iriondo",
   "footer.nav.services": "Leistungen",
   "footer.nav.about": "Über mich",
 
