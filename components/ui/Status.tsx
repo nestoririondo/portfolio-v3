@@ -6,7 +6,7 @@ import {
   StatusLabel,
 } from "@/components/ui/shadcn-io/status";
 
-const Example = ({children}: {children: React.ReactNode}) => (
+const CurrentStatus = ({children}: {children: React.ReactNode}) => (
   <Status
     className="gap-4 rounded-full px-6 py-2 text-sm bg-gray-100 dark:bg-gray-800"
     status="online"
@@ -17,4 +17,4 @@ const Example = ({children}: {children: React.ReactNode}) => (
   </Status>
 );
 
-export default Example;
+export default CurrentStatus;

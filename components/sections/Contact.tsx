@@ -6,6 +6,7 @@ import { CheckCircle } from "lucide-react";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { scrollToContact } from "@/lib/utils/scroll";
+import { Footer } from "../layout/Footer";
 
 const DEFAULT_STATE = {
   name: "",
@@ -40,7 +41,7 @@ export function Contact() {
 
     // Auto-clear errors after 3 seconds
     if (Object.keys(newErrors).length > 0) {
-      scrollToContact()
+      scrollToContact();
       const newTimeouts: Record<string, NodeJS.Timeout> = {};
 
       Object.keys(newErrors).forEach((fieldName) => {
@@ -313,27 +314,28 @@ export function Contact() {
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {PROJECT_TYPES.map((type) => (
-                  <button
+                  <label
                     key={type.value}
-                    type="button"
-                    className={`p-4 rounded-lg border-2 transition-all duration-200 text-left cursor-pointer ${
+                    className={`block p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer ${
                       formData.projectType === type.value
                         ? "bg-blue-500 text-white border-blue-500"
                         : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400"
                     }
                        ${
                          errors.projectType
-                           ? "border-red-500 bg-red-50 dark:bg-red-900/20"
+                           ? "border-red-500! bg-red-50 dark:bg-red-900/20"
                            : ""
                        }
                       `}
-                    onClick={() =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        projectType: type.value,
-                      }))
-                    }
                   >
+                    <input
+                      type="radio"
+                      name="projectType"
+                      value={type.value}
+                      checked={formData.projectType === type.value}
+                      onChange={handleChange}
+                      className="sr-only"
+                    />
                     <div className="font-medium">{type.label}</div>
                     <div
                       className={`text-sm ${
@@ -344,7 +346,7 @@ export function Contact() {
                     >
                       {type.price}
                     </div>
-                  </button>
+                  </label>
                 ))}
               </div>
             </div>
@@ -376,7 +378,7 @@ export function Contact() {
             <div className="space-y-3">
               <button
                 type="submit"
-                className="btn-primary w-full h-16 !text-lg font-semibold"
+                className="btn-primary w-full !py-6 !text-lg font-semibold"
                 disabled={isSubmitting}
               >
                 {isSubmitting
@@ -390,49 +392,7 @@ export function Contact() {
           </motion.form>
         </div>
 
-        {/* Footer */}
-        <motion.footer
-          className="mt-20 border-t border-gray-200 dark:border-gray-800 pt-12 pb-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-              <div className="text-gray-600 dark:text-gray-400 font-mono text-sm">
-                © {new Date().getFullYear()} {t("footer.copyright")}
-              </div>
-
-              <div className="flex flex-wrap gap-6 items-center">
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
-                >
-                  {t("nav.home")}
-                </a>
-                <a
-                  href="#services"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
-                >
-                  {t("footer.nav.services")}
-                </a>
-                <a
-                  href="#approach"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
-                >
-                  {t("nav.approach")}
-                </a>
-                <a
-                  href="#about"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 font-medium"
-                >
-                  {t("footer.nav.about")}
-                </a>
-              </div>
-            </div>
-          </div>
-        </motion.footer>
+        <Footer />
       </section>
     </motion.div>
   );

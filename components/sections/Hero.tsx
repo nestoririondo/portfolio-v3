@@ -8,6 +8,7 @@ import SplitText from "@/components/ui/SplitText";
 import Example from "../ui/Status";
 import DotGrid from "../ui/DotGrid";
 import { useTheme } from "@/lib/contexts/ThemeContext";
+import CurrentStatus from "../ui/Status";
 
 export function Hero() {
   const { t, language } = useLanguage();
@@ -56,20 +57,20 @@ export function Hero() {
           >
             <button
               onClick={scrollToContact}
-              className="btn-primary group !px-8 !py-6 !text-lg !min-w-[200px]"
+              className="btn-primary group px-8! py-6!"
             >
               <MessageCircle className="w-6 h-6 transition-transform duration-300 group-hover:scale-125" />
-              <span className="font-bold relative">{t("hero.subtitle")}</span>
-              <ArrowRight className="w-6 h-6 flex-shrink-0 transition-transform duration-300 group-hover:scale-125" />
+              <span className="font-bold text-[.8rem] relative text-">{t("hero.subtitle")}</span>
+              <ArrowRight className="w-6 h-6 shrink-0 transition-transform duration-300 group-hover:scale-125" />
             </button>
 
             <motion.div
-              className="flex md:mx-0 gap-3 font-mono text-sm text-gray-600 dark:text-gray-400 uppercase"
+              className="flex md:mx-0 gap-3 text-gray-600 dark:text-gray-400"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1, ease: "backIn" }}
             >
-              <Example>{t("hero.status")}</Example>
+              <CurrentStatus>{t("hero.status")}</CurrentStatus>
             </motion.div>
           </motion.div>
         </div>
