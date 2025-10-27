@@ -17,6 +17,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--normal-border": "var(--border)",
         } as React.CSSProperties
       }
+      toastOptions={{
+        style: {
+          fontSize: '16px',
+          padding: '16px 20px',
+          minHeight: '60px',
+        }
+      }}
       {...props}
     />
   );

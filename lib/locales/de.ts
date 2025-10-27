@@ -13,18 +13,6 @@ export const de = {
   "hero.cta": "Lass uns über dein Projekt sprechen",
   "hero.status": "Derzeit verfügbar für Projekte",
 
-  // Problem Recognition
-  "problems.title": "Anzeichen, dass du dein Template übergewachsen bist",
-  "problems.template":
-    "Dein Template unterstützt die Features nicht, die du benötigst",
-  "problems.manual": "Manuelle Updates fressen deine Zeit auf",
-  "problems.integration":
-    "Du kannst nicht mit deinen bestehenden Tools integrieren",
-  "problems.design": "Das Design sieht aus wie bei allen anderen",
-  "problems.performance": "Die Performance ist langsam und schadet dem SEO",
-  "problems.limited": "Du bist durch das Template limitiert",
-  "problems.conclusion":
-    "Wenn dir etwas davon bekannt vorkommt, ist es vielleicht Zeit für eine individuelle Lösung.",
 
   // Services
   "services.custom.title": "Individuelle Website-Entwicklung",
@@ -37,18 +25,6 @@ export const de = {
   "services.consulting.description":
     "Audit deiner aktuellen Website, Probleme identifizieren, nachhaltige Lösungen implementieren",
 
-  // Approach
-  "approach.business.title": "Business zuerst, Technologie zweite",
-  "approach.business.description":
-    "Deine Website sollte Geschäftsprobleme lösen, nicht nur gut aussehen",
-  "approach.communication.title": "Klare Kommunikation, kein Fachjargon",
-  "approach.communication.description":
-    "Du wirst verstehen, was passiert und warum",
-  "approach.professional.title": "Professionelle Lieferung",
-  "approach.professional.description":
-    "Ich bin beruflich Softwareentwickler, kein Hobbyist",
-  "approach.lasting.title": "Gebaut für die Ewigkeit",
-  "approach.lasting.description": "Sauberer Code, dokumentiert, wartbar",
 
   // Case Study
   "casestudy.title": "Aktuelles Projekt: Immobilien-Website",

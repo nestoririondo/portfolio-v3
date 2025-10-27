@@ -41,7 +41,6 @@ export function Header() {
         <div className="flex items-center gap-0">
           <button
             onClick={cycleLanguage}
-            className="btn-primary"
             title={t("language.toggle")}
           >
             <Globe className="w-3.5 h-3.5 md:w-[1.125rem] md:h-[1.125rem]" />
@@ -51,12 +50,11 @@ export function Header() {
           <CircleBlurThemeToggle
             start="center"
             title={t("theme.toggle")}
-            className="btn-primary !rounded-none"
           />
 
           <button
             onClick={scrollToContact}
-            className="btn-primary !px-4 md:!px-6 md:!min-w-[120px]"
+            className="!px-4 md:!px-6 md:!min-w-[120px]"
           >
             <MessageCircle className="w-3.5 h-3.5 md:w-[1.125rem] md:h-[1.125rem]" />
             <div className="hidden md:block font-extrabold relative">

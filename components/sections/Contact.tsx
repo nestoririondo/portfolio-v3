@@ -399,12 +399,14 @@ export function Contact() {
             <div className="space-y-3">
               <button
                 type="submit"
-                className="btn-primary w-full py-6! text-[.8rem]! font-semibold"
+                className="btn-primary-animated w-full justify-center"
                 disabled={isSubmitting}
               >
-                {isSubmitting
-                  ? t("contact.form.sending")
-                  : t("contact.form.benefit.consultation")}
+                <span className="font-semibold">
+                  {isSubmitting
+                    ? t("contact.form.sending")
+                    : t("contact.form.benefit.consultation")}
+                </span>
               </button>
               <p className="text-xs text-center text-gray-500 dark:text-gray-400">
                 🔒 {t("contact.form.privacy")}

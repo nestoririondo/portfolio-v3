@@ -13,16 +13,6 @@ export const en = {
   "hero.cta": "Let's talk about your project",
   "hero.status": "Currently available for projects",
 
-  // Problem Recognition
-  "problems.title": "Signs you've outgrown your template",
-  "problems.template": "Your template doesn't support the features you need",
-  "problems.manual": "Manual updates are eating up your time",
-  "problems.integration": "You can't integrate with your existing tools",
-  "problems.design": "The design looks like everyone else's",
-  "problems.performance": "Performance is slow and hurting SEO",
-  "problems.limited": "You're limited by what the template allows",
-  "problems.conclusion":
-    "If any of these sound familiar, it might be time for a custom solution.",
 
   // Services
   "services.custom.title": "Custom Website Development",
@@ -35,18 +25,6 @@ export const en = {
   "services.consulting.description":
     "Audit your current site, identify problems, implement solutions that last",
 
-  // Approach
-  "approach.business.title": "Business first, technology second",
-  "approach.business.description":
-    "Your website should solve business problems, not just look good",
-  "approach.communication.title": "Clear communication, no jargon",
-  "approach.communication.description":
-    "You'll understand what's happening and why",
-  "approach.professional.title": "Professional delivery",
-  "approach.professional.description":
-    "I'm a software developer by profession, not a hobbyist",
-  "approach.lasting.title": "Built to last",
-  "approach.lasting.description": "Clean code, documented, maintainable",
 
   // Case Study
   "casestudy.title": "Recent Project: Real Estate Website",

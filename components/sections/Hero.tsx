@@ -13,7 +13,7 @@ export function Hero() {
   const { t, language } = useLanguage();
   const { theme } = useTheme();
 
-  const baseColor = theme === "dark" ? "#0066cc" : "#9ebbff";
+  const baseColor = theme === "dark" ? "#2b3142" : "#f0f0f0";
   const activeColor = theme === "dark" ? "#00FFF7" : "#0022ff";
 
   return (
@@ -59,10 +59,10 @@ export function Hero() {
           >
             <button
               onClick={scrollToContact}
-              className="btn-primary group px-8! py-6!"
+              className="btn-primary-animated group"
             >
               <MessageCircle className="w-6 h-6 transition-transform duration-300 group-hover:scale-125" />
-              <span className="font-bold text-[1rem] relative text-">
+              <span className="font-bold text-[1rem]">
                 {t("hero.subtitle")}
               </span>
               <ArrowRight className="w-6 h-6 shrink-0 transition-transform duration-300 group-hover:scale-125" />

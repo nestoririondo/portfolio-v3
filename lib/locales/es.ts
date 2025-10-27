@@ -13,17 +13,6 @@ export const es = {
   "hero.cta": "Hablemos sobre tu proyecto",
   "hero.status": "Actualmente disponible para proyectos",
 
-  // Problem Recognition
-  "problems.title": "Señales de que has superado tu plantilla",
-  "problems.template":
-    "Tu plantilla no soporta las características que necesitas",
-  "problems.manual": "Las actualizaciones manuales están consumiendo tu tiempo",
-  "problems.integration": "No puedes integrar con tus herramientas existentes",
-  "problems.design": "El diseño se ve como el de todos los demás",
-  "problems.performance": "El rendimiento es lento y perjudica el SEO",
-  "problems.limited": "Estás limitado por lo que permite la plantilla",
-  "problems.conclusion":
-    "Si alguno de estos te suena familiar, podría ser tiempo para una solución personalizada.",
 
   // Services
   "services.custom.title": "Desarrollo Web Personalizado",
@@ -36,17 +25,6 @@ export const es = {
   "services.consulting.description":
     "Auditar tu sitio actual, identificar problemas, implementar soluciones que duren",
 
-  // Approach
-  "approach.business.title": "Negocio primero, tecnología segundo",
-  "approach.business.description":
-    "Tu sitio web debe resolver problemas empresariales, no solo verse bien",
-  "approach.communication.title": "Comunicación clara, sin jerga",
-  "approach.communication.description": "Entenderás qué está pasando y por qué",
-  "approach.professional.title": "Entrega profesional",
-  "approach.professional.description":
-    "Soy desarrollador de software por profesión, no por hobby",
-  "approach.lasting.title": "Construido para durar",
-  "approach.lasting.description": "Código limpio, documentado, mantenible",
 
   // Case Study
   "casestudy.title": "Proyecto Reciente: Sitio Web de Bienes Raíces",
