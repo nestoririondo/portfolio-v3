@@ -78,17 +78,22 @@ export const es = {
   "contact.form.email": "Email",
   "contact.form.company": "Empresa",
   "contact.form.message": "Cuéntame sobre tu proyecto",
-  "contact.form.placeholder": "Describe tu desafío actual y qué significaría el éxito",
+  "contact.form.placeholder":
+    "Describe tu desafío actual y qué significaría el éxito",
   "contact.form.submit": "Enviar Mensaje",
   "contact.form.sending": "Enviando...",
   "contact.form.success": "¡Mensaje enviado! Responderé dentro de 24 horas.",
-  "contact.form.error": "Error al enviar el mensaje. Por favor inténtalo de nuevo.",
-  "contact.form.validation": "Por favor completa todos los campos obligatorios.",
+  "contact.form.error":
+    "Error al enviar el mensaje. Por favor inténtalo de nuevo.",
+  "contact.form.validation":
+    "Por favor completa todos los campos obligatorios.",
   "contact.form.optional": "opcional",
   "contact.form.projectType": "Tipo de proyecto",
-  "contact.form.availability": "Disponibilidad limitada: Solo acepto 3 nuevos proyectos para Q1 2025",
-  "contact.form.privacy": "Tu información es segura y nunca se comparte. Sin spam, jamás.",
-  
+  "contact.form.availability":
+    "Disponibilidad limitada: Solo acepto 3 nuevos proyectos para Q1 2025",
+  "contact.form.privacy":
+    "Tu información es segura y nunca se comparte. Sin spam, jamás.",
+
   // Project Types
   "contact.form.project.website": "Desarrollo de Sitio Web",
   "contact.form.project.webapp": "Aplicación Web",
@@ -101,7 +106,7 @@ export const es = {
   // WhatsApp
   "contact.whatsapp.button": "Enviar mensaje por WhatsApp",
   "contact.form.orDetailed": "O envía información detallada del proyecto",
-  
+
   // Benefits
   "contact.form.benefit.consultation": "Solicitar Consulta Gratuita",
 
@@ -115,4 +120,27 @@ export const es = {
 
   // Language Toggle
   "language.toggle": "Cambiar Idioma",
+
+  // Chat Conversation
+  "chat.demo.1":
+    "Hola! Somos un bufete de abogados y nuestro sitio web es terrible",
+  "chat.demo.2": "¡Hola! ¿Qué le pasa al actual?",
+  "chat.demo.3": "Se hizo en 2019, lento, no es mobile-friendly...",
+  "chat.demo.4": "Vale, ¿es un theme viejo de WordPress?",
+  "chat.demo.5": "Exactamente 😅 Necesitamos algo moderno",
+  "chat.demo.6": "¡Perfecto! Eso es exactamente lo que hago",
+  "chat.demo.7": "¡Genial! ¿Quedamos en Mitte para un café?",
+  "chat.status.online": "En línea",
+  "chat.input.placeholder": "Escribe un mensaje...",
+
+  // Chat Demo Section
+  "chatdemo.title": "Empecemos la Conversación",
+  "chatdemo.description":
+    "Así es como comienza nuestra colaboración. Comunicación clara, respuestas rápidas y un enfoque en entender tus necesidades exactas.",
+  "chatdemo.benefit1": "Comunicación directa sin barreras corporativas",
+  "chatdemo.benefit2":
+    "Respuestas rápidas para mantener tu proyecto en movimiento",
+  "chatdemo.benefit3": "Experiencia técnica explicada en términos simples",
+
+  // Chat Demo Messages
 };

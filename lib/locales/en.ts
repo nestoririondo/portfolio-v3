@@ -117,4 +117,25 @@ export const en = {
 
   // Language Toggle
   "language.toggle": "Change Language",
+
+  // Chat Conversation
+  "chat.demo.1": "Hi! We're a law firm and our website is terrible",
+  "chat.demo.2": "Hey! What's wrong with the current one?",
+  "chat.demo.3": "Built in 2019, slow, not mobile-friendly...",
+  "chat.demo.4": "Ah, old WordPress theme?",
+  "chat.demo.5": "Exactly 😅 We need something modern",
+  "chat.demo.6": "Perfect! That's exactly what I do",
+  "chat.demo.7": "Great! Can we meet in Mitte for coffee?",
+  "chat.status.online": "Online",
+  "chat.input.placeholder": "Type a message...",
+
+  // Chat Demo Section
+  "chatdemo.title": "Let's Start the Conversation",
+  "chatdemo.description":
+    "This is how our collaboration begins. Clear communication, quick responses, and a focus on understanding your exact needs.",
+  "chatdemo.benefit1": "Direct communication without corporate barriers",
+  "chatdemo.benefit2": "Quick responses to keep your project moving",
+  "chatdemo.benefit3": "Technical expertise explained in simple terms",
+
+  // Chat Demo Messages
 };

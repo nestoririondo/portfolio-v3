@@ -1,6 +1,7 @@
 "use client";
 
 import { Hero, ProblemRecognition, Services, Approach, CaseStudy, About, Contact } from "@/components/sections";
+import { ChatDemo } from "@/components/sections/ChatDemo";
 
 export function MainContent() {
   return (
@@ -8,6 +9,7 @@ export function MainContent() {
       <Hero />
       <ProblemRecognition />
       <Services />
+      <ChatDemo />
       <Approach />
       {/* <CaseStudy /> */}
       <About />

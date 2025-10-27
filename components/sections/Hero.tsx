@@ -62,7 +62,7 @@ export function Hero() {
               className="btn-primary group px-8! py-6!"
             >
               <MessageCircle className="w-6 h-6 transition-transform duration-300 group-hover:scale-125" />
-              <span className="font-bold text-[.8rem] relative text-">
+              <span className="font-bold text-[1rem] relative text-">
                 {t("hero.subtitle")}
               </span>
               <ArrowRight className="w-6 h-6 shrink-0 transition-transform duration-300 group-hover:scale-125" />

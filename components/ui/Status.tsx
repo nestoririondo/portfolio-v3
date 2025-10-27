@@ -8,7 +8,7 @@ import {
 
 const CurrentStatus = ({children}: {children: React.ReactNode}) => (
   <Status
-    className="gap-4 rounded-full px-6 py-2 text-[.7rem] bg-gray-100 dark:bg-gray-800"
+    className="gap-4 rounded-full px-6 py-2 text-[.9rem] bg-gray-100 dark:bg-gray-800"
     status="online"
     variant="outline"
   >

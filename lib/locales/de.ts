@@ -79,7 +79,8 @@ export const de = {
   "contact.form.email": "E-Mail",
   "contact.form.company": "Unternehmen",
   "contact.form.message": "Erzähl mir von deinem Projekt",
-  "contact.form.placeholder": "Beschreibe deine aktuellen Herausforderungen und wie Erfolg aussehen würde",
+  "contact.form.placeholder":
+    "Beschreibe deine aktuellen Herausforderungen und wie Erfolg aussehen würde",
   "contact.form.submit": "Nachricht senden",
   "contact.form.sending": "Wird gesendet...",
   "contact.form.success":
@@ -89,9 +90,11 @@ export const de = {
   "contact.form.validation": "Bitte fülle alle Pflichtfelder aus.",
   "contact.form.optional": "optional",
   "contact.form.projectType": "Projekttyp",
-  "contact.form.availability": "Begrenzte Verfügbarkeit: Nehme nur 3 neue Projekte für Q1 2025 an",
-  "contact.form.privacy": "Deine Daten sind sicher und werden niemals geteilt. Kein Spam, niemals.",
-  
+  "contact.form.availability":
+    "Begrenzte Verfügbarkeit: Nehme nur 3 neue Projekte für Q1 2025 an",
+  "contact.form.privacy":
+    "Deine Daten sind sicher und werden niemals geteilt. Kein Spam, niemals.",
+
   // Project Types
   "contact.form.project.website": "Website-Entwicklung",
   "contact.form.project.webapp": "Web-Anwendung",
@@ -104,7 +107,7 @@ export const de = {
   // WhatsApp
   "contact.whatsapp.button": "Nachricht über WhatsApp",
   "contact.form.orDetailed": "Oder detaillierte Projektinformationen senden",
-  
+
   // Benefits
   "contact.form.benefit.consultation": "Kostenlose Beratung anfragen",
 
@@ -118,4 +121,25 @@ export const de = {
 
   // Language Toggle
   "language.toggle": "Sprache ändern",
+
+  // Chat Conversation
+  "chat.demo.1":
+    "Hi! Wir sind eine Anwaltskanzlei und unsere Website ist schrecklich",
+  "chat.demo.2": "Hey! Was ist falsch mit der aktuellen?",
+  "chat.demo.3": "2019 gebaut, langsam, nicht mobilfreundlich...",
+  "chat.demo.4": "Ah, altes WordPress-Theme?",
+  "chat.demo.5": "Genau 😅 Wir brauchen etwas Modernes",
+  "chat.demo.6": "Perfekt! Das ist genau das, was ich mache",
+  "chat.demo.7": "Toll! Können wir uns in Mitte auf einen Kaffee treffen?",
+
+  "chat.status.online": "Online",
+  "chat.input.placeholder": "Nachricht eingeben...",
+
+  // Chat Demo Section
+  "chatdemo.title": "Beginnen wir das Gespräch",
+  "chatdemo.description":
+    "So beginnt unsere Zusammenarbeit. Klare Kommunikation, schnelle Antworten und Fokus auf das Verstehen Ihrer genauen Bedürfnisse.",
+  "chatdemo.benefit1": "Direkte Kommunikation ohne Unternehmensbarrieren",
+  "chatdemo.benefit2": "Schnelle Antworten um Ihr Projekt voranzubringen",
+  "chatdemo.benefit3": "Technische Expertise in einfachen Begriffen erklärt",
 };
