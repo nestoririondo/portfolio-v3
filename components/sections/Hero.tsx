@@ -14,7 +14,7 @@ export function Hero() {
   const { theme } = useTheme();
 
   const baseColor = theme === "dark" ? "#0066cc" : "#98c6f5";
-  const activeColor = theme === "dark" ? "#00FFF7" : "#001eff";
+  const activeColor = theme === "dark" ? "#00FFF7" : "#033dff";
 
   return (
     <div className="relative h-screen">

@@ -68,10 +68,14 @@ export function ChatBubble() {
   useEffect(() => {
     if (!isInView) return;
     
-    setVisibleMessages([]);
-    
     const timeouts: NodeJS.Timeout[] = [];
     const initialDelay = 1000; // 1 second delay before first message
+    
+    // Reset messages after a micro-task to avoid synchronous setState
+    const resetTimeout = setTimeout(() => {
+      setVisibleMessages([]);
+    }, 0);
+    timeouts.push(resetTimeout);
     
     messages.forEach((message, index) => {
       const timeout = setTimeout(() => {

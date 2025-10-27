@@ -1,6 +1,13 @@
 "use client";
 
-import { Hero, ProblemRecognition, Services, Approach, CaseStudy, About, Contact } from "@/components/sections";
+import {
+  Hero,
+  ProblemRecognition,
+  Services,
+  Approach,
+  About,
+  Contact,
+} from "@/components/sections";
 import { ChatDemo } from "@/components/sections/ChatDemo";
 
 export function MainContent() {
@@ -11,7 +18,6 @@ export function MainContent() {
       <Services />
       <ChatDemo />
       <Approach />
-      {/* <CaseStudy /> */}
       <About />
       <Contact />
     </div>

@@ -2,7 +2,6 @@
 
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
-import { StatusIndicator } from "@/components/ui/StatusIndicator";
 import { SKILLS } from "@/lib/constants/skills";
 import Example from "../ui/Status";
 
