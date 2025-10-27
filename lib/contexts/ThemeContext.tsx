@@ -18,9 +18,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme) {
-      setTheme(savedTheme);
+      setTimeout(() => setTheme(savedTheme), 0);
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
+      setTimeout(() => setTheme('dark'), 0);
     }
   }, []);
 
@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
 
     if ('startViewTransition' in document) {
-      (document as any).startViewTransition(() => {
+      (document as Document & { startViewTransition: (callback: () => void) => void }).startViewTransition(() => {
         setTheme(prev => prev === 'light' ? 'dark' : 'light');
       });
     } else {

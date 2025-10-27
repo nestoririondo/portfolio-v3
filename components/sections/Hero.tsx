@@ -13,8 +13,8 @@ export function Hero() {
   const { t, language } = useLanguage();
   const { theme } = useTheme();
 
-  const baseColor = theme === "dark" ? "#0066cc" : "#98c6f5";
-  const activeColor = theme === "dark" ? "#00FFF7" : "#033dff";
+  const baseColor = theme === "dark" ? "#0066cc" : "#9ebbff";
+  const activeColor = theme === "dark" ? "#00FFF7" : "#0022ff";
 
   return (
     <div className="relative h-screen">

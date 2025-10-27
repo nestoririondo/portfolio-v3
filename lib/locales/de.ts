@@ -125,7 +125,7 @@ export const de = {
   // Chat Conversation
   "chat.demo.1":
     "Hi! Wir sind eine Anwaltskanzlei und unsere Website ist schrecklich",
-  "chat.demo.2": "Hey! Was ist falsch mit der aktuellen?",
+  "chat.demo.2": "Hey! Wo liegt das Problem bei der aktuellen?",
   "chat.demo.3": "2019 gebaut, langsam, nicht mobilfreundlich...",
   "chat.demo.4": "Ah, altes WordPress-Theme?",
   "chat.demo.5": "Genau 😅 Wir brauchen etwas Modernes",

@@ -122,7 +122,7 @@ export const en = {
   "chat.demo.1": "Hi! We're a law firm and our website is terrible",
   "chat.demo.2": "Hey! What's wrong with the current one?",
   "chat.demo.3": "Built in 2019, slow, not mobile-friendly...",
-  "chat.demo.4": "Ah, old WordPress theme?",
+  "chat.demo.4": "Oh, old WordPress theme?",
   "chat.demo.5": "Exactly 😅 We need something modern",
   "chat.demo.6": "Perfect! That's exactly what I do",
   "chat.demo.7": "Great! Can we meet in Mitte for coffee?",
