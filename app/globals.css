@@ -189,11 +189,12 @@ html {
 
   .dark .btn-primary-animated {
     border-color: #6b7280;
-    color: black;
+    color: black !important;
   }
 
-  .dark .btn-primary-animated:hover {
-    color: white;
+  .dark .btn-primary-animated:hover,
+  .dark .btn-primary-animated:hover * {
+    color: white !important;
   }
 
   .dark .btn-primary-animated::before {

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/contexts/ThemeContext";
 import { LanguageProvider } from "@/lib/contexts/LanguageContext";
+import { AnimationProvider } from "@/lib/contexts/AnimationContext";
 import { FloatingContactButton } from "@/components/ui/FloatingContactButton";
 import { FloatingControls } from "@/components/ui/FloatingControls";
 import { Toaster } from "@/components/ui/sonner";
@@ -43,12 +44,14 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <LanguageProvider>
-            <main className="min-h-screen">
-              {children}
-            </main>
-            <FloatingControls />
-            <FloatingContactButton />
-            <Toaster />
+            <AnimationProvider>
+              <main className="min-h-screen">
+                {children}
+              </main>
+              <FloatingControls />
+              <FloatingContactButton />
+              <Toaster />
+            </AnimationProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>

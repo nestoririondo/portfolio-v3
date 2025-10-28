@@ -3,10 +3,12 @@
 import { Globe } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
+import { useAnimation } from "@/lib/contexts/AnimationContext";
 import { CircleBlurThemeToggle } from "./CircleBlurThemeToggle";
 
 export function FloatingControls() {
   const { language, setLanguage, t } = useLanguage();
+  const { heroComplete } = useAnimation();
 
   const cycleLanguage = () => {
     const languages = ["en", "de", "es"] as const;
@@ -19,8 +21,8 @@ export function FloatingControls() {
     <motion.div
       className="fixed top-6 right-6 z-40 flex flex-col md:flex-row gap-3"
       initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.5, delay: 0.8 }}
+      animate={heroComplete ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+      transition={{ duration: 0.5 }}
     >
       {/* Language Toggle */}
       <motion.button

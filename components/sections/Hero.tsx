@@ -4,14 +4,15 @@ import { ArrowRight, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { scrollToContact } from "@/lib/utils/scroll";
-// import SplitText from "@/components/ui/SplitText";
 import DotGrid from "../ui/DotGrid";
 import { useTheme } from "@/lib/contexts/ThemeContext";
 import CurrentStatus from "../ui/Status";
 import BlurText from "../BlurText";
+import { useAnimation } from "@/lib/contexts/AnimationContext";
 
 export function Hero() {
   const { t } = useLanguage();
+  const { heroComplete, setHeroComplete } = useAnimation();
   const { theme } = useTheme();
 
   const baseColor = theme === "dark" ? "#2b3142" : "#f0f0f0";
@@ -39,51 +40,32 @@ export function Hero() {
           <BlurText
             text={t("hero.title")}
             delay={200}
-            animateBy='words'
-            direction='bottom'
+            animateBy="words"
+            direction="bottom"
             className="font-heading text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight text-black dark:text-white mb-8 tracking-tight uppercase relative z-30"
+            onAnimationComplete={() => setHeroComplete(true)}
           />
-          {/* <SplitText
-            key={`hero-title-${language}`}
-            text={t("hero.title")}
-            tag="h1"
-            className="font-heading text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight text-black dark:text-white mb-8 tracking-tight uppercase relative z-30"
-            delay={100}
-            duration={0.8}
-            ease="power3.out"
-            splitType="chars"
-            from={{ opacity: 0, y: 60, rotationX: -90 }}
-            to={{ opacity: 1, y: 0, rotationX: 0 }}
-            threshold={0.1}
-            rootMargin="-50px"
-            textAlign="left"
-          /> */}
 
           <motion.div
             className="flex flex-col md:flex-row md:items-center md:justify-between items-center gap-16 md:gap-8 mt-8"
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+            animate={
+              heroComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
+            }
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
           >
             <button
               onClick={scrollToContact}
-              className="btn-primary-animated group"
+              className={`btn-primary-animated group ${
+                heroComplete ? "opacity-100" : "opacity-0"
+              }`}
             >
               <MessageCircle className="w-6 h-6 transition-transform duration-300 group-hover:scale-125" />
-              <span className="font-bold text-[1rem]">
+              <span className="font-bold text-[1rem] transition-none">
                 {t("hero.subtitle")}
               </span>
               <ArrowRight className="w-6 h-6 shrink-0 transition-transform duration-300 group-hover:scale-125" />
             </button>
-
-            <motion.div
-              className="flex md:mx-0 gap-3 text-gray-600 dark:text-gray-400"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1, ease: "backIn" }}
-            >
-              <CurrentStatus>{t("about.status")}</CurrentStatus>
-            </motion.div>
           </motion.div>
         </div>
       </section>
