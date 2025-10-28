@@ -67,7 +67,7 @@ export const en = {
   "contact.form.availability":
     "Limited Availability: Only accepting 3 new projects for Q1 2025",
   "contact.form.privacy":
-    "Your information is secure and never shared. No spam, ever.",
+    "Your information is secure and never shared.",
 
   // Project Types
   "contact.form.project.website": "Website Development",

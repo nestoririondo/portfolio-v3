@@ -25,10 +25,10 @@ export function Hero() {
         gap={15}
         baseColor={baseColor}
         activeColor={activeColor}
-        proximity={200}
-        shockRadius={300}
+        proximity={300}
+        shockRadius={400}
         shockStrength={5}
-        resistance={2000}
+        resistance={500}
         returnDuration={2.5}
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
       />
@@ -47,7 +47,7 @@ export function Hero() {
           />
 
           <motion.div
-            className="flex flex-col md:flex-row md:items-center md:justify-between items-center gap-16 md:gap-8 mt-8"
+            className="flex flex-col lg:flex-row md:items-center md:justify-between items-center gap-16 md:gap-8 mt-8"
             initial={{ opacity: 0, y: 30 }}
             animate={
               heroComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
