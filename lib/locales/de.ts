@@ -44,8 +44,10 @@ export const de = {
   // About
   "about.title": "Über mich",
   "about.description1":
-    "Ich bin Softwareentwickler in der Automatisierungsbranche, wo ich technische Teams bei der Entwicklung komplexer Systeme leite. Ich übernehme ausgewählte Webentwicklungsprojekte, weil ich praktisches Programmieren und kreative Problemlösungen genieße.",
-  "about.profile.role": "Softwareentwickler",
+    "Ich bin ein professioneller Webentwickler, der Berliner Unternehmen dabei hilft, digitale Lösungen zu entwickeln, die tatsächlich Ergebnisse erzielen. Mit 5+ Jahren Erfahrung in Unternehmenssoftware habe ich Webentwicklung als meinen Beruf gewählt—nicht als Hobby.",
+  "about.description2":
+    "Ich betrachte jedes Projekt als strategische Partnerschaft und kombiniere technische Expertise mit Geschäftsverständnis, um Lösungen zu liefern, die mit Ihrem Wachstum skalieren.",
+  "about.profile.role": "Professioneller Softwareentwickler",
   "about.profile.location": "Berlin, Deutschland",
   "about.status": "Derzeit nehme ich ausgewählte Projekte an",
 

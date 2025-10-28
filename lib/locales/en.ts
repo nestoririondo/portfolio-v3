@@ -44,8 +44,10 @@ export const en = {
   // About
   "about.title": "About",
   "about.description1":
-    "I'm a software developer working in the automation industry, where I lead technical teams building complex systems. I take on select web development projects because I enjoy hands-on coding and creative problem-solving.",
-  "about.profile.role": "Software Developer",
+    "I'm a professional web developer who helps Berlin businesses build digital solutions that actually drive results. With 5+ years of enterprise software experience, I chose web development as my profession—not a hobby.",
+  "about.description2":
+    "I approach every project as a strategic partnership, combining technical expertise with business insight to deliver solutions that scale with your growth.",
+  "about.profile.role": "Professional Software Developer",
   "about.profile.location": "Berlin, Germany",
   "about.status": "Currently accepting select projects",
 

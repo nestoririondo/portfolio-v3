@@ -45,8 +45,10 @@ export const es = {
   // About
   "about.title": "Sobre mí",
   "about.description1":
-    "Soy un desarrollador de software que trabaja en la industria de automatización, donde lidero equipos técnicos construyendo sistemas complejos. Tomo proyectos selectos de desarrollo web porque disfruto la programación práctica y la resolución creativa de problemas.",
-  "about.profile.role": "Desarrollador de Software",
+    "Soy un desarrollador web profesional que ayuda a empresas berlinesas a construir soluciones digitales que realmente generan resultados. Con 5+ años de experiencia en software empresarial, elegí el desarrollo web como mi profesión—no como hobby.",
+  "about.description2":
+    "Abordo cada proyecto como una asociación estratégica, combinando experiencia técnica con perspicacia empresarial para entregar soluciones que escalan con tu crecimiento.",
+  "about.profile.role": "Desarrollador de Software Profesional",
   "about.profile.location": "Berlín, Alemania",
   "about.status": "Actualmente acepto proyectos selectos",
 

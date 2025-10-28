@@ -136,7 +136,7 @@ export function ChatBubble() {
                     <motion.li
                       key={i}
                       className={`
-                        relative max-w-[200px] mb-3 px-3 py-2 leading-5 break-words rounded-2xl text-sm
+                        relative max-w-[200px] mb-3 px-3 py-2 leading-5 overflow-wrap-break-word rounded-2xl text-sm
                         ${message.sent 
                           ? "ml-auto bg-blue-500 text-white" 
                           : `mr-auto ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'}`

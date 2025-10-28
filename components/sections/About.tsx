@@ -2,7 +2,6 @@
 
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
-import { SKILLS } from "@/lib/constants/skills";
 import Example from "../ui/Status";
 
 export function About() {
@@ -24,50 +23,51 @@ export function About() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+          className="max-w-5xl mx-auto"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="order-2 lg:order-1">
-            <div className="flex flex-col items-center lg:items-start space-y-6">
-              <div className="relative">
-                <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-lg">
-                  NI
-                </div>
+          {/* Hero Section */}
+          <div className="text-center mb-20">
+            <div className="inline-block relative mb-8">
+              <div className="w-32 h-32 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg mx-auto">
+                NI
               </div>
-              <div className="text-center lg:text-left">
-                <div className="font-mono text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                  {t("about.profile.role")}
-                  <br />
-                  {t("about.profile.location")}
-                </div>
-              </div>
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white dark:border-gray-900"></div>
+            </div>
+            
+            <div className="max-w-3xl mx-auto space-y-6">
+              <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                {t("about.description1")}
+              </p>
+              <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                {t("about.description2")}
+              </p>
             </div>
           </div>
 
-          <div className="order-1 lg:order-2 space-y-8">
-            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-              {t("about.description1")}
-            </p>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Skills & Technologies
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {SKILLS.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-2 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 font-medium text-sm rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/40 transition-colors duration-200"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 text-center">
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">5+</div>
+              <div className="text-gray-600 dark:text-gray-400 font-medium">Years Experience</div>
             </div>
+            
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 text-center">
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">💬</div>
+              <div className="text-gray-600 dark:text-gray-400 font-medium">DE/EN/ES Fluent</div>
+            </div>
+            
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 text-center">
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">🚀</div>
+              <div className="text-gray-600 dark:text-gray-400 font-medium">Business Focused</div>
+            </div>
+          </div>
 
+          {/* Status */}
+          <div className="text-center">
             <Example>{t("about.status")}</Example>
           </div>
         </motion.div>
