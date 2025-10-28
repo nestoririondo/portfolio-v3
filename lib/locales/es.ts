@@ -6,13 +6,9 @@ export const es = {
 
   // Hero Section
   "hero.title": "Sitios web Que Hacen Crecer Tu Negocio en Berlín",
-  "hero.title.part1": "Sitios web Que Hacen Crecer Tu Negocio en",
-  "hero.title.part2": "Berlín",
-  "hero.title.part3": "",
-  "hero.subtitle": "Construyamos el Tuyo",
+  "hero.subtitle": "Construyamos el tuyo",
   "hero.cta": "Hablemos sobre tu proyecto",
   "hero.status": "Actualmente disponible para proyectos",
-
 
   // Services
   "services.custom.title": "Desarrollo Web Personalizado",
@@ -24,7 +20,6 @@ export const es = {
   "services.consulting.title": "Modernización y Consultoría Técnica",
   "services.consulting.description":
     "Auditar tu sitio actual, identificar problemas, implementar soluciones que duren",
-
 
   // Case Study
   "casestudy.title": "Proyecto Reciente: Sitio Web de Bienes Raíces",
@@ -51,6 +46,9 @@ export const es = {
   "about.profile.role": "Desarrollador de Software Profesional",
   "about.profile.location": "Berlín, Alemania",
   "about.status": "Actualmente acepto proyectos selectos",
+  "about.cards.experience": "Años de experiencia",
+  "about.cards.languages": "Hablo DE/EN/ES",
+  "about.cards.approach": "Enfoque empresarial",
 
   // Contact
   "contact.title": "Hablemos sobre tu proyecto",

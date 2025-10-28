@@ -6,13 +6,9 @@ export const en = {
 
   // Hero Section
   "hero.title": "Websites That Make Your Berlin Business Grow",
-  "hero.title.part1": "Websites That Make Your",
-  "hero.title.part2": "Berlin",
-  "hero.title.part3": "Business Grow",
   "hero.subtitle": "Let's Build Yours",
   "hero.cta": "Let's talk about your project",
   "hero.status": "Currently available for projects",
-
 
   // Services
   "services.custom.title": "Custom Website Development",
@@ -24,7 +20,6 @@ export const en = {
   "services.consulting.title": "Modernization & Technical Consulting",
   "services.consulting.description":
     "Audit your current site, identify problems, implement solutions that last",
-
 
   // Case Study
   "casestudy.title": "Recent Project: Real Estate Website",
@@ -50,6 +45,9 @@ export const en = {
   "about.profile.role": "Professional Software Developer",
   "about.profile.location": "Berlin, Germany",
   "about.status": "Currently accepting select projects",
+  "about.cards.experience": "Years Experience",
+  "about.cards.languages": "DE/EN/ES Fluent",
+  "about.cards.approach": "Business Focused",
 
   // Contact
   "contact.title": "Let's Talk About Your Project",

@@ -6,13 +6,9 @@ export const de = {
 
   // Hero Section
   "hero.title": "Websites, die dein Berliner Unternehmen wachsen lassen",
-  "hero.title.part1": "Websites, die dein",
-  "hero.title.part2": "Berliner",
-  "hero.title.part3": "Unternehmen wachsen lassen",
   "hero.subtitle": "Lass uns deine bauen",
   "hero.cta": "Lass uns über dein Projekt sprechen",
   "hero.status": "Derzeit verfügbar für Projekte",
-
 
   // Services
   "services.custom.title": "Individuelle Website-Entwicklung",
@@ -24,7 +20,6 @@ export const de = {
   "services.consulting.title": "Modernisierung & technische Beratung",
   "services.consulting.description":
     "Audit deiner aktuellen Website, Probleme identifizieren, nachhaltige Lösungen implementieren",
-
 
   // Case Study
   "casestudy.title": "Aktuelles Projekt: Immobilien-Website",
@@ -50,6 +45,9 @@ export const de = {
   "about.profile.role": "Professioneller Softwareentwickler",
   "about.profile.location": "Berlin, Deutschland",
   "about.status": "Derzeit nehme ich ausgewählte Projekte an",
+  "about.cards.experience": "Jahre Erfahrung",
+  "about.cards.languages": "DE/EN/ES Fließend",
+  "about.cards.approach": "Geschäftsfokus",
 
   // Contact
   "contact.title": "Lass uns über dein Projekt sprechen",
