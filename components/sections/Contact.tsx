@@ -220,9 +220,8 @@ export function Contact() {
               href={`https://wa.me/${whatsAppNumber}?text=Hi%20Néstor!%20I%27d%20like%20to%20discuss%20a%20web%20project.`}
               target="_blank"
               rel="noopener noreferrer"
-              className="relative inline-flex items-center gap-3 bg-[#25d366] border-2 border-[#1C1E21] dark:border-gray-500 text-black hover:text-white dark:hover:text-black px-8 py-4 rounded-lg transition-all duration-300 font-medium shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-lg overflow-hidden group"
+              className="btn-whatsapp-animated inline-flex items-center gap-3 bg-[#25d366] border-2 border-[#1C1E21] dark:border-gray-500 text-black hover:text-white dark:hover:text-black px-8 py-4 rounded-lg transition-all duration-300 font-medium shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-lg"
             >
-              <div className="absolute -inset-px bg-[#1C1E21] dark:bg-gray-100 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-lg"></div>
               <svg
                 width="24"
                 height="24"
