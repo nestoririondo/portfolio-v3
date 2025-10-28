@@ -11,7 +11,13 @@ export function FloatingContactButton() {
       className="fixed bottom-6 right-6 z-40"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.5, delay: 1, type: "spring", stiffness: 100 }}
+      transition={{
+        duration: 0.8,
+        delay: 1,
+        type: "spring",
+        stiffness: 200,
+        damping: 10,
+      }}
     >
       <ShinyButton onClick={scrollToContact} className="btn-secondary !p-4">
         <MessageCircle className="w-8 h-8" />
