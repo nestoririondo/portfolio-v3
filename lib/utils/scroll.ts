@@ -5,7 +5,17 @@
 export const scrollToSection = (sectionId: string) => {
   const element = document.getElementById(sectionId);
   if (element) {
-    element.scrollIntoView({ behavior: "smooth" });
+    // Add a small delay to allow animations to settle
+    setTimeout(() => {
+      // Use offset to ensure title is fully visible
+      const rect = element.getBoundingClientRect();
+      const offsetTop = window.pageYOffset + rect.top - 50; // 100px offset from top
+      
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth"
+      });
+    }, 100);
   }
 };
 
