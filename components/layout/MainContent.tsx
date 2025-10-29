@@ -1,16 +1,17 @@
 "use client";
 
-import { Hero, Services, About, Contact } from "@/components/sections";
+import { Hero, About, Contact } from "@/components/sections";
 import { ChatDemo } from "@/components/sections/ChatDemo";
+import { Process } from "@/components/sections/Process";
 
 export function MainContent() {
   return (
-    <div className="flex flex-col gap-80">
+    <div className="flex flex-col gap-20">
       <Hero />
-      <Services />
-      <About />
+      <Process />
       <ChatDemo />
       <Contact />
+      <About />
     </div>
   );
 }

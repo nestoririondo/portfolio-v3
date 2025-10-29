@@ -13,14 +13,14 @@ export function ChatDemo() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Text content */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, y: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="space-y-6"
           >
             <motion.h2
-              className="text-4xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white"
+              className="text-4xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white text-center"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -30,7 +30,7 @@ export function ChatDemo() {
             </motion.h2>
 
             <motion.p
-              className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed"
+              className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed text-center"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -39,7 +39,7 @@ export function ChatDemo() {
               {t("chatdemo.description")}
             </motion.p>
 
-            <motion.div
+            {/* <motion.div
               className="space-y-4"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -114,7 +114,7 @@ export function ChatDemo() {
                   {t("chatdemo.benefit3")}
                 </p>
               </div>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
 
           {/* Right side - Chat component */}

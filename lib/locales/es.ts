@@ -21,22 +21,6 @@ export const es = {
   "services.consulting.description":
     "Auditar tu sitio actual, identificar problemas, implementar soluciones que duren",
 
-  // Case Study
-  "casestudy.title": "Proyecto Reciente: Sitio Web de Bienes Raíces",
-  "casestudy.challenge": "El Desafío",
-  "casestudy.challenge.description":
-    "Una agencia inmobiliaria estaba limitada por su plantilla de WordPress. Las propiedades tenían que actualizarse manualmente, el sitio era lento y no podían personalizar la experiencia de búsqueda.",
-  "casestudy.solution": "La Solución",
-  "casestudy.solution.description":
-    "Construí una solución personalizada conectándose a su API de Propstack. Las propiedades se actualizan automáticamente, la búsqueda es rápida y flexible, y el diseño refleja su marca—no una plantilla.",
-  "casestudy.results": "El Resultado",
-  "casestudy.result1":
-    "Tiempo ahorrado en actualizaciones manuales de propiedades",
-  "casestudy.result2": "Mejor experiencia de usuario con búsqueda rápida",
-  "casestudy.result3": "Gestión automatizada de inventario",
-  "casestudy.image1.alt": "Sitio web en laptop",
-  "casestudy.image2.alt": "Propiedad inmobiliaria",
-
   // About
   "about.title": "Sobre mí",
   "about.description1":
@@ -51,7 +35,7 @@ export const es = {
   "about.cards.approach": "Enfoque empresarial",
 
   // Contact
-  "contact.title": "Hablemos sobre tu proyecto",
+  "contact.title": "Comienza tu Proyecto",
   "contact.form.name": "Nombre",
   "contact.form.email": "Email",
   "contact.form.company": "Empresa",
@@ -69,8 +53,7 @@ export const es = {
   "contact.form.projectType": "Tipo de proyecto",
   "contact.form.availability":
     "Disponibilidad limitada: Solo acepto 3 nuevos proyectos para Q1 2025",
-  "contact.form.privacy":
-    "Tu información es segura y nunca se comparte.",
+  "contact.form.privacy": "Tu información es segura y nunca se comparte.",
 
   // Project Types
   "contact.form.project.website": "Desarrollo de Sitio Web",
@@ -112,7 +95,7 @@ export const es = {
   "chat.input.placeholder": "Escribe un mensaje...",
 
   // Chat Demo Section
-  "chatdemo.title": "Empecemos la Conversación",
+  "chatdemo.title": "Inicia la Conversación",
   "chatdemo.description":
     "Así es como comienza nuestra colaboración. Comunicación clara, respuestas rápidas y un enfoque en entender tus necesidades exactas.",
   "chatdemo.benefit1": "Comunicación directa sin barreras corporativas",
@@ -121,4 +104,23 @@ export const es = {
   "chatdemo.benefit3": "Experiencia técnica explicada en términos simples",
 
   // Chat Demo Messages
+
+  // Process Section
+  "process.title": "Cómo Trabajamos Juntos",
+  "process.subtitle":
+    "De la idea al lanzamiento, así haremos crecer tu negocio",
+  "process.step1.title": "Llamada de Descubrimiento",
+  "process.step1.description":
+    "Discutimos tus necesidades, objetivos y visión para entender exactamente qué significa el éxito para tu proyecto",
+  "process.step2.title": "Estrategia y Planificación",
+  "process.step2.description":
+    "Creo un plan de desarrollo personalizado con cronograma claro, hitos y arquitectura técnica",
+  "process.step3.title": "Desarrollo y Retroalimentación",
+  "process.step3.description":
+    "Construyo tu sitio web con actualizaciones regulares, revisiones de progreso y tu participación durante todo el proceso",
+  "process.step4.title": "Lanzamiento y Soporte",
+  "process.step4.description":
+    "Ponemos en marcha con pruebas exhaustivas, optimización de rendimiento y documentación completa de entrega",
+  "process.cta.text": "¿Listo para comenzar tu proyecto?",
+  "process.cta.button": "Hablemos sobre tus necesidades",
 };

@@ -21,21 +21,6 @@ export const en = {
   "services.consulting.description":
     "Audit your current site, identify problems, implement solutions that last",
 
-  // Case Study
-  "casestudy.title": "Recent Project: Real Estate Website",
-  "casestudy.challenge": "The Challenge",
-  "casestudy.challenge.description":
-    "A real estate agency was limited by their WordPress template. Properties had to be manually updated, the site was slow, and they couldn't customize the search experience.",
-  "casestudy.solution": "The Solution",
-  "casestudy.solution.description":
-    "Built a custom solution connecting to their Propstack API. Properties update automatically, search is fast and flexible, and the design reflects their brand—not a template.",
-  "casestudy.results": "The Result",
-  "casestudy.result1": "Time saved on manual property updates",
-  "casestudy.result2": "Better user experience with fast search",
-  "casestudy.result3": "Automated inventory management",
-  "casestudy.image1.alt": "Website on laptop",
-  "casestudy.image2.alt": "Real estate property",
-
   // About
   "about.title": "About",
   "about.description1":
@@ -50,7 +35,7 @@ export const en = {
   "about.cards.approach": "Business Focused",
 
   // Contact
-  "contact.title": "Let's Talk About Your Project",
+  "contact.title": "Get Your Project Started",
   "contact.form.name": "Name",
   "contact.form.email": "Email",
   "contact.form.company": "Company",
@@ -66,8 +51,7 @@ export const en = {
   "contact.form.projectType": "Project Type",
   "contact.form.availability":
     "Limited Availability: Only accepting 3 new projects for Q1 2025",
-  "contact.form.privacy":
-    "Your information is secure and never shared.",
+  "contact.form.privacy": "Your information is secure and never shared.",
 
   // Project Types
   "contact.form.project.website": "Website Development",
@@ -108,7 +92,7 @@ export const en = {
   "chat.input.placeholder": "Type a message...",
 
   // Chat Demo Section
-  "chatdemo.title": "Let's Start the Conversation",
+  "chatdemo.title": "Start the Conversation",
   "chatdemo.description":
     "This is how our collaboration begins. Clear communication, quick responses, and a focus on understanding your exact needs.",
   "chatdemo.benefit1": "Direct communication without corporate barriers",
@@ -116,4 +100,23 @@ export const en = {
   "chatdemo.benefit3": "Technical expertise explained in simple terms",
 
   // Chat Demo Messages
+
+  // Process Section
+  "process.title": "How We Work Together",
+  "process.subtitle":
+    "From idea to launch, here's how we'll make your business grow",
+  "process.step1.title": "Discovery Call",
+  "process.step1.description":
+    "We discuss your needs, goals, and vision to understand exactly what success looks like for your project",
+  "process.step2.title": "Strategy & Planning",
+  "process.step2.description":
+    "I create a tailored development plan with clear timeline, milestones, and technical architecture",
+  "process.step3.title": "Development & Feedback",
+  "process.step3.description":
+    "Build your website with regular updates, progress reviews, and your input throughout the process",
+  "process.step4.title": "Launch & Support",
+  "process.step4.description":
+    "Go live with thorough testing, performance optimization, and comprehensive handover documentation",
+  "process.cta.text": "Ready to start your project?",
+  "process.cta.button": "Let's discuss your needs",
 };

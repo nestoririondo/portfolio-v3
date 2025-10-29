@@ -7,6 +7,7 @@ import { AnimationProvider } from "@/lib/contexts/AnimationContext";
 import { FloatingContactButton } from "@/components/ui/FloatingContactButton";
 import { FloatingControls } from "@/components/ui/FloatingControls";
 import { Toaster } from "@/components/ui/sonner";
+import { Footer } from "@/components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,6 +49,7 @@ export default function RootLayout({
               <main className="min-h-screen">
                 {children}
               </main>
+              <Footer />
               <FloatingControls />
               <FloatingContactButton />
               <Toaster />

@@ -7,7 +7,7 @@ import { scrollToContact } from "@/lib/utils/scroll";
 import DotGrid from "../ui/DotGrid";
 import { useTheme } from "@/lib/contexts/ThemeContext";
 import CurrentStatus from "../ui/Status";
-import BlurText from "../BlurText";
+import BlurText from "../ui/BlurText";
 import { useAnimation } from "@/lib/contexts/AnimationContext";
 
 export function Hero() {

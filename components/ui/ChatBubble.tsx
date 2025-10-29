@@ -69,7 +69,7 @@ export function ChatBubble() {
     if (!isInView) return;
     
     const timeouts: NodeJS.Timeout[] = [];
-    const initialDelay = 1000; // 1 second delay before first message
+    const initialDelay = 500; // 1 second delay before first message
     
     // Reset messages after a micro-task to avoid synchronous setState
     const resetTimeout = setTimeout(() => {
