@@ -5,7 +5,10 @@ import { InertiaPlugin } from "gsap/InertiaPlugin";
 
 gsap.registerPlugin(InertiaPlugin);
 
-const throttle = <T extends unknown[]>(func: (...args: T) => void, limit: number) => {
+const throttle = <T extends unknown[]>(
+  func: (...args: T) => void,
+  limit: number
+) => {
   let lastCall = 0;
   return function (this: unknown, ...args: T) {
     const now = performance.now();
@@ -17,10 +20,14 @@ const throttle = <T extends unknown[]>(func: (...args: T) => void, limit: number
 };
 
 const isMobileDevice = () => {
-  if (typeof window === 'undefined') return false;
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-         ('ontouchstart' in window) ||
-         (navigator.maxTouchPoints > 0);
+  if (typeof window === "undefined") return false;
+  return (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) ||
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0
+  );
 };
 
 interface Dot {
@@ -76,8 +83,8 @@ const DotGrid: React.FC<DotGridProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const dotsRef = useRef<Dot[]>([]);
   const pointerRef = useRef({
-    x: 0,
-    y: 0,
+    x: -999,
+    y: -999,
     vx: 0,
     vy: 0,
     speed: 0,
@@ -200,55 +207,51 @@ const DotGrid: React.FC<DotGridProps> = ({
   useEffect(() => {
     // Auto wave effect for mobile devices
     const createAutoWave = () => {
-      if (isMobileDevice()) {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        
-        const rect = canvas.getBoundingClientRect();
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        // No color effect - keep pointer off-screen
-        pointerRef.current.x = -999;
-        pointerRef.current.y = -999;
-        
-        // Create expanding wave from center
-        for (const dot of dotsRef.current) {
-          const dist = Math.hypot(dot.cx - centerX, dot.cy - centerY);
-          if (dist < shockRadius * 1.5 && !dot._inertiaApplied) {
-            dot._inertiaApplied = true;
-            gsap.killTweensOf(dot);
-            
-            // Delay based on distance for wave effect
-            const delay = (dist / (shockRadius * 1.5)) * 0.8;
-            const falloff = Math.max(0, 1 - dist / (shockRadius * 1.5));
-            const pushX = (dot.cx - centerX) * shockStrength * 0.3 * falloff;
-            const pushY = (dot.cy - centerY) * shockStrength * 0.3 * falloff;
-            
-            gsap.to(dot, {
-              delay,
-              inertia: { xOffset: pushX, yOffset: pushY, resistance },
-              onComplete: () => {
-                gsap.to(dot, {
-                  xOffset: 0,
-                  yOffset: 0,
-                  duration: returnDuration,
-                  ease: "elastic.out(1,0.75)",
-                });
-                dot._inertiaApplied = false;
-              },
-            });
-          }
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // No color effect - keep pointer off-screen
+      pointerRef.current.x = -999;
+      pointerRef.current.y = -999;
+
+      // Create expanding wave from center
+      for (const dot of dotsRef.current) {
+        const dist = Math.hypot(dot.cx - centerX, dot.cy - centerY);
+        if (dist < shockRadius * 1.5 && !dot._inertiaApplied) {
+          dot._inertiaApplied = true;
+          gsap.killTweensOf(dot);
+
+          // Delay based on distance for wave effect
+          const delay = (dist / (shockRadius * 1.5)) * 0.8;
+          const falloff = Math.max(0, 1 - dist / (shockRadius * 1.5));
+          const pushX = (dot.cx - centerX) * shockStrength * .5 * falloff;
+          const pushY = (dot.cy - centerY) * shockStrength * .5 * falloff;
+
+          gsap.to(dot, {
+            delay,
+            inertia: { xOffset: pushX, yOffset: pushY, resistance },
+            onComplete: () => {
+              gsap.to(dot, {
+                xOffset: 0,
+                yOffset: 0,
+                duration: returnDuration,
+                ease: "elastic.out(1,0.75)",
+              });
+              dot._inertiaApplied = false;
+            },
+          });
         }
       }
     };
 
     // Start auto waves for mobile
     let autoWaveInterval: NodeJS.Timeout | null = null;
-    if (isMobileDevice()) {
-      // Create waves every 3-5 seconds
-      autoWaveInterval = setInterval(createAutoWave, 3000 + Math.random() * 2000);
-    }
+
+    autoWaveInterval = setInterval(createAutoWave, 2000 + Math.random() * 2000);
 
     const onMove = (e: MouseEvent) => {
       const now = performance.now();
@@ -340,9 +343,9 @@ const DotGrid: React.FC<DotGridProps> = ({
       if (e.touches.length > 0) {
         const touch = e.touches[0];
         updatePointerPosition(touch.clientX, touch.clientY);
-        const mouseEvent = new MouseEvent('mousemove', {
+        const mouseEvent = new MouseEvent("mousemove", {
           clientX: touch.clientX,
-          clientY: touch.clientY
+          clientY: touch.clientY,
         });
         onMove(mouseEvent);
       }
@@ -352,9 +355,9 @@ const DotGrid: React.FC<DotGridProps> = ({
       if (e.touches.length > 0) {
         const touch = e.touches[0];
         updatePointerPosition(touch.clientX, touch.clientY);
-        const mouseEvent = new MouseEvent('click', {
+        const mouseEvent = new MouseEvent("click", {
           clientX: touch.clientX,
-          clientY: touch.clientY
+          clientY: touch.clientY,
         });
         onClick(mouseEvent);
       }
@@ -368,10 +371,12 @@ const DotGrid: React.FC<DotGridProps> = ({
 
     const throttledMove = throttle(onMove, 50);
     const throttledTouchMove = throttle(onTouchMove, 50);
-    
+
     if (isMobileDevice()) {
       // Only touch events on mobile
-      window.addEventListener("touchmove", throttledTouchMove, { passive: true });
+      window.addEventListener("touchmove", throttledTouchMove, {
+        passive: true,
+      });
       window.addEventListener("touchstart", onTouchStart, { passive: true });
       window.addEventListener("touchend", onTouchEnd, { passive: true });
     } else {

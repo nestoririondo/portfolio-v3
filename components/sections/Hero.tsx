@@ -15,7 +15,7 @@ export function Hero() {
   const { heroComplete, setHeroComplete } = useAnimation();
   const { theme } = useTheme();
 
-  const baseColor = theme === "dark" ? "#2b3142" : "#f0f0f0";
+  const baseColor = theme === "dark" ? "#2b3142" : "#ededed";
   const activeColor = theme === "dark" ? "#00FFF7" : "#0022ff";
 
   return (
