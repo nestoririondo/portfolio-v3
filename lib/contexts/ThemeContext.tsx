@@ -16,7 +16,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>('dark');
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme;
+    const savedTheme = localStorage.getItem('nestor-iriondo-theme') as Theme;
     if (savedTheme) {
       setTimeout(() => setTheme(savedTheme), 0);
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
-    localStorage.setItem('theme', theme);
+    localStorage.setItem('nestor-iriondo-theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {

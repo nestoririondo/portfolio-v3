@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { translations, Language } from "../locales";
 
 interface LanguageContextType {
@@ -14,6 +20,10 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 );
 
 const getInitialLanguage = (): Language => {
+  const localStorageLang = localStorage.getItem("nestor-iriondo-language") as Language | null;
+  if (localStorageLang) {
+    return localStorageLang;
+  }
   if (typeof window !== "undefined") {
     const browserLang = navigator.language.toLowerCase();
     if (browserLang.startsWith("es")) return "es";
@@ -32,6 +42,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       ] || key
     );
   };
+
+  useEffect(() => {
+    localStorage.setItem("nestor-iriondo-language", language);
+  }, [language]);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
