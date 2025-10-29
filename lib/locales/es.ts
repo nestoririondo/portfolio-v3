@@ -35,7 +35,7 @@ export const es = {
   "about.cards.approach": "Enfoque empresarial",
 
   // Contact
-  "contact.title": "Comienza tu Proyecto",
+  "contact.title": "Comienza tu proyecto",
   "contact.form.name": "Nombre",
   "contact.form.email": "Email",
   "contact.form.company": "Empresa",
@@ -46,9 +46,9 @@ export const es = {
   "contact.form.sending": "Enviando...",
   "contact.form.success": "¡Mensaje enviado! Responderé dentro de 24 horas.",
   "contact.form.error":
-    "Error al enviar el mensaje. Por favor inténtalo de nuevo.",
+    "Error al enviar el mensaje. Por favor, inténtalo de nuevo.",
   "contact.form.validation":
-    "Por favor completa todos los campos obligatorios.",
+    "Por favor, completa todos los campos obligatorios.",
   "contact.form.optional": "opcional",
   "contact.form.projectType": "Tipo de proyecto",
   "contact.form.availability":
@@ -56,10 +56,10 @@ export const es = {
   "contact.form.privacy": "Tu información es segura y nunca se comparte.",
 
   // Project Types
-  "contact.form.project.website": "Desarrollo de Sitio Web",
-  "contact.form.project.webapp": "Aplicación Web",
-  "contact.form.project.ecommerce": "Tienda E-commerce",
-  "contact.form.project.maintenance": "Mantenimiento de Sitio Web",
+  "contact.form.project.website": "Desarrollo de sitio web",
+  "contact.form.project.webapp": "Aplicación web",
+  "contact.form.project.ecommerce": "Tienda e-commerce",
+  "contact.form.project.maintenance": "Mantenimiento de sitio web",
   "contact.form.project.other": "Otro",
   "contact.form.project.discuss": "Hablemos",
   "contact.form.estimatedRange": "Rango estimado:",
@@ -69,7 +69,7 @@ export const es = {
   "contact.form.orDetailed": "O envía información detallada del proyecto",
 
   // Benefits
-  "contact.form.benefit.consultation": "Solicitar Consulta Gratuita",
+  "contact.form.benefit.consultation": "Solicitar consulta gratuita",
 
   // Footer
   "footer.copyright": "Néstor Iriondo",
@@ -85,17 +85,17 @@ export const es = {
   // Chat Conversation
   "chat.demo.1":
     "Hola! Somos un bufete de abogados y nuestro sitio web es terrible",
-  "chat.demo.2": "¡Hola! ¿Qué le pasa al actual?",
-  "chat.demo.3": "Se hizo en 2019, lento, no es mobile-friendly...",
-  "chat.demo.4": "Vale, ¿es un theme viejo de WordPress?",
-  "chat.demo.5": "Exactamente 😅 Necesitamos algo moderno",
-  "chat.demo.6": "¡Perfecto! Eso es exactamente lo que hago",
-  "chat.demo.7": "¡Genial! ¿Quedamos en Mitte para un café?",
+  "chat.demo.2": "Hola! Qué le pasa al actual?",
+  "chat.demo.3": "Se hizo en 2019, va lento, no es mobile-friendly...",
+  "chat.demo.4": "Vale, es un theme viejo de WordPress?",
+  "chat.demo.5": "Exacto 😅 Necesitamos algo moderno",
+  "chat.demo.6": "Perfecto! Eso es exactamente lo que hago",
+  "chat.demo.7": "Genial! Quedamos en Mitte para un café?",
   "chat.status.online": "En línea",
   "chat.input.placeholder": "Escribe un mensaje...",
 
   // Chat Demo Section
-  "chatdemo.title": "Inicia la Conversación",
+  "chatdemo.title": "Inicia la conversación",
   "chatdemo.description":
     "Así es como comienza nuestra colaboración. Comunicación clara, respuestas rápidas y un enfoque en entender tus necesidades exactas.",
   "chatdemo.benefit1": "Comunicación directa sin barreras corporativas",
@@ -106,12 +106,12 @@ export const es = {
   // Chat Demo Messages
 
   // Process Section
-  "process.title": "Cómo Trabajamos Juntos",
+  "process.title": "Cómo trabajamos juntos",
   "process.subtitle":
     "De la idea al lanzamiento, así haremos crecer tu negocio",
-  "process.step1.title": "Llamada de Descubrimiento",
+  "process.step1.title": "Conversación exploratoria",
   "process.step1.description":
-    "Discutimos tus necesidades, objetivos y visión para entender exactamente qué significa el éxito para tu proyecto",
+    "Discutimos tus necesidades, objetivos y visión. En remoto o en persona en Berlín.",
   "process.step2.title": "Estrategia y Planificación",
   "process.step2.description":
     "Creo un plan de desarrollo personalizado con cronograma claro, hitos y arquitectura técnica",

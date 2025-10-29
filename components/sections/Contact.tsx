@@ -6,8 +6,6 @@ import { CheckCircle } from "lucide-react";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { scrollToContact } from "@/lib/utils/scroll";
-import { Footer } from "../layout/Footer";
-import { env } from "process";
 
 const DEFAULT_STATE = {
   name: "",
@@ -182,7 +180,7 @@ export function Contact() {
     [t]
   );
 
-  const whatsAppNumber = env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+  const whatsAppNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
   return (
     <motion.div

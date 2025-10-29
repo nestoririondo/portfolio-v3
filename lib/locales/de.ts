@@ -109,7 +109,7 @@ export const de = {
     "Von der Idee bis zum Launch, so lassen wir dein Unternehmen wachsen",
   "process.step1.title": "Entdeckungsgespräch",
   "process.step1.description":
-    "Wir besprechen deine Bedürfnisse, Ziele und Vision, um genau zu verstehen, wie Erfolg für dein Projekt aussieht",
+    "Wir besprechen deine Bedürfnisse, Ziele und Vision. Remote oder persönlich in Berlin.",
   "process.step2.title": "Strategie & Planung",
   "process.step2.description":
     "Ich erstelle einen maßgeschneiderten Entwicklungsplan mit klarem Zeitplan, Meilensteinen und technischer Architektur",

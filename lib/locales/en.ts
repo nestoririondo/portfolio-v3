@@ -107,7 +107,7 @@ export const en = {
     "From idea to launch, here's how we'll make your business grow",
   "process.step1.title": "Discovery Call",
   "process.step1.description":
-    "We discuss your needs, goals, and vision to understand exactly what success looks like for your project",
+    "We discuss your needs, goals, and vision. Remote or in-person in Berlin.",
   "process.step2.title": "Strategy & Planning",
   "process.step2.description":
     "I create a tailored development plan with clear timeline, milestones, and technical architecture",
