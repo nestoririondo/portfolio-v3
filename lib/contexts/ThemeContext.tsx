@@ -16,6 +16,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>('dark');
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const savedTheme = localStorage.getItem('nestor-iriondo-theme') as Theme;
     if (savedTheme) {
       setTimeout(() => setTheme(savedTheme), 0);
@@ -25,6 +27,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('nestor-iriondo-theme', theme);
   }, [theme]);
@@ -38,7 +42,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       animationFn();
     }
 
-    if ('startViewTransition' in document) {
+    if (typeof window !== 'undefined' && 'startViewTransition' in document) {
       (document as Document & { startViewTransition: (callback: () => void) => void }).startViewTransition(() => {
         setTheme(prev => prev === 'light' ? 'dark' : 'light');
       });

@@ -20,20 +20,28 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 );
 
 const getInitialLanguage = (): Language => {
+  if (typeof window === "undefined") {
+    return "en"; // Default for SSR
+  }
+  
   const localStorageLang = localStorage.getItem("nestor-iriondo-language") as Language | null;
   if (localStorageLang) {
     return localStorageLang;
   }
-  if (typeof window !== "undefined") {
-    const browserLang = navigator.language.toLowerCase();
-    if (browserLang.startsWith("es")) return "es";
-    if (browserLang.startsWith("de")) return "de";
-  }
+  
+  const browserLang = navigator.language.toLowerCase();
+  if (browserLang.startsWith("es")) return "es";
+  if (browserLang.startsWith("de")) return "de";
+  
   return "en";
 };
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>(getInitialLanguage());
+  const [language, setLanguage] = useState<Language>("en");
+  
+  useEffect(() => {
+    setLanguage(getInitialLanguage());
+  }, []);
 
   const t = (key: string): string => {
     return (
@@ -44,7 +52,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    localStorage.setItem("nestor-iriondo-language", language);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("nestor-iriondo-language", language);
+    }
   }, [language]);
 
   return (
