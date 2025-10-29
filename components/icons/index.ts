@@ -1,1 +1,0 @@
-export { Fernsehturm } from './Fernsehturm';
