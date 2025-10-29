@@ -20,16 +20,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Néstor Iriondo - Full Stack Developer",
-  description: "Professional full-stack developer specializing in React, Next.js, and modern web technologies. Available for freelance projects.",
-  keywords: ["Full Stack Developer", "React", "Next.js", "TypeScript", "Web Development", "Freelance"],
+  title: "Néstor Iriondo - Web Developer | Websites That Make Your Berlin Business Grow",
+  description: "Professional web developer helping Berlin businesses grow with custom websites, modern web applications, and API integrations. 5+ years enterprise experience. Currently accepting select projects.",
+  keywords: ["Berlin Web Developer", "Website Development Berlin", "React Developer", "Next.js", "TypeScript", "Custom Web Applications", "API Integration", "Business Websites", "E-commerce Development"],
   authors: [{ name: "Néstor Iriondo" }],
   creator: "Néstor Iriondo",
+  icons: {
+    icon: "/icons/favicon.svg",
+  },
   openGraph: {
-    title: "Néstor Iriondo - Full Stack Developer",
-    description: "Professional full-stack developer specializing in React, Next.js, and modern web technologies.",
+    title: "Néstor Iriondo - Web Developer | Berlin Business Websites",
+    description: "Professional web developer helping Berlin businesses grow with custom websites, modern web applications, and API integrations. 5+ years enterprise experience.",
     type: "website",
     locale: "en_US",
+    siteName: "Néstor Iriondo - Web Developer",
   },
 };
 
