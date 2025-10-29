@@ -104,7 +104,7 @@ export const de = {
   "chatdemo.benefit3": "Technische Expertise in einfachen Begriffen erklärt",
 
   // Process Section
-  "process.title": "Wie wir zusammenarbeiten",
+  "process.title": "So funktioniert es",
   "process.subtitle":
     "Von der Idee bis zum Launch, so lassen wir dein Unternehmen wachsen",
   "process.step1.title": "Entdeckungsgespräch",

@@ -106,7 +106,7 @@ export const es = {
   // Chat Demo Messages
 
   // Process Section
-  "process.title": "Cómo trabajamos juntos",
+  "process.title": "Cómo funciona",
   "process.subtitle":
     "De la idea al lanzamiento, así haremos crecer tu negocio",
   "process.step1.title": "Conversación exploratoria",

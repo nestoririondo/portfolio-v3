@@ -102,10 +102,10 @@ export const en = {
   // Chat Demo Messages
 
   // Process Section
-  "process.title": "How We Work Together",
+  "process.title": "How It Works",
   "process.subtitle":
     "From idea to launch, here's how we'll make your business grow",
-  "process.step1.title": "Discovery Call",
+  "process.step1.title": "Discovery Conversation",
   "process.step1.description":
     "We discuss your needs, goals, and vision. Remote or in-person in Berlin.",
   "process.step2.title": "Strategy & Planning",
