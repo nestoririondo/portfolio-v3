@@ -6,7 +6,7 @@ import { Process } from "@/components/sections/Process";
 
 export function MainContent() {
   return (
-    <div className="flex flex-col gap-20">
+    <div className="flex flex-col gap-28">
       <Hero />
       <Process />
       <ChatDemo />

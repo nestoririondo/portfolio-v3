@@ -37,13 +37,7 @@ export function About() {
           </h2>
         </motion.div>
 
-        <motion.div
-          className="max-w-5xl mx-auto"
-          // initial={{ opacity: 0, y: 50 }}
-          // whileInView={{ opacity: 1, y: 0 }}
-          // viewport={{ once: true }}
-          // transition={{ duration: 0.6, delay: 0.2 }}
-        >
+        <motion.div className="max-w-5xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-20">
             <motion.div
@@ -73,10 +67,37 @@ export function About() {
               className="max-w-3xl mx-auto space-y-6"
             >
               <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-                {t("about.description1")}
+                {t("about.description1")
+                  .split(" ")
+                  .map((word, i) => (
+                    <motion.span
+                      key={i}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.05 }}
+                      className="font-mono"
+                    >
+                      {word}{" "}
+                    </motion.span>
+                  ))}
               </p>
+
               <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-                {t("about.description2")}
+                {t("about.description2")
+                  .split(" ")
+                  .map((word, i) => (
+                    <motion.span
+                      key={i}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.05 + 0.8 }}
+                      className="font-mono"
+                    >
+                      {word}{" "}
+                    </motion.span>
+                  ))}
               </p>
             </motion.div>
           </div>
