@@ -8,6 +8,7 @@ import { FloatingContactButton } from "@/components/ui/FloatingContactButton";
 import { FloatingControls } from "@/components/ui/FloatingControls";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "@/components/layout/Footer";
+import { PostHogProvider } from "@/components/providers/PostHogProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,19 +48,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground`}
       >
-        <ThemeProvider>
-          <LanguageProvider>
-            <AnimationProvider>
-              <main className="min-h-screen">
-                {children}
-              </main>
-              <Footer />
-              <FloatingControls />
-              <FloatingContactButton />
-              <Toaster />
-            </AnimationProvider>
-          </LanguageProvider>
-        </ThemeProvider>
+        <PostHogProvider>
+          <ThemeProvider>
+            <LanguageProvider>
+              <AnimationProvider>
+                <main className="min-h-screen">
+                  {children}
+                </main>
+                <Footer />
+                <FloatingControls />
+                <FloatingContactButton />
+                <Toaster />
+              </AnimationProvider>
+            </LanguageProvider>
+          </ThemeProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
