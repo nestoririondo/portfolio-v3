@@ -5,28 +5,28 @@ export const en = {
   "nav.approach": "Approach",
 
   // Hero Section
-  "hero.title": "Websites That Make Your Berlin Business Grow",
-  "hero.subtitle": "Let's Build Yours",
+  "hero.title": "Websites That Help Your Berlin Business Grow",
+  "hero.subtitle": "Let's build yours",
   "hero.cta": "Let's talk about your project",
   "hero.status": "Currently available for projects",
 
   // Services
   "services.custom.title": "Custom Website Development",
   "services.custom.description":
-    "Build from scratch or redesign entirely—fast, modern, built for your specific needs",
+    "Built from scratch or completely redesigned — fast, modern, and tailored to your needs",
   "services.api.title": "API Integrations & Custom Features",
   "services.api.description":
-    "Connect your website to the tools you already use—CRMs, inventory systems, booking platforms",
+    "Connect your website with the tools you already use — CRM, inventory, or booking systems",
   "services.consulting.title": "Modernization & Technical Consulting",
   "services.consulting.description":
-    "Audit your current site, identify problems, implement solutions that last",
+    "Audit your current site, identify issues, and implement lasting solutions",
 
   // About
   "about.title": "About",
   "about.description1":
-    "I'm a professional web developer who helps Berlin businesses build digital solutions that actually drive results. With 5+ years of enterprise software experience, I chose web development as my profession—not a hobby.",
+    "I'm a full-stack developer based in Berlin, building modern web solutions for local businesses. I work full-time at Murrelektronik developing industrial IoT platforms, and I take on side projects because I love building useful, well-crafted products.",
   "about.description2":
-    "I approach every project as a strategic partnership, combining technical expertise with business insight to deliver solutions that scale with your growth.",
+    "Work directly with me — no agencies, no middlemen, no surprises. If you need a reliable developer in Berlin, let's talk.",
   "about.profile.role": "Professional Software Developer",
   "about.profile.location": "Berlin, Germany",
   "about.status": "Currently accepting select projects",
@@ -35,13 +35,13 @@ export const en = {
   "about.cards.approach": "Business Focused",
 
   // Contact
-  "contact.title": "Get Your Project Started",
+  "contact.title": "Let's Get Started!",
   "contact.form.name": "Name",
   "contact.form.email": "Email",
   "contact.form.company": "Company",
   "contact.form.message": "Tell me about your project",
   "contact.form.placeholder":
-    "Describe your current challenge and what success would look like",
+    "Describe your current challenges and what success looks like to you",
   "contact.form.submit": "Send Message",
   "contact.form.sending": "Sending...",
   "contact.form.success": "Message sent! I'll respond within 24 hours.",
@@ -50,8 +50,8 @@ export const en = {
   "contact.form.optional": "optional",
   "contact.form.projectType": "Project Type",
   "contact.form.availability":
-    "Limited Availability: Only accepting 3 new projects for Q1 2025",
-  "contact.form.privacy": "Your information is secure and never shared.",
+    "Limited availability: accepting only 3 new projects for Q1 2025",
+  "contact.form.privacy": "Your information is secure and will never be shared.",
 
   // Project Types
   "contact.form.project.website": "Website Development",
@@ -92,9 +92,9 @@ export const en = {
   "chat.input.placeholder": "Type a message...",
 
   // Chat Demo Section
-  "chatdemo.title": "Start the Conversation",
+  "chatdemo.title": "Let's Start the Conversation",
   "chatdemo.description":
-    "This is how our collaboration begins. Clear communication, quick responses, and a focus on understanding your exact needs.",
+    "This is how our collaboration starts: clear communication, quick responses, and a focus on understanding your exact needs.",
   "chatdemo.benefit1": "Direct communication without corporate barriers",
   "chatdemo.benefit2": "Quick responses to keep your project moving",
   "chatdemo.benefit3": "Technical expertise explained in simple terms",
@@ -110,13 +110,13 @@ export const en = {
     "We discuss your needs, goals, and vision. Remote or in-person in Berlin.",
   "process.step2.title": "Strategy & Planning",
   "process.step2.description":
-    "I create a tailored development plan with clear timeline, milestones, and technical architecture",
+    "I create a tailored development plan with a clear timeline, milestones, and technical architecture.",
   "process.step3.title": "Development & Feedback",
   "process.step3.description":
-    "Build your website with regular updates, progress reviews, and your input throughout the process",
+    "I build your website with regular updates, progress reviews, and your input every step of the way",
   "process.step4.title": "Launch & Support",
   "process.step4.description":
-    "Go live with thorough testing, performance optimization, and comprehensive handover documentation",
+    "Launch with thorough testing, performance optimization, and clear handover documentation",
   "process.cta.text": "Ready to start your project?",
   "process.cta.button": "Let's discuss your needs",
 };
