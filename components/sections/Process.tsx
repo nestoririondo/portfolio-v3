@@ -54,12 +54,12 @@ export function Process() {
             // Logical color progression with higher contrast
             const colors = [
               {
-                bg: "bg-blue-200",
+                bg: "bg-blue-400",
                 border: "border-blue-200 dark:border-blue-700",
-                connector: "bg-blue-300",
+                connector: "bg-blue-400",
               },
               {
-                bg: "bg-blue-400",
+                bg: "bg-blue-500",
                 border: "border-blue-200 dark:border-blue-700",
                 connector: "bg-blue-500",
               },
@@ -69,7 +69,7 @@ export function Process() {
                 connector: "bg-blue-600",
               },
               {
-                bg: "bg-blue-900",
+                bg: "bg-blue-800",
                 border: "border-blue-200 dark:border-blue-700",
                 connector: "bg-blue-800",
               },
@@ -97,14 +97,13 @@ export function Process() {
                       className={`w-20 h-20 ${stepColor.bg} rounded-full flex items-center justify-center relative z-10 shadow-lg`}
                     >
                       <motion.span
-                        initial={{ scale: 0 }}
-                        whileInView={{ scale: 1 }}
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{
-                          duration: 0.5,
+                          duration: 0.4,
                           delay: step.delay + 0.5,
-                          type: "spring",
-                          stiffness: 120,
+                          ease: "easeOut",
                         }}
                         className="text-5xl"
                       >

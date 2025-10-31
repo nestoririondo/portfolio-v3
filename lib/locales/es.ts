@@ -6,7 +6,7 @@ export const es = {
 
   // Hero Section
   "hero.title": "Sitios web que hacen crecer tu negocio en Berlín",
-  "hero.subtitle": "Construyamos el tuyo juntos",
+  "hero.subtitle": "Construyamos el tuyo",
   "hero.cta": "Hablemos de tu proyecto",
   "hero.status": "Actualmente disponible para proyectos",
 
