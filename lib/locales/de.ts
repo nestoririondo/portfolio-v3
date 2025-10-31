@@ -32,7 +32,7 @@ export const de = {
   "about.status": "Derzeit nehme ich ausgewählte Projekte an",
   "about.cards.experience": "Jahre Erfahrung",
   "about.cards.languages": "DE/EN/ES Fließend",
-  "about.cards.approach": "Geschäftsfokus",
+  "about.cards.location": "Berlin Ansässig",
 
   // Contact
   "contact.title": "Lass uns starten!",
@@ -110,7 +110,7 @@ export const de = {
     "Vier bewährte Schritte, um deine Website in dein bestes Verkaufstool zu verwandeln",
   "process.step1.title": "Wachstumsmöglichkeiten Entdecken",
   "process.step1.description":
-    "Wir analysieren deine geschäftlichen Herausforderungen und erkennen, wo du Kunden verlierst – um neue Wachstumsmöglichkeiten zu finden.",
+    "Wir analysieren deine geschäftlichen Herausforderungen und erkennen, wo du Kunden verlierst – um neue Wachstumsmöglichkeiten zu finden. Remote oder persönlich in Berlin.",
   "process.step2.title": "Für Conversions Gestalten",
   "process.step2.description":
     "Wir entwickeln eine Website-Strategie, die Besucher in Kunden verwandelt – mit klaren Nutzerwegen und überzeugenden Call-to-Actions.",

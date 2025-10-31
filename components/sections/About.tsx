@@ -14,8 +14,8 @@ const CARDS = [
     titleKey: "about.cards.languages",
   },
   {
-    icon: "🚀",
-    titleKey: "about.cards.approach",
+    icon: "📍",
+    titleKey: "about.cards.location",
   },
 ];
 

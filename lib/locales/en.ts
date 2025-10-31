@@ -32,7 +32,7 @@ export const en = {
   "about.status": "Currently accepting select projects",
   "about.cards.experience": "Years Experience",
   "about.cards.languages": "DE/EN/ES Fluent",
-  "about.cards.approach": "Business Focused",
+  "about.cards.location": "Berlin Based",
 
   // Contact
   "contact.title": "Let's Get Started!",
@@ -108,7 +108,7 @@ export const en = {
     "Four proven steps to turn your website into your best sales tool",
   "process.step1.title": "Discover Growth Opportunities",
   "process.step1.description":
-    "We analyze your business challenges and pinpoint where you lose customers to uncover growth opportunities.",
+    "We analyze your business challenges and pinpoint where you lose customers to uncover growth opportunities. Remote or in-person in Berlin.",
   "process.step2.title": "Design to Convert",
   "process.step2.description":
     "We craft a web strategy that turns visitors into leads with clear journeys and compelling calls to action.",

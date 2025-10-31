@@ -32,7 +32,7 @@ export const es = {
   "about.status": "Actualmente acepto proyectos selectos",
   "about.cards.experience": "Años de experiencia",
   "about.cards.languages": "Hablo DE/EN/ES",
-  "about.cards.approach": "Enfoque empresarial",
+  "about.cards.location": "Basado en Berlín",
 
   // Contact
   "contact.title": "¡Empecemos!",
@@ -111,7 +111,7 @@ export const es = {
     "Cuatro pasos probados para convertir tu web en tu mejor herramienta de ventas",
   "process.step1.title": "Descubre Oportunidades de Crecimiento",
   "process.step1.description":
-    "Analizamos tus retos de negocio e identificamos dónde pierdes clientes para revelar nuevas oportunidades de crecimiento.",
+    "Analizamos tus retos de negocio e identificamos dónde pierdes clientes para revelar nuevas oportunidades de crecimiento. En remoto o en persona en Berlín.",
   "process.step2.title": "Diseña para Convertir",
   "process.step2.description":
     "Creamos una estrategia web que convierte visitantes en leads, con recorridos claros y llamadas a la acción efectivas.",
