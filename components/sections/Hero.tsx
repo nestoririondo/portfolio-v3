@@ -36,14 +36,16 @@ export function Hero() {
         className="absolute inset-0 h-full flex flex-col justify-center items-start max-w-6xl mx-auto px-4 md:px-4 z-20"
       >
         <div className="w-full relative z-30">
-          <BlurText
-            text={t("hero.title")}
-            delay={200}
-            animateBy="words"
-            direction="bottom"
-            className="font-heading text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight text-black dark:text-white mb-8 tracking-tight uppercase relative z-30"
-            onAnimationComplete={() => setHeroComplete(true)}
-          />
+          <h1>
+            <BlurText
+              text={t("hero.title")}
+              delay={200}
+              animateBy="words"
+              direction="bottom"
+              className="font-heading text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight text-black dark:text-white mb-8 tracking-tight uppercase relative z-30"
+              onAnimationComplete={() => setHeroComplete(true)}
+            />
+          </h1>
 
           <motion.div
             className="flex flex-col lg:flex-row md:items-center md:justify-between items-center gap-16 md:gap-8 mt-8"

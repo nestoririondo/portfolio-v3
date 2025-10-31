@@ -21,20 +21,58 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Néstor Iriondo - Web Developer | Websites That Make Your Berlin Business Grow",
-  description: "Professional web developer helping Berlin businesses grow with custom websites, modern web applications, and API integrations. 5+ years enterprise experience. Currently accepting select projects.",
-  keywords: ["Berlin Web Developer", "Website Development Berlin", "React Developer", "Next.js", "TypeScript", "Custom Web Applications", "API Integration", "Business Websites", "E-commerce Development"],
+  title: "Néstor Iriondo - Web Developer | Berlin Business Websites",
+  description: "Berlin web developer creating custom websites that drive business growth. Specializing in React, Next.js, and API integrations. 5+ years experience.",
+  keywords: ["Berlin Web Developer", "Website Development Berlin", "React Developer", "Next.js", "TypeScript", "Custom Web Applications", "API Integration", "Business Websites", "E-commerce Development", "Frontend Developer", "Full Stack Developer"],
   authors: [{ name: "Néstor Iriondo" }],
   creator: "Néstor Iriondo",
+  metadataBase: new URL("https://nestoririondo.com"),
   icons: {
     icon: "/icons/favicon.svg",
+    shortcut: "/icons/favicon.svg",
+    apple: "/icons/apple-touch-icon.png",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   openGraph: {
     title: "Néstor Iriondo - Web Developer | Berlin Business Websites",
-    description: "Professional web developer helping Berlin businesses grow with custom websites, modern web applications, and API integrations. 5+ years enterprise experience.",
-    type: "website",
-    locale: "en_US",
+    description: "Berlin web developer creating custom websites that drive business growth. Specializing in React, Next.js, and API integrations.",
+    url: "https://nestoririondo.com",
     siteName: "Néstor Iriondo - Web Developer",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Néstor Iriondo - Web Developer",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Néstor Iriondo - Web Developer | Berlin Business Websites",
+    description: "Berlin web developer creating custom websites that drive business growth. Specializing in React, Next.js, and API integrations.",
+    images: ["/og-image.jpg"],
+    creator: "@nestordev",
+  },
+  alternates: {
+    canonical: "https://nestoririondo.com",
+    languages: {
+      "en-US": "https://nestoririondo.com",
+      "de-DE": "https://nestoririondo.com/de",
+      "es-ES": "https://nestoririondo.com/es",
+    },
   },
 };
 
@@ -43,8 +81,38 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Néstor Iriondo",
+    "jobTitle": "Web Developer",
+    "description": "Professional web developer specializing in React, Next.js, and custom web applications for Berlin businesses",
+    "url": "https://nestoririondo.com",
+    "image": "https://nestoririondo.com/og-image.jpg",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Berlin",
+      "addressCountry": "Germany"
+    },
+    "sameAs": [
+      "https://github.com/nestorcode",
+      "https://linkedin.com/in/nestor-iriondo"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "description": "Custom website development, web applications, and API integrations",
+      "areaServed": "Berlin, Germany"
+    }
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground`}
       >
