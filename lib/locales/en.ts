@@ -51,7 +51,8 @@ export const en = {
   "contact.form.projectType": "Project Type",
   "contact.form.availability":
     "Limited availability: accepting only 3 new projects for Q1 2025",
-  "contact.form.privacy": "Your information is secure and will never be shared.",
+  "contact.form.privacy":
+    "Your information is secure and will never be shared.",
 
   // Project Types
   "contact.form.project.website": "Website Development",
@@ -101,22 +102,22 @@ export const en = {
 
   // Chat Demo Messages
 
-  // Process Section
-  "process.title": "How It Works",
+  // Process
+  "process.title": "How We Grow Your Business",
   "process.subtitle":
-    "From idea to launch, here's how we'll make your business grow",
-  "process.step1.title": "Discovery Conversation",
+    "Four proven steps to turn your website into your best sales tool",
+  "process.step1.title": "Discover Growth Opportunities",
   "process.step1.description":
-    "We discuss your needs, goals, and vision. Remote or in-person in Berlin.",
-  "process.step2.title": "Strategy & Planning",
+    "We analyze your business challenges and pinpoint where you lose customers to uncover growth opportunities.",
+  "process.step2.title": "Design to Convert",
   "process.step2.description":
-    "I create a tailored development plan with a clear timeline, milestones, and technical architecture.",
-  "process.step3.title": "Development & Feedback",
+    "We craft a web strategy that turns visitors into leads with clear journeys and compelling calls to action.",
+  "process.step3.title": "Build & Optimize",
   "process.step3.description":
-    "I build your website with regular updates, progress reviews, and your input every step of the way",
-  "process.step4.title": "Launch & Support",
+    "Fast, mobile-optimized development with built-in analytics to measure what drives results.",
+  "process.step4.title": "Launch & Scale",
   "process.step4.description":
-    "Launch with thorough testing, performance optimization, and clear handover documentation",
+    "We launch with performance tracking and monthly reports showing how your website fuels growth.",
   "process.cta.text": "Ready to start your project?",
-  "process.cta.button": "Let's discuss your needs",
+  "process.cta.button": "Let's talk about your needs",
 };

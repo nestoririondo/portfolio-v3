@@ -106,21 +106,21 @@ export const es = {
   // Chat Demo Messages
 
   // Process Section
-  "process.title": "Cómo funciona",
+  "process.title": "Cómo Hacemos Crecer Tu Negocio",
   "process.subtitle":
-    "De la idea al lanzamiento, así haremos crecer tu negocio",
-  "process.step1.title": "Conversación exploratoria",
+    "Cuatro pasos probados para convertir tu web en tu mejor herramienta de ventas",
+  "process.step1.title": "Descubre Oportunidades de Crecimiento",
   "process.step1.description":
-    "Discutimos tus necesidades, objetivos y visión. En remoto o en persona en Berlín.",
-  "process.step2.title": "Estrategia y Planificación",
+    "Analizamos tus retos de negocio e identificamos dónde pierdes clientes para revelar nuevas oportunidades de crecimiento.",
+  "process.step2.title": "Diseña para Convertir",
   "process.step2.description":
-    "Creo un plan de desarrollo personalizado con un cronograma claro, hitos definidos y una arquitectura técnica sólida",
-  "process.step3.title": "Desarrollo y Retroalimentación",
+    "Creamos una estrategia web que convierte visitantes en leads, con recorridos claros y llamadas a la acción efectivas.",
+  "process.step3.title": "Construye y Optimiza",
   "process.step3.description":
-    "Desarrollo tu sitio web con actualizaciones regulares, revisiones de progreso y tu participación en cada etapa del proceso",
-  "process.step4.title": "Lanzamiento y Soporte",
+    "Desarrollo rápido y optimizado para móvil, con analítica integrada para medir qué impulsa los resultados.",
+  "process.step4.title": "Lanza y Escala",
   "process.step4.description":
-    "Lanzamos tu sitio con pruebas exhaustivas, optimización del rendimiento y una documentación de entrega completa",
-  "process.cta.text": "¿Listo para comenzar tu proyecto?",
-  "process.cta.button": "Hablemos sobre tus necesidades",
+    "Lanzamos con seguimiento de rendimiento e informes mensuales que muestran cómo tu web impulsa el crecimiento.",
+  "process.cta.text": "¿Listo para empezar tu proyecto?",
+  "process.cta.button": "Hablemos de tus necesidades",
 };

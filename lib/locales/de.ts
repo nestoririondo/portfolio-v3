@@ -53,7 +53,8 @@ export const de = {
   "contact.form.projectType": "Projekttyp",
   "contact.form.availability":
     "Begrenzte Verfügbarkeit: Nehme nur 3 neue Projekte für Q1 2025 an",
-  "contact.form.privacy": "Deine Daten sind sicher und werden selbstverständlich nicht weitergegeben.",
+  "contact.form.privacy":
+    "Deine Daten sind sicher und werden selbstverständlich nicht weitergegeben.",
 
   // Project Types
   "contact.form.project.website": "Website-Entwicklung",
@@ -104,21 +105,21 @@ export const de = {
   "chatdemo.benefit3": "Technische Expertise in einfachen Begriffen erklärt",
 
   // Process Section
-  "process.title": "So läuft es",
+  "process.title": "Wie Wir Dein Business Wachsen Lassen",
   "process.subtitle":
-    "Von der Idee bis zum Launch, so lassen wir dein Unternehmen wachsen",
-  "process.step1.title": "Entdeckungsgespräch",
+    "Vier bewährte Schritte, um deine Website in dein bestes Verkaufstool zu verwandeln",
+  "process.step1.title": "Wachstumsmöglichkeiten Entdecken",
   "process.step1.description":
-    "Wir besprechen deine Bedürfnisse, Ziele und Vision. Remote oder persönlich in Berlin.",
-  "process.step2.title": "Strategie & Planung",
+    "Wir analysieren deine geschäftlichen Herausforderungen und erkennen, wo du Kunden verlierst – um neue Wachstumsmöglichkeiten zu finden.",
+  "process.step2.title": "Für Conversions Gestalten",
   "process.step2.description":
-    "Ich erstelle einen maßgeschneiderten Entwicklungsplan mit klarem Zeitplan, Meilensteinen und technischer Architektur",
-  "process.step3.title": "Entwicklung & Feedback",
+    "Wir entwickeln eine Website-Strategie, die Besucher in Kunden verwandelt – mit klaren Nutzerwegen und überzeugenden Call-to-Actions.",
+  "process.step3.title": "Aufbauen & Optimieren",
   "process.step3.description":
-    "Ich entwickle deine Website mit regelmäßigen Updates, Zwischenfeedbacks und deinem Input während des gesamten Prozesses",
-  "process.step4.title": "Launch & Support",
+    "Schnelle, mobiloptimierte Entwicklung mit integriertem Analytics-Tracking, um zu messen, was Ergebnisse bringt.",
+  "process.step4.title": "Starten & Skalieren",
   "process.step4.description":
-    "Launch mit gründlichen Tests, Performance-Optimierung und einer klaren Übergabe-Dokumentation",
+    "Launch mit Performance-Tracking und monatlichen Reports, die zeigen, wie deine Website Wachstum fördert.",
   "process.cta.text": "Bereit, dein Projekt zu starten?",
   "process.cta.button": "Lass uns über deine Bedürfnisse sprechen",
 };

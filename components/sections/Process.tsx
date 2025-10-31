@@ -2,26 +2,25 @@
 
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
-import { MessageCircle, FileText, Code, Rocket } from "lucide-react";
 
 const processSteps = [
   {
-    icon: MessageCircle,
+    emoji: "🔍",
     key: "discovery",
     delay: 0.1,
   },
   {
-    icon: FileText,
+    emoji: "🎯",
     key: "planning",
     delay: 0.2,
   },
   {
-    icon: Code,
+    emoji: "🛠️",
     key: "development",
     delay: 0.3,
   },
   {
-    icon: Rocket,
+    emoji: "🚀",
     key: "launch",
     delay: 0.4,
   },
@@ -50,17 +49,32 @@ export function Process() {
 
         <div className="space-y-8 md:space-y-12">
           {processSteps.map((step, index) => {
-            const Icon = step.icon;
             const isEven = index % 2 === 0;
-            
+
             // Logical color progression with higher contrast
             const colors = [
-              { bg: 'bg-blue-400', border: 'border-blue-200 dark:border-blue-700', connector: 'bg-blue-300' },
-              { bg: 'bg-blue-600', border: 'border-blue-200 dark:border-blue-700', connector: 'bg-blue-500' },
-              { bg: 'bg-blue-700', border: 'border-blue-200 dark:border-blue-700', connector: 'bg-blue-600' },
-              { bg: 'bg-blue-900', border: 'border-blue-200 dark:border-blue-700', connector: 'bg-blue-800' },
+              {
+                bg: "bg-blue-200",
+                border: "border-blue-200 dark:border-blue-700",
+                connector: "bg-blue-300",
+              },
+              {
+                bg: "bg-blue-400",
+                border: "border-blue-200 dark:border-blue-700",
+                connector: "bg-blue-500",
+              },
+              {
+                bg: "bg-blue-600",
+                border: "border-blue-200 dark:border-blue-700",
+                connector: "bg-blue-600",
+              },
+              {
+                bg: "bg-blue-900",
+                border: "border-blue-200 dark:border-blue-700",
+                connector: "bg-blue-800",
+              },
             ];
-            
+
             const stepColor = colors[index];
 
             return (
@@ -72,8 +86,8 @@ export function Process() {
                 transition={{ duration: 0.6, delay: step.delay }}
                 className={`flex flex-col items-center gap-6`}
               >
-                {/* Step Number & Icon */}
-                <div className="flex-shrink-0">
+                {/* Step Number & Emoji */}
+                <div className="shrink-0">
                   <div className="relative">
                     <motion.div
                       initial={{ scale: 0, opacity: 0 }}
@@ -82,7 +96,20 @@ export function Process() {
                       transition={{ duration: 0.5, delay: step.delay + 0.2 }}
                       className={`w-20 h-20 ${stepColor.bg} rounded-full flex items-center justify-center relative z-10 shadow-lg`}
                     >
-                      <Icon className="w-10 h-10 text-white" />
+                      <motion.span
+                        initial={{ scale: 0 }}
+                        whileInView={{ scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          duration: 0.5,
+                          delay: step.delay + 0.5,
+                          type: "spring",
+                          stiffness: 120,
+                        }}
+                        className="text-5xl"
+                      >
+                        {step.emoji}
+                      </motion.span>
                     </motion.div>
                     <motion.div
                       initial={{ scale: 0 }}
