@@ -66,143 +66,152 @@ const topics = [
 async function generateBlogPost(maxRetries = 3) {
   // Check for concurrent execution
   if (!createLock()) {
-    return { 
-      title: 'Concurrent execution prevented', 
-      status: 'skipped',
-      reason: 'Another blog generation already running'
+    return {
+      title: "Concurrent execution prevented",
+      status: "skipped",
+      reason: "Another blog generation already running",
     };
   }
-  
+
   try {
     // Always fetch existing posts for duplicate checking and image selection
     console.log("🔍 Fetching existing posts to check for duplicates...");
     const existingPosts = await fetchExistingPosts();
-  
-  // Check for recent posts to prevent duplicate runs
-  const recentPosts = existingPosts.filter(post => {
-    const postDate = new Date(post.publishedDate || post.createdAt);
-    const now = new Date();
-    const diffMinutes = (now - postDate) / (1000 * 60);
-    return diffMinutes < 30; // Posts created in last 30 minutes
-  });
-  
-  if (recentPosts.length > 0) {
-    console.log(`⏰ Found ${recentPosts.length} recent posts (last 30 minutes). Checking for duplicates...`);
-    for (const recent of recentPosts) {
-      console.log(`   - "${recent.title}" (${new Date(recent.publishedDate || recent.createdAt).toISOString()})`);
-    }
-  }
 
-  // Check for forced topic first (only if actually provided and not empty)
-  const forceTopic = process.env.FORCE_TOPIC?.trim();
-  let topic;
-
-  if (
-    forceTopic &&
-    forceTopic.length > 0 &&
-    forceTopic !== "undefined" &&
-    forceTopic !== "null"
-  ) {
-    console.log(`🎯 Using forced topic: "${forceTopic}"`);
-    
-    // Check if we already have a recent post about this topic
-    const topicKeywords = forceTopic.toLowerCase().split(/[\s-_]+/);
-    const duplicateByTopic = recentPosts.find(post => {
-      const titleLower = post.title.toLowerCase();
-      return topicKeywords.some(keyword => 
-        keyword.length > 3 && titleLower.includes(keyword)
-      );
+    // Check for recent posts to prevent duplicate runs
+    const recentPosts = existingPosts.filter((post) => {
+      const postDate = new Date(post.publishedDate || post.createdAt);
+      const now = new Date();
+      const diffMinutes = (now - postDate) / (1000 * 60);
+      return diffMinutes < 30; // Posts created in last 30 minutes
     });
-    
-    if (duplicateByTopic) {
-      console.log(`⚠️ Recent post about "${forceTopic}" already exists: "${duplicateByTopic.title}"`);
-      console.log('🚫 Skipping to avoid duplicate content');
-      return { 
-        title: duplicateByTopic.title, 
-        status: 'skipped',
-        reason: 'Recent duplicate topic found'
-      };
-    }
-    
-    topic = forceTopic;
-  } else {
-    // No forced topic, select from available topics to avoid duplicates
-    console.log(
-      "🔍 No forced topic provided, selecting from available topics..."
-    );
-    const availableTopics = await getAvailableTopics(existingPosts);
 
-    if (availableTopics.length === 0) {
-      console.log("⚠️ No available topics found that aren't duplicates");
-      return null;
+    if (recentPosts.length > 0) {
+      console.log(
+        `⏰ Found ${recentPosts.length} recent posts (last 30 minutes). Checking for duplicates...`
+      );
+      for (const recent of recentPosts) {
+        console.log(
+          `   - "${recent.title}" (${new Date(
+            recent.publishedDate || recent.createdAt
+          ).toISOString()})`
+        );
+      }
     }
 
-    topic = availableTopics[Math.floor(Math.random() * availableTopics.length)];
-  }
-  console.log(`📝 Selected topic: "${topic}"`);
+    // Check for forced topic first (only if actually provided and not empty)
+    const forceTopic = process.env.FORCE_TOPIC?.trim();
+    let topic;
 
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      console.log(`Attempt ${attempt}: Generating content for "${topic}"`);
+    if (
+      forceTopic &&
+      forceTopic.length > 0 &&
+      forceTopic !== "undefined" &&
+      forceTopic !== "null"
+    ) {
+      console.log(`🎯 Using forced topic: "${forceTopic}"`);
 
-      const response = await anthropic.messages.create({
-        model: "claude-3-haiku-20240307",
-        max_tokens: 2000,
-        messages: [
-          {
-            role: "user",
-            content: blogPromptTemplate(topic),
-          },
-        ],
+      // Check if we already have a recent post about this topic
+      const topicKeywords = forceTopic.toLowerCase().split(/[\s-_]+/);
+      const duplicateByTopic = recentPosts.find((post) => {
+        const titleLower = post.title.toLowerCase();
+        return topicKeywords.some(
+          (keyword) => keyword.length > 3 && titleLower.includes(keyword)
+        );
       });
 
-      const rawContent = response.content[0].text;
-      const validation = validateAndCleanContent(rawContent);
-
-      if (validation.isValid) {
-        // Final duplicate check on generated title
-        const isDuplicate = await checkTitleSimilarity(
-          validation.title,
-          existingPosts
-        );
-        if (isDuplicate) {
-          console.log(
-            `❌ Generated title too similar to existing post: "${validation.title}"`
-          );
-          if (attempt === maxRetries) {
-            console.log("⚠️ Max retries reached, skipping this generation");
-            return null;
-          }
-          continue;
-        }
-
-        console.log("✅ Content validation passed");
-        await publishToContentful(validation, topic, existingPosts);
-        return validation;
-      } else {
+      if (duplicateByTopic) {
         console.log(
-          `❌ Attempt ${attempt} failed validation:`,
-          validation.errors
+          `⚠️ Recent post about "${forceTopic}" already exists: "${duplicateByTopic.title}"`
         );
+        console.log("🚫 Skipping to avoid duplicate content");
+        return {
+          title: duplicateByTopic.title,
+          status: "skipped",
+          reason: "Recent duplicate topic found",
+        };
+      }
+
+      topic = forceTopic;
+    } else {
+      // No forced topic, select from available topics to avoid duplicates
+      console.log(
+        "🔍 No forced topic provided, selecting from available topics..."
+      );
+      const availableTopics = await getAvailableTopics(existingPosts);
+
+      if (availableTopics.length === 0) {
+        console.log("⚠️ No available topics found that aren't duplicates");
+        return null;
+      }
+
+      topic =
+        availableTopics[Math.floor(Math.random() * availableTopics.length)];
+    }
+    console.log(`📝 Selected topic: "${topic}"`);
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`Attempt ${attempt}: Generating content for "${topic}"`);
+
+        const response = await anthropic.messages.create({
+          model: "claude-3-haiku-20240307",
+          max_tokens: 2000,
+          messages: [
+            {
+              role: "user",
+              content: blogPromptTemplate(topic),
+            },
+          ],
+        });
+
+        const rawContent = response.content[0].text;
+        const validation = validateAndCleanContent(rawContent);
+
+        if (validation.isValid) {
+          // Final duplicate check on generated title
+          const isDuplicate = await checkTitleSimilarity(
+            validation.title,
+            existingPosts
+          );
+          if (isDuplicate) {
+            console.log(
+              `❌ Generated title too similar to existing post: "${validation.title}"`
+            );
+            if (attempt === maxRetries) {
+              console.log("⚠️ Max retries reached, skipping this generation");
+              return null;
+            }
+            continue;
+          }
+
+          console.log("✅ Content validation passed");
+          await publishToContentful(validation, topic, existingPosts);
+          return validation;
+        } else {
+          console.log(
+            `❌ Attempt ${attempt} failed validation:`,
+            validation.errors
+          );
+
+          if (attempt === maxRetries) {
+            // Last attempt - publish anyway with fixes
+            console.log("⚠️ Publishing with automatic fixes");
+            const fixed = applyAutomaticFixes(validation);
+            await publishToContentful(fixed, topic, existingPosts);
+            return fixed;
+          }
+        }
+      } catch (error) {
+        console.error(`Attempt ${attempt} failed:`, error);
 
         if (attempt === maxRetries) {
-          // Last attempt - publish anyway with fixes
-          console.log("⚠️ Publishing with automatic fixes");
-          const fixed = applyAutomaticFixes(validation);
-          await publishToContentful(fixed, topic, existingPosts);
-          return fixed;
+          throw error;
         }
       }
-    } catch (error) {
-      console.error(`Attempt ${attempt} failed:`, error);
-
-      if (attempt === maxRetries) {
-        throw error;
-      }
     }
-  }
   } catch (error) {
-    console.error('❌ Blog generation failed:', error);
+    console.error("❌ Blog generation failed:", error);
     throw error;
   } finally {
     // Always remove lock when function exits
