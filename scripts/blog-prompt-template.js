@@ -8,8 +8,9 @@ FORMATTING REQUIREMENTS:
 4. Include 3 bullet points with ACTUAL CONTENT (only if the topic naturally supports it)
 5. Use **bold** for key terms (3-5 per post)
 6. Add relevant emojis in H2 headlines where appropriate (e.g., 🔧 for technical topics, 💡 for tips, 🚀 for growth)
-7. Total length: 600-800 words
+7. Total length: MINIMUM 650 words, target 700-800 words
 8. NO placeholder brackets - write actual content
+9. Be detailed and comprehensive - don't rush to finish
 
 REQUIRED STRUCTURE:
 # [SEO-Optimized Title Under 65 Characters - Keep it complete!]
