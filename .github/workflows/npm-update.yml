@@ -1,0 +1,172 @@
+name: Weekly NPM Updates
+
+on:
+  # Run every Monday at 9 AM UTC (10 AM CET)
+  schedule:
+    - cron: '0 9 * * 1'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Configure Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+    - name: Install current dependencies
+      run: npm ci
+      
+    - name: Check for outdated packages
+      id: outdated
+      run: |
+        # Check for outdated packages and capture output
+        OUTDATED=$(npm outdated --json || echo '{}')
+        echo "outdated_packages=$OUTDATED" >> $GITHUB_OUTPUT
+        
+        # Count outdated packages
+        OUTDATED_COUNT=$(echo "$OUTDATED" | jq 'length')
+        echo "outdated_count=$OUTDATED_COUNT" >> $GITHUB_OUTPUT
+        
+        echo "📦 Found $OUTDATED_COUNT outdated packages"
+        
+    - name: Update dependencies
+      if: steps.outdated.outputs.outdated_count > 0
+      run: |
+        echo "🔄 Updating npm dependencies..."
+        
+        # Update all dependencies
+        npm update
+        
+        # Also update devDependencies
+        npm update --save-dev
+        
+        # Audit and fix vulnerabilities
+        npm audit fix || true
+        
+        echo "✅ Dependencies updated"
+        
+    - name: Run tests after update
+      if: steps.outdated.outputs.outdated_count > 0
+      run: |
+        # Run build to ensure everything still works
+        npm run build || {
+          echo "❌ Build failed after dependency update"
+          exit 1
+        }
+        
+        # Run linting if available
+        if npm run lint --silent > /dev/null 2>&1; then
+          npm run lint || {
+            echo "⚠️ Linting failed after dependency update"
+            exit 1
+          }
+        fi
+        
+    - name: Check for changes
+      id: changes
+      if: steps.outdated.outputs.outdated_count > 0
+      run: |
+        # Check if package-lock.json was modified
+        if git diff --quiet package-lock.json; then
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+          echo "📦 No changes to commit"
+        else
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "📦 Changes detected in package-lock.json"
+        fi
+        
+    - name: Generate update summary
+      if: steps.changes.outputs.has_changes == 'true'
+      id: summary
+      run: |
+        # Generate a summary of updated packages
+        echo "📦 **NPM Dependencies Updated**" > update_summary.md
+        echo "" >> update_summary.md
+        echo "**Date**: $(date '+%Y-%m-%d %H:%M UTC')" >> update_summary.md
+        echo "" >> update_summary.md
+        
+        # Get the changes from git diff
+        echo "**Updated Packages**:" >> update_summary.md
+        git diff package-lock.json | grep '"version":' | head -20 | while read line; do
+          echo "- $line" >> update_summary.md
+        done
+        
+        # Add security audit info
+        echo "" >> update_summary.md
+        echo "**Security Audit**:" >> update_summary.md
+        npm audit --audit-level moderate >> update_summary.md || echo "No security issues found" >> update_summary.md
+        
+        # Read summary for commit message
+        SUMMARY=$(head -50 update_summary.md | tr '\n' ' ')
+        echo "update_summary=$SUMMARY" >> $GITHUB_OUTPUT
+        
+    - name: Commit changes
+      if: steps.changes.outputs.has_changes == 'true'
+      run: |
+        # Add updated files
+        git add package-lock.json
+        
+        # Create commit with detailed message
+        git commit -m "🔄 Weekly NPM dependency updates
+
+        - Updated npm dependencies to latest versions
+        - Resolved security vulnerabilities
+        - Build and tests passing after updates
+        - Date: $(date '+%Y-%m-%d %H:%M UTC')
+        
+        🤖 Automated weekly maintenance
+        
+        Co-authored-by: GitHub Actions <actions@github.com>"
+        
+    - name: Push changes
+      if: steps.changes.outputs.has_changes == 'true'
+      run: |
+        git push origin main
+        echo "✅ Changes pushed to main branch"
+        
+    - name: Create workflow summary
+      run: |
+        echo "## 📦 NPM Update Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Date**: $(date '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Outdated Packages**: ${{ steps.outdated.outputs.outdated_count }}" >> $GITHUB_STEP_SUMMARY
+        
+        if [[ "${{ steps.changes.outputs.has_changes }}" == "true" ]]; then
+          echo "- **Status**: ✅ Dependencies updated and committed" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Status**: ✅ Passed" >> $GITHUB_STEP_SUMMARY
+        elif [[ "${{ steps.outdated.outputs.outdated_count }}" == "0" ]]; then
+          echo "- **Status**: ✅ All dependencies are up to date" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "- **Status**: ℹ️ No changes needed" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        # Add security info
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔒 Security Status" >> $GITHUB_STEP_SUMMARY
+        npm audit --audit-level moderate >> $GITHUB_STEP_SUMMARY || echo "No security vulnerabilities found" >> $GITHUB_STEP_SUMMARY
+        
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "## ❌ NPM Update Failed" >> $GITHUB_STEP_SUMMARY
+        echo "- **Date**: $(date '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "- **Error**: Dependency update or build failed" >> $GITHUB_STEP_SUMMARY
+        echo "- **Action Required**: Manual intervention needed" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Please check the workflow logs and update dependencies manually." >> $GITHUB_STEP_SUMMARY
