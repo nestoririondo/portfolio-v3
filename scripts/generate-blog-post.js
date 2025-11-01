@@ -2,17 +2,15 @@ import "dotenv/config";
 import Anthropic from "@anthropic-ai/sdk";
 import contentfulManagementPkg from "contentful-management";
 import * as contentfulPkg from "contentful";
-import unsplashPkg from "unsplash-js";
+import { createClient as createPexelsClient } from 'pexels';
 import fetch from "node-fetch";
 
 import { blogPromptTemplate } from "./blog-prompt-template.js";
 import { validateAndCleanContent } from "./content-validator.js";
 import { createLock, removeLock } from "./blog-lock.js";
-import { contentLinkEnhancer } from "./content-link-enhancer.js";
 
 const { createClient } = contentfulManagementPkg;
 const { createClient: createContentfulClient } = contentfulPkg;
-const { createApi } = unsplashPkg;
 
 // Validate required environment variables
 const requiredEnvVars = [
@@ -20,7 +18,7 @@ const requiredEnvVars = [
   "CONTENTFUL_MANAGEMENT_TOKEN",
   "CONTENTFUL_SPACE_ID",
   "CONTENTFUL_ACCESS_TOKEN",
-  "UNSPLASH_ACCESS_KEY",
+  "PEXELS_API_KEY",
 ];
 
 const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
@@ -48,110 +46,107 @@ const contentful = createContentfulClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
-const unsplash = createApi({
-  accessKey: process.env.UNSPLASH_ACCESS_KEY,
-  fetch,
-});
+const pexels = createPexelsClient(process.env.PEXELS_API_KEY);
 
 const topics = [
-  // Web Development & Performance
-  "Website speed optimization for Berlin restaurants",
-  "Progressive Web Apps: The future of mobile experiences",
-  "Core Web Vitals optimization strategies for 2025",
-  "Server-side rendering vs client-side rendering performance",
-  "Image optimization techniques for faster websites",
-  "CDN implementation for European businesses",
-  "Database query optimization for web applications",
-  "Lazy loading best practices for modern websites",
+  // Business Growth & Digital Strategy
+  "How a faster website can increase your Berlin restaurant's revenue by 30%",
+  "Why your Berlin business needs a mobile-friendly website in 2025",
+  "5 website improvements that boost customer trust for Berlin companies",
+  "How online booking systems increase appointments for Berlin service businesses",
+  "Why Berlin businesses lose customers with slow websites (and how to fix it)",
+  "The complete guide to getting more customers through your website",
+  "How to turn your Berlin business website into a sales machine",
+  "Why professional photos on your website increase Berlin business sales",
 
-  // Frontend Development & Design
-  "Mobile-first design trends in 2025",
-  "CSS Grid vs Flexbox: When to use which layout system",
-  "Modern JavaScript frameworks comparison: React vs Vue vs Svelte",
-  "Micro-interactions that boost user engagement",
-  "Dark mode implementation best practices",
-  "Responsive typography for better readability",
-  "Animation performance optimization techniques",
-  "Component-driven development workflows",
+  // Local Berlin Business Success
+  "How Berlin cafes use their websites to build customer loyalty",
+  "Digital marketing strategies that work for Berlin small businesses",
+  "How to attract more local Berlin customers with smart web design",
+  "Why Berlin businesses need professional email addresses (not Gmail)",
+  "5 website features every Berlin restaurant must have in 2025",
+  "How Berlin retail stores compete with Amazon using smart websites",
+  "Local SEO secrets: Get your Berlin business found on Google",
+  "How Berlin service providers get more bookings through their websites",
 
-  // Backend & Infrastructure
-  "API design patterns for scalable applications",
-  "Microservices architecture for growing startups",
-  "Docker containerization for web developers",
-  "Cloud deployment strategies: AWS vs Vercel vs Netlify",
-  "Database selection guide: SQL vs NoSQL for web apps",
-  "Serverless functions for cost-effective scaling",
-  "Real-time features with WebSockets and SSE",
-  "GraphQL vs REST API design decisions",
+  // Customer Experience & Sales
+  "Why customers abandon Berlin business websites (and how to stop it)",
+  "How to make Berlin customers trust your business website instantly",
+  "The psychology of website design: What makes Berlin customers buy",
+  "How appointment booking systems save Berlin businesses time and money",
+  "Why Berlin businesses need customer reviews on their websites",
+  "Contact forms that actually get responses for Berlin companies",
+  "How to showcase your Berlin business expertise through your website",
+  "Website accessibility: Serving all Berlin customers better",
 
-  // Business & Marketing
-  "Local SEO strategies for Berlin companies",
-  "E-commerce conversion optimization",
-  "Digital marketing automation for small businesses",
-  "Content marketing strategies for tech companies",
-  "Social media integration for business websites",
-  "Email marketing best practices for SaaS products",
-  "Customer retention through web personalization",
-  "Landing page optimization for higher conversions",
+  // Online Sales & E-commerce
+  "How Berlin businesses start selling online successfully",
+  "Online payment solutions German customers actually use",
+  "Why Berlin shops need websites that work on smartphones", 
+  "How to sell products online: A guide for Berlin businesses",
+  "Website security that protects your Berlin customers' data",
+  "Email marketing that works for Berlin small businesses",
+  "How Berlin businesses get customer reviews and testimonials",
+  "Building customer trust: Essential website features for Berlin companies",
 
-  // Security & Compliance
-  "GDPR compliance for German small businesses",
-  "Website accessibility requirements in Germany",
-  "Cybersecurity essentials for business websites",
-  "SSL certificate implementation and management",
-  "Data privacy regulations across European markets",
-  "Authentication strategies: JWT vs OAuth vs Sessions",
-  "Password security best practices for web apps",
-  "XSS and CSRF protection techniques",
+  // Legal & Compliance (Business-Friendly)
+  "GDPR made simple: What Berlin businesses need to know",
+  "Website legal requirements every Berlin business must follow",
+  "Protecting customer data: Essential security for Berlin websites",
+  "Cookie policies explained for Berlin business owners",
+  "Accessibility laws: Making your Berlin website welcoming to everyone",
+  "Business insurance for websites: Protecting your Berlin company online",
+  "Terms of service and privacy policies for Berlin businesses",
+  "Copyright and image rights for Berlin business websites",
 
-  // E-commerce & Online Business
-  "Headless commerce architecture advantages",
-  "Payment gateway integration for European markets",
-  "Multi-currency support for international sales",
-  "Inventory management system integration",
-  "Customer reviews and rating system implementation",
-  "Abandoned cart recovery automation strategies",
-  "Cross-border e-commerce compliance in EU",
-  "Subscription billing model implementation",
+  // Digital Marketing & Customer Acquisition  
+  "Google Ads vs Facebook Ads: What works best for Berlin businesses",
+  "Social media integration that brings customers to Berlin businesses",
+  "Content marketing: How Berlin businesses become local authorities",
+  "Email newsletters that Berlin customers actually read",
+  "Online reputation management for Berlin companies",
+  "How to get featured in Berlin business directories and guides",
+  "Seasonal marketing: Timing promotions for Berlin businesses",
+  "Customer referral programs that grow Berlin businesses",
 
-  // Technology & Innovation
-  "AI integration in modern web applications",
-  "Machine learning for personalized user experiences",
-  "Blockchain integration for web developers",
-  "Voice interface development for websites",
-  "Augmented reality features for e-commerce sites",
-  "IoT device integration with web platforms",
-  "Edge computing for faster web applications",
-  "5G impact on web development strategies",
+  // Technology Made Simple (Business Benefits)
+  "AI tools that help Berlin businesses work smarter, not harder",
+  "Chatbots: How Berlin businesses provide 24/7 customer service",
+  "Cloud storage solutions that protect Berlin business data",
+  "Automation tools that save Berlin businesses time and money",
+  "Voice search: How Berlin customers find businesses differently now",
+  "Virtual reality marketing: The future for Berlin tourism businesses",
+  "Smart analytics: Understanding your Berlin customers better",
+  "Mobile apps vs websites: What Berlin businesses actually need",
 
-  // Content Management & Workflow
-  "Content management system selection guide",
-  "Headless CMS vs traditional CMS comparison",
-  "JAMstack architecture for content-heavy sites",
-  "Version control workflows for design teams",
-  "Automated testing strategies for web projects",
-  "CI/CD pipelines for frontend deployments",
-  "Code review best practices for development teams",
-  "Documentation strategies for growing codebases",
+  // Business Operations & Efficiency
+  "How Berlin businesses manage their content without technical skills",
+  "Backup strategies: Protecting your Berlin business website",
+  "Domain names and hosting: Simple guide for Berlin business owners",
+  "Website maintenance: Keeping your Berlin business site running smoothly",
+  "Integration solutions: Connecting your website to business tools",
+  "Customer management through your Berlin business website",
+  "Inventory systems for Berlin retail businesses",
+  "Appointment scheduling that works for Berlin service providers",
 
-  // Analytics & Optimization
-  "Web analytics setup for business insights",
-  "A/B testing implementation without third-party tools",
-  "Heatmap analysis for user behavior optimization",
-  "Conversion funnel optimization techniques",
-  "Performance monitoring and alerting systems",
-  "User feedback collection and implementation",
-  "Data-driven design decision making",
-  "Growth hacking techniques for web platforms",
+  // Measurement & Growth
+  "Google Analytics explained for Berlin business owners",
+  "Testing what works: Simple A/B testing for Berlin websites",
+  "Understanding customer behavior on your Berlin business website",
+  "Conversion tracking: Know which marketing brings in customers",
+  "Website performance: Why speed matters for Berlin businesses",
+  "Customer feedback tools for Berlin business improvement",
+  "Making decisions based on data: Analytics for Berlin entrepreneurs",
+  "Growth strategies using your website data for Berlin companies",
 
-  // Freelancing & Business Development
-  "Client onboarding processes for web agencies",
-  "Project management tools for remote development teams",
-  "Pricing strategies for web development services",
-  "Building long-term client relationships in tech",
-  "Portfolio optimization for attracting ideal clients",
-  "Networking strategies for Berlin tech professionals",
-  "Time tracking and productivity tools for developers",
+  // Business Development & Partnerships
+  "Finding the right web developer for your Berlin business",
+  "Project planning: Website redesign timeline for Berlin companies",
+  "Budget planning: Website costs for Berlin small businesses",
+  "Maintenance plans: Long-term website care for Berlin businesses",
+  "Training staff on your new Berlin business website",
+  "Partnerships with Berlin web agencies: What to expect",
+  "Scaling your website as your Berlin business grows",
   "Legal considerations for freelance web developers",
 
   // Emerging Trends & Future Technologies
@@ -163,6 +158,76 @@ const topics = [
   "WebAssembly applications in modern web development",
   "Quantum computing implications for web security",
   "Metaverse development opportunities for web developers",
+
+  // Modern Web Development & Frameworks (2025)
+  "Next.js 15 vs Vite: Choosing the right framework for Berlin startups",
+  "TypeScript adoption strategy for legacy JavaScript projects",
+  "Server-side rendering performance optimization for e-commerce sites",
+  "Progressive Web Apps implementation for Berlin retail businesses",
+  "Headless CMS architecture for content-driven websites",
+  "Micro-frontends: Breaking down monolithic web applications",
+  "Edge computing benefits for Berlin-based web applications",
+  "JAMstack deployment strategies for static site generation",
+
+  // Performance & Optimization
+  "Core Web Vitals optimization for better search rankings",
+  "Image optimization techniques that reduce loading times by 60%",
+  "Database query optimization for high-traffic web applications",
+  "CDN implementation strategies for global content delivery",
+  "Bundle splitting and code optimization for faster page loads",
+  "Memory leak detection and prevention in JavaScript applications",
+  "Browser caching strategies for improved user experience",
+  "Lighthouse scoring optimization for professional websites",
+
+  // Security & Best Practices
+  "Modern authentication patterns: OAuth 2.0 vs WebAuthn",
+  "API security best practices for client-facing applications",
+  "Cross-site scripting (XSS) prevention in React applications",
+  "Content Security Policy implementation for production websites",
+  "HTTPS migration strategies for existing web applications",
+  "Input validation and sanitization techniques",
+  "Secure cookie handling and session management",
+  "Vulnerability scanning integration in CI/CD pipelines",
+
+  // Developer Experience & Tooling
+  "VS Code extensions that boost web development productivity",
+  "Git workflow optimization for solo developers and teams",
+  "ESLint and Prettier configuration for consistent code quality",
+  "Docker containerization for web development environments",
+  "GitHub Actions automation for deployment and testing",
+  "Package manager comparison: npm vs yarn vs pnpm",
+  "Hot module replacement optimization for faster development",
+  "Debugging techniques for complex React component trees",
+
+  // API Development & Integration
+  "RESTful API design principles for scalable web services",
+  "GraphQL implementation benefits for data-heavy applications",
+  "WebSocket integration for real-time web applications",
+  "Third-party API integration best practices and error handling",
+  "Rate limiting and throttling for API protection",
+  "API documentation automation with OpenAPI/Swagger",
+  "Webhook implementation for event-driven architectures",
+  "Microservices communication patterns for web applications",
+
+  // Testing & Quality Assurance
+  "Test-driven development workflow for React components",
+  "End-to-end testing automation with Playwright and Cypress",
+  "Visual regression testing for design system consistency",
+  "Performance testing strategies for web application optimization",
+  "Accessibility testing automation in development workflows",
+  "Unit testing patterns for JavaScript utility functions",
+  "Integration testing for API endpoints and databases",
+  "Cross-browser compatibility testing in modern workflows",
+
+  // Freelance & Business Development
+  "Client communication strategies for web development projects",
+  "Project scoping and estimation techniques for freelance developers",
+  "Portfolio optimization strategies that attract high-value clients",
+  "Pricing strategies for web development services in 2025",
+  "Contract templates and legal considerations for freelance work",
+  "Time tracking and productivity tools for remote developers",
+  "Building long-term client relationships through value delivery",
+  "Technical debt communication strategies for non-technical stakeholders"
 ];
 
 // Function to fetch trending topics from multiple sources
@@ -387,17 +452,17 @@ async function generateBlogPost(maxRetries = 3) {
     ) {
       console.log(`🎯 Using forced topic: "${forceTopic}"`);
 
-      // Check if we already have a recent post about this topic
+      // Check if we already have a recent post about this topic (more lenient)
       const topicKeywords = forceTopic.toLowerCase().split(/[\s-_]+/)
-        .filter(keyword => keyword.length > 3)
-        .filter(keyword => !['business', 'website', 'berlin', 'german', 'companies'].includes(keyword)); // Exclude common words
+        .filter(keyword => keyword.length > 4)
+        .filter(keyword => !['business', 'website', 'berlin', 'german', 'companies', 'guide', 'strategies'].includes(keyword)); // Exclude common words
       
       const duplicateByTopic = recentPosts.find((post) => {
         const titleLower = post.title.toLowerCase();
         const matchingKeywords = topicKeywords.filter(keyword => titleLower.includes(keyword));
-        // Require at least 2 specific keywords to match, or 1 very specific keyword
-        return matchingKeywords.length >= 2 || 
-               (matchingKeywords.length === 1 && matchingKeywords[0].length > 8);
+        // Require at least 3 specific keywords to match, or 1 very specific keyword (10+ chars)
+        return matchingKeywords.length >= 3 || 
+               (matchingKeywords.length === 1 && matchingKeywords[0].length > 10);
       });
 
       if (duplicateByTopic) {
@@ -473,13 +538,9 @@ async function generateBlogPost(maxRetries = 3) {
 
           console.log("✅ Content validation passed");
 
-          // Enhance content with relevant links
-          console.log("🔗 Adding contextual links to content...");
-          const enhancedContent = contentLinkEnhancer.enhanceContent(validation.content);
-          console.log(`✅ Enhanced content with ${contentLinkEnhancer.getMappingsCount()} possible link mappings`);
+          // Use content as-is without link enhancement
           const enhancedValidation = {
             ...validation,
-            content: enhancedContent,
           };
 
           await publishToContentful(enhancedValidation, topic, existingPosts);
@@ -495,14 +556,9 @@ async function generateBlogPost(maxRetries = 3) {
             console.log("⚠️ Publishing with automatic fixes");
             const fixed = applyAutomaticFixes(validation);
 
-            // Enhance content with relevant links
-            console.log("🔗 Adding contextual links to fixed content...");
-            const enhancedContent = contentLinkEnhancer.enhanceContent(fixed.content);
-            console.log(`✅ Enhanced content with ${contentLinkEnhancer.getMappingsCount()} possible link mappings`);
-            const enhancedFixed = { ...fixed, content: enhancedContent };
-
-            await publishToContentful(enhancedFixed, topic, existingPosts);
-            return enhancedFixed;
+            // Use fixed content as-is without link enhancement
+            await publishToContentful(fixed, topic, existingPosts);
+            return fixed;
           }
         }
       } catch (error) {
@@ -617,12 +673,8 @@ function convertToRichText(markdown) {
         });
         bulletPoints = [];
       }
-    } else if (
-      trimmed.length > 0 &&
-      !trimmed.startsWith("[") &&
-      !trimmed.endsWith("]")
-    ) {
-      // Regular paragraph - handle bold text, skip placeholder brackets
+    } else if (trimmed.length > 0) {
+      // Regular paragraph - handle bold text and links
       const paragraphContent = parseTextWithBold(trimmed);
 
       content.push({
@@ -681,39 +733,200 @@ function parseTextWithBold(text) {
   return content;
 }
 
-async function fetchUnsplashImage(topic, existingPosts = []) {
+async function findUniqueImageFromResults(photos, usedImageUrls, topic) {
+  if (!photos || photos.length === 0) return null;
+
+  for (const photo of photos) {
+    const photoId = photo.id.toString();
+    // Check if this photo ID appears in any existing blog file names
+    // (Contentful stores them as blog-{timestamp}.jpg containing the pexels ID)
+    const isUsed = usedImageUrls.some((usedUrl) => usedUrl.includes(photoId));
+
+    if (!isUsed) {
+      console.log(`✅ Found unique image: ${photo.alt || "Professional image"}`);
+      return {
+        url: photo.src.large,
+        alt: photo.alt || `Professional image related to ${topic}`,
+        credit: `Photo by ${photo.photographer} on Pexels`,
+        downloadUrl: photo.src.original,
+        pexelsId: photo.id,
+      };
+    }
+  }
+  return null;
+}
+
+async function generateSmartSearchTerms(topic) {
   try {
-    // Extract keywords from topic for search
-    const keywords =
-      topic
-        .toLowerCase()
-        .replace(/\b(for|berlin|german|germany|website|web|development)\b/g, "")
-        .trim()
-        .split(/\s+/)
-        .slice(0, 3)
-        .join(" ") || "business technology";
 
-    console.log(`🖼️ Searching Unsplash for: "${keywords}"`);
+    const prompt = `Given this blog post topic: "${topic}"
 
-    const result = await unsplash.search.getPhotos({
-      query: keywords,
-      page: 1,
-      perPage: 20, // Get more results to avoid duplicates
-      orientation: "landscape",
+Generate 3 specific, visual image search terms that would find relevant professional stock photos on Pexels. Focus on CONCRETE VISUAL ELEMENTS:
+
+CRITICAL REQUIREMENTS:
+- PRIORITIZE THE MOST VISUALLY DISTINCTIVE ELEMENT first (coffee shop > blockchain, restaurant > analytics, etc.)
+- Use SPECIFIC object combinations (laptop + screen + data, coffee + tablet + ordering)
+- Include the EXACT TOOL/PLATFORM name when mentioned (Google Analytics, Docker, React, etc.)
+- Focus on SCREENS, INTERFACES, and DEVICES showing the actual technology IN CONTEXT
+- For business-specific topics, include the business environment (coffee shop, restaurant, office)
+
+VISUAL PATTERNS THAT WORK:
+- "coffee shop tablet ordering system"
+- "restaurant pos system screen"
+- "hair salon appointment booking tablet"
+- "bakery point of sale system screen"
+- "law firm office computer workspace"
+- "art gallery digital exhibition screen"
+- "fashion boutique online store laptop"
+- "analytics dashboard laptop screen"  
+- "google analytics interface computer"
+- "docker terminal coding laptop"
+- "blockchain cryptocurrency mobile app"
+
+PRIORITIZATION RULES:
+- Physical business (hair salon, bakery, restaurant, art gallery, law firm, fashion store) beats abstract tech (blockchain, AI, analytics)
+- Specific tools/platforms (Google Analytics, Docker) beat generic terms (dashboard, interface)
+- Industry context (beauty, legal, fashion, food, art, retail, fintech, healthcare, e-commerce) adds visual relevance
+- Design/development topics MUST show screens, computers, coding, or workspace setups
+
+CRITICAL FOR WEB/DESIGN TOPICS:
+- "website design" → "web designer laptop mockups", "website wireframe computer screen"
+- "website redesign" → "web development workspace laptop", "website design process computer"
+- "web development" → "coding laptop screen programming", "web developer workspace setup"
+- "digital agency" → "creative agency office workspace", "designers collaborating computers"
+
+CRITICAL FOR DEVOPS/AUTOMATION TOPICS:
+- "GitHub Actions" → "github code repository laptop screen", "ci cd pipeline dashboard computer"
+- "deployment automation" → "deployment pipeline laptop interface", "server monitoring dashboard screen"
+- "CI/CD pipeline" → "continuous integration laptop dashboard", "devops workflow computer screen"
+- "Docker containerization" → "docker terminal laptop programming", "containerization development screen"
+- "API testing" → "api testing laptop interface", "software testing computer dashboard"
+
+CRITICAL FOR LEGAL/POLICY TOPICS:
+- "cookie policies" → "website privacy settings screen", "gdpr compliance laptop interface"
+- "privacy policy" → "website legal compliance laptop", "privacy settings computer screen"
+- "GDPR compliance" → "data protection laptop dashboard", "privacy compliance computer interface"
+- "terms of service" → "website legal terms laptop screen", "business compliance computer"
+
+CRITICAL FOR SPECIFIC BUSINESS TYPES:
+- "hair salon" → "hair salon interior workspace", "hairstylist client consultation", "salon appointment booking tablet"
+- "bakery" → "bakery counter display case", "bakery point of sale system", "artisan bakery workspace"
+- "law firm" → "law firm office workspace", "lawyer computer desktop", "legal documents laptop screen"
+- "art gallery" → "art gallery exhibition space", "gallery digital display screen", "art collection computer interface"
+- "fashion boutique" → "clothing store interior display", "fashion retail point of sale", "boutique online shopping laptop"
+- "späti convenience store" → "convenience store interior shelves", "small shop counter workspace", "local store point of sale"
+- "advertising agency" → "creative agency office workspace", "ad campaign laptop design", "marketing team collaboration"
+- "real estate" → "real estate office laptop", "property listing computer screen", "realtor workspace setup"
+- "fitness center" → "gym equipment digital interface", "fitness app smartphone screen", "health club workspace"
+- "dental practice" → "dental office computer system", "medical appointment booking tablet", "healthcare workspace setup"
+
+VISUAL PATTERNS TO AVOID:
+- "person analyzing data" (too vague)
+- "business meeting analytics" (generic)
+- "professional dashboard review" (no specific tool)
+- "mobile app interface" (too generic)
+- "people on sofa" or "family photos" (completely irrelevant)
+- "timeline" without context (leads to random calendar/family photos)
+
+Examples:
+Topic: "Google Analytics for businesses" → "google analytics dashboard screen", "website analytics laptop interface", "data charts computer monitor"
+Topic: "Blockchain loyalty programs for coffee shops" → "coffee shop digital loyalty tablet", "cafe pos system blockchain", "coffee ordering app smartphone"
+Topic: "Docker for fintech" → "docker terminal fintech development", "fintech application containers laptop", "financial software development screen"
+Topic: "Website redesign timeline" → "web designer laptop wireframes", "website mockup computer screen", "web development workspace setup"
+Topic: "Web development process" → "coding laptop programming screen", "web developer workspace computer", "website design laptop mockups"
+Topic: "Cookie policies for businesses" → "website privacy settings screen", "gdpr compliance laptop interface", "privacy policy computer dashboard"
+Topic: "GitHub Actions automation" → "github repository laptop screen", "ci cd pipeline dashboard interface", "deployment automation computer terminal"
+Topic: "API testing strategies" → "api testing laptop dashboard", "software testing computer screen", "testing automation development interface"
+Topic: "Instagram marketing for hair salons" → "hair salon interior workspace", "hairstylist client consultation tablet", "salon social media laptop screen"
+Topic: "Online booking for Berlin spätis" → "convenience store point of sale", "small shop counter workspace", "local store digital interface"
+Topic: "Portfolio websites for law firms" → "law firm office workspace", "lawyer computer desktop", "legal services laptop interface"
+Topic: "Digital exhibitions for art galleries" → "art gallery exhibition space", "gallery digital display screen", "art collection computer interface"
+Topic: "E-commerce for fashion boutiques" → "clothing store interior display", "fashion retail laptop interface", "boutique online shopping screen"
+Topic: "Creative agency portfolio design" → "creative agency office workspace", "ad campaign laptop design", "marketing team collaboration computer"
+
+Return only the 3 search terms, separated by commas, no explanations.`;
+
+    const response = await anthropic.messages.create({
+      model: "claude-3-haiku-20240307",
+      max_tokens: 150,
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
     });
 
-    if (result.errors) {
-      console.error("❌ Unsplash search error:", result.errors);
-      return null;
+    const searchTerms = response.content[0].text.trim().split(',');
+    
+    // Return the first search term, cleaned up
+    const primaryTerm = searchTerms[0]?.trim() || topic;
+    console.log(`🤖 AI-generated search terms: ${searchTerms.join(', ')}`);
+    console.log(`🎯 Using primary term: "${primaryTerm}"`);
+    
+    return primaryTerm;
+  } catch (error) {
+    console.log(`⚠️ AI search term generation failed: ${error.message}`);
+    
+    // Enhanced fallback: specific tool/platform detection
+    const lowercaseTopic = topic.toLowerCase();
+    
+    // Specific platform/tool detection
+    if (lowercaseTopic.includes('google analytics')) {
+      return "google analytics dashboard computer screen";
     }
-
-    const photos = result.response?.results;
-    if (!photos || photos.length === 0) {
-      console.log("⚠️ No photos found, using fallback search");
-      return await fetchFallbackImage(existingPosts);
+    if (lowercaseTopic.includes('analytics')) {
+      return "analytics dashboard laptop interface";
     }
+    if (lowercaseTopic.includes('docker')) {
+      return "docker terminal laptop development";
+    }
+    if (lowercaseTopic.includes('react')) {
+      return "react code editor programming screen";
+    }
+    if (lowercaseTopic.includes('vue')) {
+      return "vue framework development laptop";
+    }
+    if (lowercaseTopic.includes('typescript')) {
+      return "typescript code editor laptop screen";
+    }
+    if (lowercaseTopic.includes('javascript')) {
+      return "javascript programming laptop screen";
+    }
+    if (lowercaseTopic.includes('email') && lowercaseTopic.includes('marketing')) {
+      return "email marketing dashboard laptop screen";
+    }
+    if (lowercaseTopic.includes('booking') || lowercaseTopic.includes('appointment')) {
+      return "appointment booking app smartphone screen";
+    }
+    if (lowercaseTopic.includes('payment')) {
+      return "payment processing laptop interface";
+    }
+    if (lowercaseTopic.includes('security')) {
+      return "cybersecurity dashboard computer screen";
+    }
+    if (lowercaseTopic.includes('seo')) {
+      return "seo analytics dashboard laptop";
+    }
+    
+    // Generic tech/business fallback
+    const words = topic.toLowerCase().split(/\s+/);
+    const techTerms = words.filter(word => 
+      ['development', 'programming', 'coding', 'website', 'app', 'mobile', 
+       'digital', 'online', 'automation', 'ai', 'database'].includes(word)
+    );
+    
+    if (techTerms.length > 0) {
+      return `${techTerms[0]} laptop screen interface`;
+    }
+    
+    return "laptop computer screen interface";
+  }
+}
 
-    // Get list of used image URLs
+async function fetchPexelsImage(topic, existingPosts = []) {
+  try {
+    // Get list of used image URLs once
     const usedImageUrls = existingPosts
       .map((post) => post.featuredImageUrl)
       .filter(Boolean)
@@ -721,28 +934,74 @@ async function fetchUnsplashImage(topic, existingPosts = []) {
 
     console.log(`🔍 Checking against ${usedImageUrls.length} existing images`);
 
-    // Find an unused photo
-    for (const photo of photos) {
-      const photoUrl = photo.urls.regular;
-      const isUsed = usedImageUrls.some(
-        (usedUrl) => usedUrl.includes(photo.id) || photoUrl.includes(photo.id)
-      );
+    // Strategy 1: AI-powered smart topic-to-image mapping
+    const smartKeywords = await generateSmartSearchTerms(topic);
+    console.log(`🖼️ Strategy 1 - Searching Pexels for: "${smartKeywords}"`);
 
-      if (!isUsed) {
-        console.log(
-          `✅ Found unique image: ${photo.alt_description || "Untitled"}`
-        );
-        return {
-          url: photoUrl,
-          alt: photo.alt_description || `Image related to ${topic}`,
-          credit: `Photo by ${photo.user.name} on Unsplash`,
-          downloadUrl: photo.links.download,
-        };
-      }
+    let result = await pexels.photos.search({
+      query: smartKeywords,
+      page: 1,
+      per_page: 20,
+      orientation: 'landscape',
+      size: 'large'
+    });
+
+    let uniqueImage = await findUniqueImageFromResults(result.photos, usedImageUrls, topic);
+    if (uniqueImage) return uniqueImage;
+
+    // Strategy 2: Topic-specific alternatives (avoid generic business terms)
+    const alternativeKeywords = [
+      `${smartKeywords.split(' ')[0]} workspace setup`, // First word + workspace
+      `computer screen ${smartKeywords.split(' ').pop()}`, // Computer screen + last word  
+      `digital ${smartKeywords.replace(/business|meeting|office/g, 'technology')}`, // Replace generic terms
+      `creative ${smartKeywords.replace(/professional|business/g, 'workspace')}`, // More creative approach
+      `modern ${smartKeywords.split(' ').slice(-2).join(' ')}`  // Modern + last 2 words
+    ];
+
+    for (const altKeyword of alternativeKeywords) {
+      console.log(`🔄 Strategy 2 - Trying alternative: "${altKeyword}"`);
+      
+      result = await pexels.photos.search({
+        query: altKeyword,
+        page: Math.floor(Math.random() * 3) + 1, // Random page
+        per_page: 15,
+        orientation: 'landscape',
+        size: 'large'
+      });
+
+      uniqueImage = await findUniqueImageFromResults(result.photos, usedImageUrls, topic);
+      if (uniqueImage) return uniqueImage;
     }
 
-    // If all images from this search are used, try fallback
-    console.log("⚠️ All images from search appear to be used, trying fallback");
+    // Strategy 3: Visual concept categories (avoid handshake/meeting images)
+    const categoryTerms = [
+      "laptop screen website design",
+      "smartphone app interface",
+      "computer dashboard analytics",
+      "tablet digital workspace", 
+      "keyboard coding development",
+      "monitor web development",
+      "phone digital marketing",
+      "workspace creative setup"
+    ];
+
+    for (const category of categoryTerms) {
+      console.log(`🎯 Strategy 3 - Trying category: "${category}"`);
+      
+      result = await pexels.photos.search({
+        query: category,
+        page: Math.floor(Math.random() * 5) + 1, // Random page 1-5
+        per_page: 15,
+        orientation: 'landscape',
+        size: 'large'
+      });
+
+      uniqueImage = await findUniqueImageFromResults(result.photos, usedImageUrls, topic);
+      if (uniqueImage) return uniqueImage;
+    }
+
+    // If all strategies fail, use fallback
+    console.log("⚠️ All search strategies exhausted, trying fallback");
     return await fetchFallbackImage(existingPosts);
   } catch (error) {
     console.error("❌ Error fetching image:", error);
@@ -753,11 +1012,14 @@ async function fetchUnsplashImage(topic, existingPosts = []) {
 async function fetchFallbackImage(existingPosts = []) {
   try {
     const fallbackQueries = [
-      "business office computer",
-      "modern workspace",
-      "digital technology",
-      "office desk laptop",
-      "business meeting",
+      "laptop computer screen code",
+      "website design interface",
+      "digital device workspace",
+      "computer programming setup",
+      "technology workspace minimal",
+      "web development screen",
+      "mobile app development",
+      "creative workspace setup"
     ];
 
     const usedImageUrls = existingPosts
@@ -768,44 +1030,122 @@ async function fetchFallbackImage(existingPosts = []) {
     for (const query of fallbackQueries) {
       console.log(`🔄 Trying fallback search: "${query}"`);
 
-      const result = await unsplash.search.getPhotos({
+      const result = await pexels.photos.search({
         query,
         page: 1,
-        perPage: 10,
-        orientation: "landscape",
+        per_page: 10,
+        orientation: 'landscape',
+        size: 'large'
       });
 
-      const photos = result.response?.results;
+      const photos = result.photos;
       if (photos && photos.length > 0) {
         // Find an unused photo from this fallback search
         for (const photo of photos) {
           const isUsed = usedImageUrls.some(
             (usedUrl) =>
               usedUrl.includes(photo.id) ||
-              photo.urls.regular.includes(photo.id)
+              photo.src.large.includes(photo.id)
           );
 
           if (!isUsed) {
             console.log(
               `✅ Found unique fallback image: ${
-                photo.alt_description || "Untitled"
+                photo.alt || "Professional image"
               }`
             );
             return {
-              url: photo.urls.regular,
-              alt: photo.alt_description || "Business technology image",
-              credit: `Photo by ${photo.user.name} on Unsplash`,
-              downloadUrl: photo.links.download,
+              url: photo.src.large,
+              alt: photo.alt || "Business technology image",
+              credit: `Photo by ${photo.photographer} on Pexels`,
+              downloadUrl: photo.src.original,
+              pexelsId: photo.id,
             };
           }
         }
       }
     }
 
-    console.log("⚠️ Could not find any unique fallback images");
+    console.log("⚠️ Could not find any unique fallback images, trying more creative searches...");
+    
+    // Try more creative, specific searches with random elements
+    const creativeQueries = [
+      "abstract technology pattern",
+      "minimalist office setup",
+      "coding screen dark theme",
+      "futuristic digital interface",
+      "professional workspace setup",
+      "team collaboration meeting",
+      "startup office environment",
+      "creative workspace design",
+      "tech innovation concept",
+      "digital transformation visual"
+    ];
+    
+    // Shuffle the array and try a few random ones
+    const shuffledQueries = creativeQueries.sort(() => Math.random() - 0.5).slice(0, 5);
+    
+    for (const query of shuffledQueries) {
+      console.log(`🎨 Trying creative search: "${query}"`);
+      
+      const result = await pexels.photos.search({
+        query,
+        page: Math.floor(Math.random() * 3) + 1, // Random page 1-3
+        per_page: 15,
+        orientation: 'landscape',
+        size: 'large'
+      });
+
+      if (result.photos && result.photos.length > 0) {
+        // Try to find any unused image, be less strict
+        for (const photo of result.photos) {
+          const photoId = photo.id.toString();
+          const isStrictlyUsed = usedImageUrls.some(usedUrl => usedUrl.includes(photoId));
+          
+          if (!isStrictlyUsed) {
+            console.log(`✅ Found creative unique image: ${photo.alt || "Creative professional image"}`);
+            return {
+              url: photo.src.large,
+              alt: photo.alt || "Professional creative image",
+              credit: `Photo by ${photo.photographer} on Pexels`,
+              downloadUrl: photo.src.original,
+              pexelsId: photo.id,
+            };
+          }
+        }
+      }
+    }
+    
+    console.log("⚠️ Still no unique images found, using guaranteed fallback...");
+    
+    // Final guaranteed fallback - use a very specific search that's unlikely to be used
+    const guaranteedResult = await pexels.photos.search({
+      query: `abstract gradient ${Math.random().toString(36).substring(7)}`, // Random search
+      page: 1,
+      per_page: 5,
+      orientation: 'landscape',
+      size: 'large'
+    });
+    
+    if (guaranteedResult.photos && guaranteedResult.photos.length > 0) {
+      const photo = guaranteedResult.photos[0];
+      console.log(`✅ Using guaranteed fallback image: ${photo.alt || "Abstract professional image"}`);
+      return {
+        url: photo.src.large,
+        alt: photo.alt || "Professional abstract image",
+        credit: `Photo by ${photo.photographer} on Pexels`,
+        downloadUrl: photo.src.original,
+        pexelsId: photo.id,
+      };
+    }
+    
   } catch (error) {
     console.error("❌ Fallback image error:", error);
   }
+  
+  // Absolute final fallback - return null and let the system handle it
+  console.log("❌ All image searches failed");
+  return null;
   return null;
 }
 
@@ -840,7 +1180,7 @@ async function uploadImageToContentful(imageData) {
         file: {
           "en-US": {
             contentType: "image/jpeg",
-            fileName: `blog-${Date.now()}.jpg`,
+            fileName: `blog-pexels-${imageData.pexelsId}-${Date.now()}.jpg`,
             uploadFrom: {
               sys: {
                 type: "Link",
@@ -896,7 +1236,7 @@ async function publishToContentful(blogData, topic, existingPosts = []) {
     // Fetch and upload featured image
     let featuredImageRef = null;
     console.log("🖼️ Fetching featured image...");
-    const imageData = await fetchUnsplashImage(topic, existingPosts);
+    const imageData = await fetchPexelsImage(topic, existingPosts);
 
     if (imageData) {
       const uploadedImage = await uploadImageToContentful(imageData);
@@ -942,8 +1282,13 @@ async function publishToContentful(blogData, topic, existingPosts = []) {
 if (process.env.NODE_ENV !== "test") {
   generateBlogPost()
     .then((result) => {
-      console.log("🎉 Blog post generated successfully:", result.title);
-      process.exit(0);
+      if (result === null) {
+        console.log("⚠️ No blog post generated - all topics are duplicates or unavailable");
+        process.exit(0);
+      } else {
+        console.log("🎉 Blog post generated successfully:", result.title);
+        process.exit(0);
+      }
     })
     .catch((error) => {
       console.error("💥 Failed to generate blog post:", error);
@@ -976,21 +1321,21 @@ async function fetchExistingPosts() {
 async function getAvailableTopics(existingPosts) {
   const usedKeywords = extractKeywordsFromTitles(existingPosts);
 
-  // Fetch trending topics (fallback to curated if needed)
-  console.log("🔍 Fetching trending web development topics...");
-  const currentTopics = await fetchTrendingTopics();
+  // Use curated business-focused topics instead of technical trending topics
+  console.log("🔍 Selecting from business-focused topic list...");
+  const currentTopics = topics; // Use our curated business topics
 
   return currentTopics.filter((topic) => {
     const topicKeywords = extractKeywords(topic);
 
-    // Check if any keyword from the topic is already heavily used
+    // Check if any keyword from the topic is already heavily used (more lenient)
     const isOverused = topicKeywords.some((keyword) => {
       const usageCount = usedKeywords.filter(
         (used) =>
           used.includes(keyword.toLowerCase()) ||
           keyword.toLowerCase().includes(used)
       ).length;
-      return usageCount >= 2; // Topic considered overused if used 2+ times
+      return usageCount >= 4; // Topic considered overused if used 4+ times (was 2+)
     });
 
     return !isOverused;
@@ -1015,7 +1360,7 @@ function extractKeywords(text) {
     .split(/\s+/)
     .filter(
       (word) =>
-        word.length > 3 &&
+        word.length > 4 &&
         ![
           "website",
           "berlin",
@@ -1024,6 +1369,11 @@ function extractKeywords(text) {
           "guide",
           "tips",
           "strategies",
+          "unlock",
+          "power",
+          "your",
+          "with",
+          "2025"
         ].includes(word)
     );
 }

@@ -131,40 +131,103 @@ class ContentLinkEnhancer {
   }
 
   /**
-   * Enhance content by adding relevant links
+   * Enhance content by adding relevant links (smart linking - only first mention)
    */
   enhanceContent(content) {
     let enhancedContent = content;
+    const linkedTerms = new Set(); // Track which terms we've already linked
+    
+    // Add internal website links first
+    enhancedContent = this.addInternalLinks(enhancedContent);
     
     // Sort mappings by length (longest first) to avoid partial matches
     const sortedMappings = Object.entries(this.linkMappings)
       .sort(([a], [b]) => b.length - a.length);
     
     for (const [term, url] of sortedMappings) {
-      // Skip if term matches exclude patterns
-      if (this.shouldExclude(term)) continue;
+      // Skip if we've already linked this term or it matches exclude patterns
+      if (linkedTerms.has(term.toLowerCase()) || this.shouldExclude(term)) continue;
       
       // Create regex for whole word matching (case insensitive)
       const regex = new RegExp(`\\b(${this.escapeRegex(term)})\\b`, 'gi');
       
-      // Only replace if not already linked and not in a link context
-      enhancedContent = enhancedContent.replace(regex, (match, p1) => {
-        // Check if already in a link or markdown link
-        const beforeMatch = enhancedContent.substring(0, enhancedContent.indexOf(match));
-        const afterMatch = enhancedContent.substring(enhancedContent.indexOf(match) + match.length);
+      // Only replace FIRST occurrence and if not already linked
+      const match = regex.exec(enhancedContent);
+      if (match && !this.isInLinkContext(enhancedContent, match.index)) {
+        const replacement = `[${match[1]}](${url})`;
+        enhancedContent = enhancedContent.substring(0, match.index) + 
+                         replacement + 
+                         enhancedContent.substring(match.index + match[0].length);
         
-        // Skip if already in markdown link syntax
-        if (beforeMatch.includes('[') && afterMatch.includes('](') ||
-            beforeMatch.includes('](') || 
-            beforeMatch.includes('<a ') && afterMatch.includes('</a>')) {
-          return match;
-        }
-        
-        return `[${p1}](${url})`;
-      });
+        linkedTerms.add(term.toLowerCase());
+      }
     }
     
     return enhancedContent;
+  }
+  
+  /**
+   * Add internal links to your website pages
+   */
+  addInternalLinks(content) {
+    const internalLinkMappings = {
+      // Services and expertise
+      'web development consultant': '/#about',
+      'web developer': '/#about',
+      'web development services': '/#services',
+      'website development': '/#services',
+      'Berlin web developer': '/#about',
+      'freelance web developer': '/#about',
+      
+      // Process and contact
+      'contact': '/#contact',
+      'get in touch': '/#contact',
+      'consultation': '/#contact',
+      'discuss your project': '/#contact',
+      'project planning': '/#process',
+      'web development process': '/#process',
+      
+      // Blog and resources
+      'blog': '/blog',
+      'more insights': '/blog',
+      'web development blog': '/blog',
+      'latest articles': '/blog',
+    };
+    
+    let enhancedContent = content;
+    const linkedInternalTerms = new Set();
+    
+    // Sort by length (longest first)
+    const sortedInternalMappings = Object.entries(internalLinkMappings)
+      .sort(([a], [b]) => b.length - a.length);
+    
+    for (const [term, url] of sortedInternalMappings) {
+      if (linkedInternalTerms.has(term.toLowerCase())) continue;
+      
+      const regex = new RegExp(`\\b(${this.escapeRegex(term)})\\b`, 'gi');
+      
+      // Only replace first occurrence
+      if (regex.test(enhancedContent) && !enhancedContent.includes(`[${term}]`)) {
+        enhancedContent = enhancedContent.replace(regex, `[$1](${url})`);
+        linkedInternalTerms.add(term.toLowerCase());
+        break; // Only add one internal link per content
+      }
+    }
+    
+    return enhancedContent;
+  }
+  
+  /**
+   * Check if a match is already within a link context
+   */
+  isInLinkContext(content, matchIndex) {
+    const beforeMatch = content.substring(Math.max(0, matchIndex - 100), matchIndex);
+    const afterMatch = content.substring(matchIndex, Math.min(content.length, matchIndex + 100));
+    
+    // Check if already in markdown link syntax
+    return (beforeMatch.includes('[') && afterMatch.includes('](')) ||
+           beforeMatch.includes('](') || 
+           (beforeMatch.includes('<a ') && afterMatch.includes('</a>'));
   }
   
   /**
