@@ -4,212 +4,212 @@ on:
   workflow_dispatch:
     inputs:
       breaking_topic:
-        description: 'Breaking news or urgent topic'
+        description: "Breaking news or urgent topic"
         required: true
         type: string
       urgency:
-        description: 'Urgency level'
+        description: "Urgency level"
         required: true
         type: choice
         options:
-        - 'high'
-        - 'medium'
-        - 'low'
-        default: 'medium'
+          - "high"
+          - "medium"
+          - "low"
+        default: "medium"
       context:
-        description: 'Additional context or news source'
+        description: "Additional context or news source"
         required: false
         type: string
 
 jobs:
   generate-breaking-news-post:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        cache-dependency-path: 'my-app/package-lock.json'
-        
-    - name: Install dependencies
-      working-directory: my-app
-      run: npm ci
-      
-    - name: Prepare breaking news topic
-      id: prepare-topic
-      run: |
-        TOPIC="${{ inputs.breaking_topic }}"
-        URGENCY="${{ inputs.urgency }}"
-        CONTEXT="${{ inputs.context }}"
-        CURRENT_DATE=$(date '+%Y-%m-%d')
-        
-        # Add urgency and Berlin context to the topic
-        if [[ "$URGENCY" == "high" ]]; then
-          ENHANCED_TOPIC="URGENT: $TOPIC - What Berlin businesses need to know"
-        elif [[ "$URGENCY" == "medium" ]]; then
-          ENHANCED_TOPIC="Breaking: $TOPIC - Impact on German businesses"
-        else
-          ENHANCED_TOPIC="Latest: $TOPIC - Berlin business perspective"
-        fi
-        
-        echo "enhanced_topic=$ENHANCED_TOPIC" >> $GITHUB_OUTPUT
-        echo "🚨 Breaking news topic: $ENHANCED_TOPIC"
-        
-        if [[ -n "$CONTEXT" ]]; then
-          echo "📰 Context: $CONTEXT"
-        fi
-        
-    - name: Create breaking news template
-      run: |
-        cat > scripts/breaking-news-template.js << 'EOF'
-        const breakingNewsTemplate = (topic, urgency, context) => `
-        You are a professional copywriter creating an URGENT blog post for Néstor Iriondo, a web developer in Berlin. This is breaking news that Berlin business owners need to know about immediately.
-        
-        BREAKING NEWS CONTEXT:
-        Topic: ${topic}
-        ${context ? `Additional Context: ${context}` : ''}
-        Urgency Level: ${urgency}
-        
-        URGENT FORMATTING REQUIREMENTS:
-        1. Title MUST be under 65 characters and convey urgency
-        2. Meta description: 120-140 characters with complete sentence
-        3. Start with urgent hook mentioning the breaking news
-        4. Include immediate actionable advice for Berlin businesses
-        5. Explain the direct impact on German/Berlin companies
-        6. Use **bold** for critical terms
-        7. Add relevant emojis in headlines (🚨 for urgent, ⚠️ for warnings, 💡 for advice)
-        8. Total length: 600-800 words
-        
-        STRUCTURE:
-        # [Urgent Title Under 65 Characters with Breaking News Angle]
-        
-        [Meta description: 120-140 characters - MUST end with complete sentence]
-        
-        Write an urgent opening paragraph about this breaking news and its immediate impact on Berlin businesses (60-80 words).
-        
-        ## 🚨 What Just Happened
-        Explain the breaking news clearly and concisely (100-150 words).
-        
-        ## ⚠️ Immediate Impact on Berlin Businesses  
-        Detail how this affects local businesses specifically (100-150 words).
-        
-        ## 💡 Action Steps for Business Owners
-        Provide immediate, actionable advice (100-150 words).
-        
-        - **Immediate step 1** - what to do right now
-        - **Important consideration 2** - key thing to watch
-        - **Strategic move 3** - how to prepare or respond
-        
-        ## Conclusion
-        Wrap up with reassurance and offer web development assistance for adapting to this change (50-80 words).
-        
-        TONE: Urgent but professional, informative but not alarmist. Address Berlin business owners directly.
-        
-        Before submitting your final output, check that all formatting rules are followed:
-        ✓ Title under 65 characters with urgency
-        ✓ Meta description 120-140 characters with complete sentence  
-        ✓ Word count 600-800 words
-        ✓ 3-4 H2 sections with emojis
-        ✓ 3 action-oriented bullet points
-        ✓ Proper markdown syntax
-        ✓ No placeholder brackets
-        
-        Write the breaking news blog post now.
-        `;
-        
-        export { breakingNewsTemplate };
-        EOF
-        
-    - name: Create breaking news generation script
-      run: |
-        cat > scripts/breaking-news-generation.js << 'EOF'
-        import 'dotenv/config';
-        import { generateBlogPost } from './generate-blog-post.js';
-        import { breakingNewsTemplate } from './breaking-news-template.js';
-        
-        const breakingTopic = process.env.BREAKING_TOPIC;
-        const urgency = process.env.URGENCY;
-        const context = process.env.CONTEXT || '';
-        
-        console.log('🚨 Breaking News Blog Generation');
-        console.log(`🎯 Topic: ${breakingTopic}`);
-        console.log(`⚡ Urgency: ${urgency}`);
-        
-        try {
-          // Temporarily override the blog prompt template
-          const fs = await import('fs');
-          const originalTemplate = fs.readFileSync('./scripts/blog-prompt-template.js', 'utf8');
-          
-          // Create custom template content
-          const customTemplate = `const blogPromptTemplate = (topic) => \`${breakingNewsTemplate(breakingTopic, urgency, context)}\`;
-          
-          export { blogPromptTemplate };`;
-          
-          // Write temporary template
-          fs.writeFileSync('./scripts/blog-prompt-template-backup.js', originalTemplate);
-          fs.writeFileSync('./scripts/blog-prompt-template.js', customTemplate);
-          
-          // Generate the breaking news post
-          const result = await generateBlogPost();
-          
-          // Restore original template
-          fs.writeFileSync('./scripts/blog-prompt-template.js', originalTemplate);
-          fs.unlinkSync('./scripts/blog-prompt-template-backup.js');
-          
-          if (result) {
-            console.log('🚀 Breaking news blog post generated successfully!');
-            console.log(`📝 Title: ${result.title}`);
-          } else {
-            console.log('⚠️ No blog post was generated');
-          }
-          
-        } catch (error) {
-          // Restore template on error
-          const fs = await import('fs');
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "my-app/package-lock.json"
+
+      - name: Install dependencies
+        working-directory: my-app
+        run: npm ci
+
+      - name: Prepare breaking news topic
+        id: prepare-topic
+        run: |
+          TOPIC="${{ inputs.breaking_topic }}"
+          URGENCY="${{ inputs.urgency }}"
+          CONTEXT="${{ inputs.context }}"
+          CURRENT_DATE=$(date '+%Y-%m-%d')
+
+          # Add urgency and Berlin context to the topic
+          if [[ "$URGENCY" == "high" ]]; then
+            ENHANCED_TOPIC="URGENT: $TOPIC - What Berlin businesses need to know"
+          elif [[ "$URGENCY" == "medium" ]]; then
+            ENHANCED_TOPIC="Breaking: $TOPIC - Impact on German businesses"
+          else
+            ENHANCED_TOPIC="Latest: $TOPIC - Berlin business perspective"
+          fi
+
+          echo "enhanced_topic=$ENHANCED_TOPIC" >> $GITHUB_OUTPUT
+          echo "🚨 Breaking news topic: $ENHANCED_TOPIC"
+
+          if [[ -n "$CONTEXT" ]]; then
+            echo "📰 Context: $CONTEXT"
+          fi
+
+      - name: Create breaking news template
+        run: |
+          cat > scripts/breaking-news-template.js << 'EOF'
+          const breakingNewsTemplate = (topic, urgency, context) => `
+          You are a professional copywriter creating an URGENT blog post for Néstor Iriondo, a web developer in Berlin. This is breaking news that Berlin business owners need to know about immediately.
+
+          BREAKING NEWS CONTEXT:
+          Topic: ${topic}
+          ${context ? `Additional Context: ${context}` : ''}
+          Urgency Level: ${urgency}
+
+          URGENT FORMATTING REQUIREMENTS:
+          1. Title MUST be under 65 characters and convey urgency
+          2. Meta description: 120-140 characters with complete sentence
+          3. Start with urgent hook mentioning the breaking news
+          4. Include immediate actionable advice for Berlin businesses
+          5. Explain the direct impact on German/Berlin companies
+          6. Use **bold** for critical terms
+          7. Add relevant emojis in headlines (🚨 for urgent, ⚠️ for warnings, 💡 for advice)
+          8. Total length: 600-800 words
+
+          STRUCTURE:
+          # [Urgent Title Under 65 Characters with Breaking News Angle]
+
+          [Meta description: 120-140 characters - MUST end with complete sentence]
+
+          Write an urgent opening paragraph about this breaking news and its immediate impact on Berlin businesses (60-80 words).
+
+          ## 🚨 What Just Happened
+          Explain the breaking news clearly and concisely (100-150 words).
+
+          ## ⚠️ Immediate Impact on Berlin Businesses  
+          Detail how this affects local businesses specifically (100-150 words).
+
+          ## 💡 Action Steps for Business Owners
+          Provide immediate, actionable advice (100-150 words).
+
+          - **Immediate step 1** - what to do right now
+          - **Important consideration 2** - key thing to watch
+          - **Strategic move 3** - how to prepare or respond
+
+          ## Conclusion
+          Wrap up with reassurance and offer web development assistance for adapting to this change (50-80 words).
+
+          TONE: Urgent but professional, informative but not alarmist. Address Berlin business owners directly.
+
+          Before submitting your final output, check that all formatting rules are followed:
+          ✓ Title under 65 characters with urgency
+          ✓ Meta description 120-140 characters with complete sentence  
+          ✓ Word count 600-800 words
+          ✓ 3-4 H2 sections with emojis
+          ✓ 3 action-oriented bullet points
+          ✓ Proper markdown syntax
+          ✓ No placeholder brackets
+
+          Write the breaking news blog post now.
+          `;
+
+          export { breakingNewsTemplate };
+          EOF
+
+      - name: Create breaking news generation script
+        run: |
+          cat > scripts/breaking-news-generation.js << 'EOF'
+          import 'dotenv/config';
+          import { generateBlogPost } from './generate-blog-post.js';
+          import { breakingNewsTemplate } from './breaking-news-template.js';
+
+          const breakingTopic = process.env.BREAKING_TOPIC;
+          const urgency = process.env.URGENCY;
+          const context = process.env.CONTEXT || '';
+
+          console.log('🚨 Breaking News Blog Generation');
+          console.log(`🎯 Topic: ${breakingTopic}`);
+          console.log(`⚡ Urgency: ${urgency}`);
+
           try {
-            const backup = fs.readFileSync('./scripts/blog-prompt-template-backup.js', 'utf8');
-            fs.writeFileSync('./scripts/blog-prompt-template.js', backup);
+            // Temporarily override the blog prompt template
+            const fs = await import('fs');
+            const originalTemplate = fs.readFileSync('./scripts/blog-prompt-template.js', 'utf8');
+            
+            // Create custom template content
+            const customTemplate = `const blogPromptTemplate = (topic) => \`${breakingNewsTemplate(breakingTopic, urgency, context)}\`;
+            
+            export { blogPromptTemplate };`;
+            
+            // Write temporary template
+            fs.writeFileSync('./scripts/blog-prompt-template-backup.js', originalTemplate);
+            fs.writeFileSync('./scripts/blog-prompt-template.js', customTemplate);
+            
+            // Generate the breaking news post
+            const result = await generateBlogPost();
+            
+            // Restore original template
+            fs.writeFileSync('./scripts/blog-prompt-template.js', originalTemplate);
             fs.unlinkSync('./scripts/blog-prompt-template-backup.js');
-          } catch (restoreError) {
-            console.error('❌ Failed to restore template:', restoreError);
+            
+            if (result) {
+              console.log('🚀 Breaking news blog post generated successfully!');
+              console.log(`📝 Title: ${result.title}`);
+            } else {
+              console.log('⚠️ No blog post was generated');
+            }
+            
+          } catch (error) {
+            // Restore template on error
+            const fs = await import('fs');
+            try {
+              const backup = fs.readFileSync('./scripts/blog-prompt-template-backup.js', 'utf8');
+              fs.writeFileSync('./scripts/blog-prompt-template.js', backup);
+              fs.unlinkSync('./scripts/blog-prompt-template-backup.js');
+            } catch (restoreError) {
+              console.error('❌ Failed to restore template:', restoreError);
+            }
+            
+            console.error('❌ Breaking news generation failed:', error);
+            process.exit(1);
           }
-          
-          console.error('❌ Breaking news generation failed:', error);
-          process.exit(1);
-        }
-        EOF
-        
-    - name: Generate breaking news post
-      working-directory: my-app
-      env:
-        CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
-        CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
-        CONTENTFUL_MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
-        CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
-        PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
-        BREAKING_TOPIC: ${{ steps.prepare-topic.outputs.enhanced_topic }}
-        URGENCY: ${{ inputs.urgency }}
-        CONTEXT: ${{ inputs.context }}
-      run: node scripts/breaking-news-generation.js
-      
-    - name: Notify completion
-      run: |
-        echo "## 🚨 Breaking News Blog Generated" >> $GITHUB_STEP_SUMMARY
-        echo "- **Topic**: ${{ steps.prepare-topic.outputs.enhanced_topic }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Urgency**: ${{ inputs.urgency }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Generated**: $(date '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
-        if [[ -n "${{ inputs.context }}" ]]; then
-          echo "- **Context**: ${{ inputs.context }}" >> $GITHUB_STEP_SUMMARY
-        fi
-        echo "- **Status**: ✅ Published immediately to Contentful" >> $GITHUB_STEP_SUMMARY
-        
-    - name: Clean up temporary files
-      run: |
-        rm -f scripts/breaking-news-generation.js
-        rm -f scripts/breaking-news-template.js
-        rm -f scripts/blog-prompt-template-backup.js
+          EOF
+
+      - name: Generate breaking news post
+        working-directory: my-app
+        env:
+          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
+          CONTENTFUL_MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          BREAKING_TOPIC: ${{ steps.prepare-topic.outputs.enhanced_topic }}
+          URGENCY: ${{ inputs.urgency }}
+          CONTEXT: ${{ inputs.context }}
+        run: node scripts/breaking-news-generation.js
+
+      - name: Notify completion
+        run: |
+          echo "## 🚨 Breaking News Blog Generated" >> $GITHUB_STEP_SUMMARY
+          echo "- **Topic**: ${{ steps.prepare-topic.outputs.enhanced_topic }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Urgency**: ${{ inputs.urgency }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Generated**: $(date '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          if [[ -n "${{ inputs.context }}" ]]; then
+            echo "- **Context**: ${{ inputs.context }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "- **Status**: ✅ Published immediately to Contentful" >> $GITHUB_STEP_SUMMARY
+
+      - name: Clean up temporary files
+        run: |
+          rm -f scripts/breaking-news-generation.js
+          rm -f scripts/breaking-news-template.js
+          rm -f scripts/blog-prompt-template-backup.js
