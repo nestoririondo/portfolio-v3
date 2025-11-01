@@ -430,7 +430,7 @@ async function generateBlogPost(maxRetries = 3) {
         console.log(`Attempt ${attempt}: Generating content for "${topic}"`);
 
         const promptContent = await blogPromptTemplate(topic);
-        
+
         const response = await anthropic.messages.create({
           model: "claude-3-haiku-20240307",
           max_tokens: 2000,

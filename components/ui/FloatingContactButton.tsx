@@ -11,14 +11,14 @@ export function FloatingContactButton() {
   const { heroComplete } = useAnimation();
   const pathname = usePathname();
   const router = useRouter();
-  
-  const isBlogPage = pathname.startsWith('/blog');
+
+  const isBlogPage = pathname.startsWith("/blog");
   const shouldShow = isBlogPage || heroComplete;
 
   const handleContactClick = () => {
     if (isBlogPage) {
       // Navigate to homepage with contact hash
-      router.push('/#contact');
+      router.push("/#contact");
     } else {
       // Scroll to contact section on current page
       scrollToContact();
@@ -28,9 +28,7 @@ export function FloatingContactButton() {
     <motion.div
       className="fixed bottom-6 right-6 z-40"
       initial={{ scale: 0, opacity: 0 }}
-      animate={
-        shouldShow ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
-      }
+      animate={shouldShow ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
       transition={{
         duration: 0.8,
         type: "spring",

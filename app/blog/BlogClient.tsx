@@ -26,9 +26,9 @@ export function BlogClient({ initialPosts, initialHasMore }: BlogClientProps) {
       const data = await response.json();
 
       if (data.posts) {
-        setPosts(prev => [...prev, ...data.posts]);
+        setPosts((prev) => [...prev, ...data.posts]);
         setHasMore(data.pagination.hasMore);
-        setPage(prev => prev + 1);
+        setPage((prev) => prev + 1);
       }
     } catch (error) {
       console.error("Error loading more posts:", error);
@@ -48,7 +48,7 @@ export function BlogClient({ initialPosts, initialHasMore }: BlogClientProps) {
       { threshold: 0.1 }
     );
 
-    const loadMoreTrigger = document.getElementById('load-more-trigger');
+    const loadMoreTrigger = document.getElementById("load-more-trigger");
     if (loadMoreTrigger) {
       observer.observe(loadMoreTrigger);
     }
@@ -64,7 +64,8 @@ export function BlogClient({ initialPosts, initialHasMore }: BlogClientProps) {
             Berlin Business Growth Hub
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            Strategic insights, proven techniques, and actionable advice to help your Berlin business thrive in the digital world
+            Strategic insights, proven techniques, and actionable advice to help
+            your Berlin business thrive in the digital world
           </p>
         </div>
 
@@ -104,14 +105,13 @@ export function BlogClient({ initialPosts, initialHasMore }: BlogClientProps) {
                           dateTime={post.fields.publishedDate}
                           className="text-sm text-gray-500 dark:text-gray-400"
                         >
-                          {new Date(post.fields.publishedDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )}
+                          {new Date(
+                            post.fields.publishedDate
+                          ).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
                         </time>
                       </div>
 
@@ -158,7 +158,10 @@ export function BlogClient({ initialPosts, initialHasMore }: BlogClientProps) {
 
             {/* Infinite scroll trigger */}
             {hasMore && (
-              <div id="load-more-trigger" className="flex justify-center items-center py-8">
+              <div
+                id="load-more-trigger"
+                className="flex justify-center items-center py-8"
+              >
                 {!loading && (
                   <button
                     onClick={loadMorePosts}

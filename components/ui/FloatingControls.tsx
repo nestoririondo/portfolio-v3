@@ -11,8 +11,8 @@ export function FloatingControls() {
   const { language, setLanguage, t } = useLanguage();
   const { heroComplete } = useAnimation();
   const pathname = usePathname();
-  
-  const isBlogPage = pathname.startsWith('/blog');
+
+  const isBlogPage = pathname.startsWith("/blog");
   const shouldShow = isBlogPage || heroComplete;
 
   const cycleLanguage = () => {

@@ -44,9 +44,13 @@ function validateAndCleanContent(content) {
       `Meta description too short: ${metaDescription.length}/120+ chars`
     );
   }
-  
+
   // Allow longer descriptions if they are complete sentences
-  if (metaDescription && metaDescription.length > 200 && !metaDescription.endsWith('.')) {
+  if (
+    metaDescription &&
+    metaDescription.length > 200 &&
+    !metaDescription.endsWith(".")
+  ) {
     errors.push(
       `Meta description too long and incomplete: ${metaDescription.length} chars (should end with period)`
     );

@@ -1,13 +1,13 @@
-import { trendsFetcher } from './fetch-current-trends.js';
+import { trendsFetcher } from "./fetch-current-trends.js";
 
 const blogPromptTemplate = async (topic) => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
-  
+  const currentMonth = currentDate.toLocaleString("default", { month: "long" });
+
   // Fetch current trends dynamically
   const currentTrends = await trendsFetcher.getFormattedTrends();
-  
+
   return `
 You are a professional copywriter creating an engaging blog post for Néstor Iriondo, a web developer and digital consultant in Berlin who helps businesses grow through strategic web development, performance optimization, and digital transformation.
 

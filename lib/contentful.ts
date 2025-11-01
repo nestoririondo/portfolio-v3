@@ -1,99 +1,102 @@
-import { createClient } from 'contentful'
-import { Document } from '@contentful/rich-text-types'
+import { createClient } from "contentful";
+import { Document } from "@contentful/rich-text-types";
 
 if (!process.env.CONTENTFUL_SPACE_ID) {
-  throw new Error('CONTENTFUL_SPACE_ID is required')
+  throw new Error("CONTENTFUL_SPACE_ID is required");
 }
 
 if (!process.env.CONTENTFUL_ACCESS_TOKEN) {
-  throw new Error('CONTENTFUL_ACCESS_TOKEN is required')
+  throw new Error("CONTENTFUL_ACCESS_TOKEN is required");
 }
 
 export const contentfulClient = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-})
+});
 
 export interface BlogPost {
   sys: {
-    id: string
-    createdAt: string
-    updatedAt: string
-  }
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+  };
   fields: {
-    title: string
-    slug: string
-    subtitle?: string
-    excerpt?: string
-    content: Document
+    title: string;
+    slug: string;
+    subtitle?: string;
+    excerpt?: string;
+    content: Document;
     featuredImage?: {
       fields: {
         file: {
-          url: string
+          url: string;
           details: {
             image: {
-              width: number
-              height: number
-            }
-          }
-        }
-        title: string
-      }
-    }
-    publishedDate: string
-    author?: string | object
-  }
+              width: number;
+              height: number;
+            };
+          };
+        };
+        title: string;
+      };
+    };
+    publishedDate: string;
+    author?: string | object;
+  };
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
   try {
     const response = await contentfulClient.getEntries({
-      content_type: 'blogPost',
-      order: ['-fields.publishedDate'],
-    })
+      content_type: "blogPost",
+      order: ["-fields.publishedDate"],
+    });
 
-    return response.items as unknown as BlogPost[]
+    return response.items as unknown as BlogPost[];
   } catch (error) {
-    console.error('Error fetching blog posts:', error)
-    return []
+    console.error("Error fetching blog posts:", error);
+    return [];
   }
 }
 
-export async function getBlogPostsPaginated(skip: number = 0, limit: number = 9): Promise<{ posts: BlogPost[], total: number, hasMore: boolean }> {
+export async function getBlogPostsPaginated(
+  skip: number = 0,
+  limit: number = 9
+): Promise<{ posts: BlogPost[]; total: number; hasMore: boolean }> {
   try {
     const response = await contentfulClient.getEntries({
-      content_type: 'blogPost',
-      order: ['-fields.publishedDate'],
+      content_type: "blogPost",
+      order: ["-fields.publishedDate"],
       skip,
       limit,
-    })
+    });
 
     return {
       posts: response.items as unknown as BlogPost[],
       total: response.total,
-      hasMore: (skip + limit) < response.total
-    }
+      hasMore: skip + limit < response.total,
+    };
   } catch (error) {
-    console.error('Error fetching paginated blog posts:', error)
-    return { posts: [], total: 0, hasMore: false }
+    console.error("Error fetching paginated blog posts:", error);
+    return { posts: [], total: 0, hasMore: false };
   }
 }
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   try {
     const response = await contentfulClient.getEntries({
-      content_type: 'blogPost',
-      'fields.slug': slug,
+      content_type: "blogPost",
+      "fields.slug": slug,
       limit: 1,
-    })
+    });
 
     if (response.items.length > 0) {
-      return response.items[0] as unknown as BlogPost
+      return response.items[0] as unknown as BlogPost;
     }
 
-    return null
+    return null;
   } catch (error) {
-    console.error('Error fetching blog post:', error)
-    return null
+    console.error("Error fetching blog post:", error);
+    return null;
   }
 }
