@@ -60,9 +60,18 @@ class AutoBlogGenerator {
     }
 
     try {
-      // Select trending topic
+      // Get options from environment variables (GitHub Actions)
+      const forceTopic = process.env.FORCE_TOPIC;
+      const useTrending = process.env.USE_TRENDING !== 'false';
+
+      const options = {
+        forceTopic,
+        useTrending,
+      };
+
+      // Select trending topic with options
       const { topic, metadata } =
-        await trendingTopicSelector.selectTrendingTopic();
+        await trendingTopicSelector.selectTrendingTopic(options);
 
       console.log("🤖 Auto-generating blog post...");
       console.log(`📝 Topic: "${topic}"`);
@@ -243,28 +252,22 @@ switch (command) {
     break;
 
   default:
-    console.log("🤖 Auto Blog Generator");
-    console.log("Usage:");
-    console.log(
-      "  node auto-trending-blog.js test [count]     - Test topic selection"
-    );
-    console.log(
-      "  node auto-trending-blog.js generate         - Generate single blog"
-    );
-    console.log(
-      "  node auto-trending-blog.js batch [count]    - Generate multiple blogs"
-    );
-    console.log("");
-    console.log("Examples:");
-    console.log(
-      "  node auto-trending-blog.js test 3          - Test 3 topic selections"
-    );
-    console.log(
-      "  node auto-trending-blog.js generate        - Generate 1 trending blog"
-    );
-    console.log(
-      "  node auto-trending-blog.js batch 2         - Generate 2 trending blogs"
-    );
+    // Default behavior - just generate a blog (for GitHub Actions)
+    autoBlogGenerator
+      .generateTrendingBlog()
+      .then((result) => {
+        if (result.success) {
+          console.log("🎉 Auto blog generation completed successfully!");
+          process.exit(0);
+        } else {
+          console.log("❌ Auto blog generation failed");
+          process.exit(1);
+        }
+      })
+      .catch((error) => {
+        console.error("❌ Auto blog generation error:", error);
+        process.exit(1);
+      });
     break;
 }
 

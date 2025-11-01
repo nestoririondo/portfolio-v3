@@ -143,6 +143,67 @@ class TrendsFetcher {
   }
 
   /**
+   * Get high-intent local search keywords that Berlin businesses actually search for
+   */
+  getBerlinSpecificKeywords() {
+    const currentYear = new Date().getFullYear();
+    
+    return [
+      // Developer services searches
+      `WordPress developer Berlin Mitte cost ${currentYear}`,
+      `React developer Berlin hiring freelance`,
+      `Next.js developer Berlin rates hourly`,
+      `TypeScript developer Berlin remote work`,
+      
+      // Business website searches  
+      `website development Berlin small business`,
+      `e-commerce website Berlin startup costs`,
+      `business website design Berlin Kreuzberg`,
+      `website maintenance Berlin monthly pricing`,
+      
+      // Compliance and local requirements
+      `GDPR compliant website development Germany`,
+      `German privacy law website requirements`,
+      `Berlin business website legal compliance`,
+      `EU cookie consent implementation Germany`,
+      
+      // Payment and technical integration
+      `German payment system integration Shopify`,
+      `SEPA payment gateway website development`,
+      `Klarna payment integration Berlin business`,
+      `German banking API website integration`,
+      
+      // Localization and multi-language
+      `website translation German English business`,
+      `multilingual website development Berlin`,
+      `German SEO optimization Berlin companies`,
+      `Berlin local SEO website optimization`,
+      
+      // Industry-specific searches
+      `restaurant website development Berlin`,
+      `Berlin tech startup website design`,
+      `medical practice website Germany GDPR`,
+      `Berlin consulting firm website development`,
+      
+      // Performance and technical
+      `website speed optimization Berlin business`,
+      `mobile website development Germany`,
+      `Berlin website hosting GDPR compliant`,
+      `website security audit Berlin companies`,
+      
+      // Cost and pricing related
+      `website development cost Berlin ${currentYear}`,
+      `freelance web developer Berlin prices`,
+      `Berlin website redesign budget planning`,
+      `German market website development rates`,
+    ].map((keyword) => ({
+      type: "local_seo",
+      trend: keyword,
+      source: "local-search-intent",
+    }));
+  }
+
+  /**
    * Make HTTPS request with query parameters
    */
   httpsRequest(url, params = {}) {
@@ -216,12 +277,19 @@ class TrendsFetcher {
         this.fetchDevToTrends(),
       ]);
 
-      // Combine all trends
+      // Combine trends with balanced selection
+      const githubResults = githubTrends.status === "fulfilled" ? githubTrends.value : [];
+      const devtoResults = devtoTrends.status === "fulfilled" ? devtoTrends.value : [];
+      const techTrends = this.getCurrentTechTrends().slice(0, 6); // Limit tech trends
+      const businessTrends = this.getBerlinBusinessTrends().slice(0, 4); // Limit business trends  
+      const localSeoTrends = this.getBerlinSpecificKeywords().slice(0, 8); // Include local SEO
+
       const allTrends = [
-        ...(githubTrends.status === "fulfilled" ? githubTrends.value : []),
-        ...(devtoTrends.status === "fulfilled" ? devtoTrends.value : []),
-        ...this.getCurrentTechTrends(),
-        ...this.getBerlinBusinessTrends(),
+        ...githubResults,
+        ...devtoResults,
+        ...techTrends,
+        ...businessTrends,
+        ...localSeoTrends, // Ensure local SEO is included
       ];
 
       // Remove duplicates and limit
@@ -230,7 +298,7 @@ class TrendsFetcher {
           (trend, index, self) =>
             index === self.findIndex((t) => t.trend === trend.trend)
         )
-        .slice(0, 15);
+        .slice(0, 25); // Increased to accommodate all types
 
       this.trends = uniqueTrends;
       this.lastFetched = Date.now();
@@ -243,11 +311,12 @@ class TrendsFetcher {
         error.message
       );
 
-      // Fallback to curated trends
+      // Fallback to curated trends including local keywords
       this.trends = [
-        ...this.getCurrentTechTrends(),
-        ...this.getBerlinBusinessTrends(),
-      ].slice(0, 12);
+        ...this.getCurrentTechTrends().slice(0, 6),
+        ...this.getBerlinBusinessTrends().slice(0, 4),
+        ...this.getBerlinSpecificKeywords().slice(0, 8),
+      ];
 
       this.lastFetched = Date.now();
       return this.trends;
@@ -260,13 +329,16 @@ class TrendsFetcher {
   async getFormattedTrends() {
     const trends = await this.getAllTrends();
 
-    const techTrends = trends.filter((t) => t.type === "tech").slice(0, 6);
+    const techTrends = trends.filter((t) => t.type === "tech").slice(0, 5);
     const businessTrends = trends
       .filter((t) => t.type === "business")
       .slice(0, 4);
     const contentTrends = trends
       .filter((t) => t.type === "content")
       .slice(0, 3);
+    const localSeoTrends = trends
+      .filter((t) => t.type === "local_seo")
+      .slice(0, 5);
 
     let formatted = "";
 
@@ -281,6 +353,14 @@ class TrendsFetcher {
     if (businessTrends.length > 0) {
       formatted += "Berlin Business Focus Areas:\n";
       businessTrends.forEach((trend) => {
+        formatted += `- ${trend.trend}\n`;
+      });
+      formatted += "\n";
+    }
+
+    if (localSeoTrends.length > 0) {
+      formatted += "High-Intent Berlin Search Keywords:\n";
+      localSeoTrends.forEach((trend) => {
         formatted += `- ${trend.trend}\n`;
       });
       formatted += "\n";
