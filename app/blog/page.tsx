@@ -55,7 +55,7 @@ export default async function BlogPage() {
                     </time>
                   </div>
                   
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                     {post.fields.title}
                   </h2>
                   

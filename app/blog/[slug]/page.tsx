@@ -18,7 +18,7 @@ const richTextOptions = {
   },
   renderNode: {
     [BLOCKS.PARAGRAPH]: (_: unknown, children: React.ReactNode) => (
-      <p className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">{children}</p>
+      <p className="mb-6 text-gray-700 dark:text-gray-300 leading-relaxed text-lg">{children}</p>
     ),
     [BLOCKS.HEADING_1]: (_: unknown, children: React.ReactNode) => (
       <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">{children}</h1>
@@ -124,7 +124,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </header>
 
           {/* Content */}
-          <div className="prose prose-lg max-w-none prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-strong:text-gray-900 dark:prose-strong:text-white prose-ul:text-gray-700 dark:prose-ul:text-gray-300 prose-ol:text-gray-700 dark:prose-ol:text-gray-300">
+          <div className="prose prose-lg max-w-none prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6 prose-strong:text-gray-900 dark:prose-strong:text-white prose-ul:text-gray-700 dark:prose-ul:text-gray-300 prose-ol:text-gray-700 dark:prose-ol:text-gray-300 prose-headings:mb-6 prose-headings:mt-8">
             {post.fields.content && 
               documentToReactComponents(post.fields.content as Document, richTextOptions)
             }
@@ -141,11 +141,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </p>
               <a
                 href="/#contact"
-                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                className="btn-primary-animated"
               >
-                Get in touch
+                <span className="font-semibold">Get in touch</span>
                 <svg
-                  className="ml-2 w-4 h-4"
+                  className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

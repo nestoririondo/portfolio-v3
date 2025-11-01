@@ -1,4 +1,4 @@
-export function validateAndCleanContent(content) {
+function validateAndCleanContent(content) {
   // Extract title, meta description, and body
   const lines = content.split('\n');
   let title = '';
@@ -35,12 +35,12 @@ export function validateAndCleanContent(content) {
   // Validation checks
   const errors = [];
   
-  if (!title || title.length > 60) {
-    errors.push('Title missing or too long (>60 chars)');
+  if (!title || title.length > 65) {
+    errors.push('Title missing or too long (>65 chars)');
   }
   
-  if (!metaDescription || metaDescription.length < 150 || metaDescription.length > 160) {
-    errors.push('Meta description must be 150-160 characters');
+  if (!metaDescription || metaDescription.length < 120 || metaDescription.length > 140) {
+    errors.push('Meta description must be 120-140 characters');
   }
   
   const wordCount = body.split(/\s+/).length;
@@ -54,8 +54,8 @@ export function validateAndCleanContent(content) {
   }
   
   const bulletPoints = (body.match(/^- \*\*/gm) || []).length;
-  if (bulletPoints < 3) {
-    errors.push('Need at least 3 bullet points with bold formatting');
+  if (bulletPoints > 0 && bulletPoints < 3) {
+    errors.push('If using bullet points, need at least 3 with bold formatting');
   }
   
   return {
@@ -79,3 +79,5 @@ function generateSlug(title) {
     .replace(/^-|-$/g, '')
     .substring(0, 60);
 }
+
+export { validateAndCleanContent };
