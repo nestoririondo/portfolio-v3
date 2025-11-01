@@ -81,21 +81,60 @@ class AutoBlogGenerator {
       this.createLock(topic);
 
       // Run the blog generation script with the selected topic
-      const command = `cd "${process.cwd()}" && FORCE_TOPIC="${topic}" node scripts/generate-blog-post.js`;
+      let command = `cd "${process.cwd()}" && FORCE_TOPIC="${topic}" node scripts/generate-blog-post.js`;
+      let output, generatedTitle;
+      let attempts = 0;
+      const maxAttempts = 3;
 
-      console.log("🔄 Generating content...");
-      const output = execSync(command, {
-        encoding: "utf8",
-        timeout: 5 * 60 * 1000, // 5 minute timeout
-        stdio: "pipe",
-      });
+      while (attempts < maxAttempts) {
+        attempts++;
+        console.log(`🔄 Generating content (attempt ${attempts})...`);
+        
+        try {
+          output = execSync(command, {
+            encoding: "utf8",
+            timeout: 5 * 60 * 1000, // 5 minute timeout
+            stdio: "pipe",
+          });
 
-      console.log("📄 Generation output:");
-      console.log(output);
+          console.log("📄 Generation output:");
+          console.log(output);
 
-      // Extract title from output if available
-      const titleMatch = output.match(/Blog post generated successfully: (.+)/);
-      const generatedTitle = titleMatch ? titleMatch[1] : "Unknown title";
+          // Check if the generation was skipped due to duplicates
+          if (output.includes("🚫 Skipping to avoid duplicate content")) {
+            console.log(`⏭️ Topic "${topic}" was skipped as duplicate, trying alternative...`);
+            
+            // Try without forcing a topic (let the system choose)
+            if (attempts === 1) {
+              command = `cd "${process.cwd()}" && node scripts/generate-blog-post.js`;
+              console.log("🎲 Switching to automatic topic selection...");
+              continue;
+            }
+            
+            // If automatic also fails, try with trending disabled
+            if (attempts === 2) {
+              const { topic: altTopic, metadata: altMetadata } = 
+                await trendingTopicSelector.selectTrendingTopic({ useTrending: false });
+              command = `cd "${process.cwd()}" && FORCE_TOPIC="${altTopic}" node scripts/generate-blog-post.js`;
+              console.log(`🔄 Trying fallback topic: "${altTopic}"`);
+              topic = altTopic;
+              metadata = altMetadata;
+              continue;
+            }
+          }
+
+          // Extract title from output if available
+          const titleMatch = output.match(/Blog post generated successfully: (.+)/);
+          generatedTitle = titleMatch ? titleMatch[1] : "Unknown title";
+          break; // Success, exit retry loop
+          
+        } catch (error) {
+          if (attempts === maxAttempts) {
+            throw error; // Re-throw on final attempt
+          }
+          console.log(`⚠️ Attempt ${attempts} failed: ${error.message}`);
+        }
+      }
 
       this.removeLock();
 
