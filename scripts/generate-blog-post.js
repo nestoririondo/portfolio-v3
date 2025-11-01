@@ -63,6 +63,10 @@ const topics = [
 ];
 
 async function generateBlogPost(maxRetries = 3) {
+  // Always fetch existing posts for duplicate checking and image selection
+  console.log('🔍 Fetching existing posts to check for duplicates...');
+  const existingPosts = await fetchExistingPosts();
+  
   // Check for forced topic first (only if actually provided and not empty)
   const forceTopic = process.env.FORCE_TOPIC?.trim();
   let topic;
@@ -76,11 +80,10 @@ async function generateBlogPost(maxRetries = 3) {
     console.log(`🎯 Using forced topic: "${forceTopic}"`);
     topic = forceTopic;
   } else {
-    // Fetch existing posts to avoid duplicates
+    // No forced topic, select from available topics to avoid duplicates
     console.log(
       "🔍 No forced topic provided, selecting from available topics..."
     );
-    const existingPosts = await fetchExistingPosts();
     const availableTopics = await getAvailableTopics(existingPosts);
 
     if (availableTopics.length === 0) {
