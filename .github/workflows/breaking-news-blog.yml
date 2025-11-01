@@ -29,20 +29,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-          cache-dependency-path: "my-app/package-lock.json"
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20"
+        cache: "pnpm"
+        cache-dependency-path: "my-app/pnpm-lock.yaml"
 
-      - name: Install dependencies
-        working-directory: my-app
-        run: npm ci
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
 
-      - name: Prepare breaking news topic
-        id: prepare-topic
-        run: |
+    - name: Install dependencies
+      working-directory: my-app
+      run: pnpm install --frozen-lockfile
+
+    - name: Prepare breaking news topic
+      id: prepare-topic
+      run: |
           TOPIC="${{ inputs.breaking_topic }}"
           URGENCY="${{ inputs.urgency }}"
           CONTEXT="${{ inputs.context }}"
