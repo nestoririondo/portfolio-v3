@@ -13,11 +13,13 @@
 ## Add to Environment Variables
 
 ### Local Development (.env.local)
+
 ```bash
 PEXELS_API_KEY=your_pexels_api_key_here
 ```
 
 ### GitHub Actions (Repository Secrets)
+
 1. Go to your repository on GitHub
 2. Settings → Secrets and variables → Actions
 3. Add new repository secret:
@@ -25,6 +27,7 @@ PEXELS_API_KEY=your_pexels_api_key_here
    - Value: Your API key from Pexels
 
 ## Benefits Over Unsplash
+
 ✅ **Better Quality**: Higher resolution images
 ✅ **More Variety**: 3.2M+ photos vs Unsplash's limited selection  
 ✅ **Better Search**: More accurate topic matching
@@ -34,8 +37,9 @@ PEXELS_API_KEY=your_pexels_api_key_here
 ✅ **Better API**: More reliable and faster responses
 
 ## Migration Complete ✅
+
 - ❌ Removed Unsplash dependency
-- ✅ Added Pexels API integration  
+- ✅ Added Pexels API integration
 - ✅ Updated image fetching functions
 - ✅ Maintained duplicate detection
 - ✅ Preserved fallback system

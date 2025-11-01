@@ -2,7 +2,7 @@ import "dotenv/config";
 import Anthropic from "@anthropic-ai/sdk";
 import contentfulManagementPkg from "contentful-management";
 import * as contentfulPkg from "contentful";
-import { createClient as createPexelsClient } from 'pexels';
+import { createClient as createPexelsClient } from "pexels";
 import fetch from "node-fetch";
 
 import { blogPromptTemplate } from "./blog-prompt-template.js";
@@ -82,7 +82,7 @@ const topics = [
   // Online Sales & E-commerce
   "How Berlin businesses start selling online successfully",
   "Online payment solutions German customers actually use",
-  "Why Berlin shops need websites that work on smartphones", 
+  "Why Berlin shops need websites that work on smartphones",
   "How to sell products online: A guide for Berlin businesses",
   "Website security that protects your Berlin customers' data",
   "Email marketing that works for Berlin small businesses",
@@ -99,7 +99,7 @@ const topics = [
   "Terms of service and privacy policies for Berlin businesses",
   "Copyright and image rights for Berlin business websites",
 
-  // Digital Marketing & Customer Acquisition  
+  // Digital Marketing & Customer Acquisition
   "Google Ads vs Facebook Ads: What works best for Berlin businesses",
   "Social media integration that brings customers to Berlin businesses",
   "Content marketing: How Berlin businesses become local authorities",
@@ -227,7 +227,7 @@ const topics = [
   "Contract templates and legal considerations for freelance work",
   "Time tracking and productivity tools for remote developers",
   "Building long-term client relationships through value delivery",
-  "Technical debt communication strategies for non-technical stakeholders"
+  "Technical debt communication strategies for non-technical stakeholders",
 ];
 
 // Function to fetch trending topics from multiple sources
@@ -453,16 +453,33 @@ async function generateBlogPost(maxRetries = 3) {
       console.log(`🎯 Using forced topic: "${forceTopic}"`);
 
       // Check if we already have a recent post about this topic (more lenient)
-      const topicKeywords = forceTopic.toLowerCase().split(/[\s-_]+/)
-        .filter(keyword => keyword.length > 4)
-        .filter(keyword => !['business', 'website', 'berlin', 'german', 'companies', 'guide', 'strategies'].includes(keyword)); // Exclude common words
-      
+      const topicKeywords = forceTopic
+        .toLowerCase()
+        .split(/[\s-_]+/)
+        .filter((keyword) => keyword.length > 4)
+        .filter(
+          (keyword) =>
+            ![
+              "business",
+              "website",
+              "berlin",
+              "german",
+              "companies",
+              "guide",
+              "strategies",
+            ].includes(keyword)
+        ); // Exclude common words
+
       const duplicateByTopic = recentPosts.find((post) => {
         const titleLower = post.title.toLowerCase();
-        const matchingKeywords = topicKeywords.filter(keyword => titleLower.includes(keyword));
+        const matchingKeywords = topicKeywords.filter((keyword) =>
+          titleLower.includes(keyword)
+        );
         // Require at least 3 specific keywords to match, or 1 very specific keyword (10+ chars)
-        return matchingKeywords.length >= 3 || 
-               (matchingKeywords.length === 1 && matchingKeywords[0].length > 10);
+        return (
+          matchingKeywords.length >= 3 ||
+          (matchingKeywords.length === 1 && matchingKeywords[0].length > 10)
+        );
       });
 
       if (duplicateByTopic) {
@@ -501,7 +518,11 @@ async function generateBlogPost(maxRetries = 3) {
 
         // Analyze recent content structures to ensure variety
         const recentStructures = analyzeContentStructures(existingPosts);
-        console.log(`📊 Recent structures: ${recentStructures.map(s => s.structure).join(', ')}`);
+        console.log(
+          `📊 Recent structures: ${recentStructures
+            .map((s) => s.structure)
+            .join(", ")}`
+        );
 
         const promptContent = await blogPromptTemplate(topic, recentStructures);
 
@@ -743,7 +764,9 @@ async function findUniqueImageFromResults(photos, usedImageUrls, topic) {
     const isUsed = usedImageUrls.some((usedUrl) => usedUrl.includes(photoId));
 
     if (!isUsed) {
-      console.log(`✅ Found unique image: ${photo.alt || "Professional image"}`);
+      console.log(
+        `✅ Found unique image: ${photo.alt || "Professional image"}`
+      );
       return {
         url: photo.src.large,
         alt: photo.alt || `Professional image related to ${topic}`,
@@ -758,7 +781,6 @@ async function findUniqueImageFromResults(photos, usedImageUrls, topic) {
 
 async function generateSmartSearchTerms(topic) {
   try {
-
     const prompt = `Given this blog post topic: "${topic}"
 
 Generate 3 specific, visual image search terms that would find relevant professional stock photos on Pexels. Focus on CONCRETE VISUAL ELEMENTS:
@@ -857,69 +879,86 @@ Return only the 3 search terms, separated by commas, no explanations.`;
       ],
     });
 
-    const searchTerms = response.content[0].text.trim().split(',');
-    
+    const searchTerms = response.content[0].text.trim().split(",");
+
     // Return the first search term, cleaned up
     const primaryTerm = searchTerms[0]?.trim() || topic;
-    console.log(`🤖 AI-generated search terms: ${searchTerms.join(', ')}`);
+    console.log(`🤖 AI-generated search terms: ${searchTerms.join(", ")}`);
     console.log(`🎯 Using primary term: "${primaryTerm}"`);
-    
+
     return primaryTerm;
   } catch (error) {
     console.log(`⚠️ AI search term generation failed: ${error.message}`);
-    
+
     // Enhanced fallback: specific tool/platform detection
     const lowercaseTopic = topic.toLowerCase();
-    
+
     // Specific platform/tool detection
-    if (lowercaseTopic.includes('google analytics')) {
+    if (lowercaseTopic.includes("google analytics")) {
       return "google analytics dashboard computer screen";
     }
-    if (lowercaseTopic.includes('analytics')) {
+    if (lowercaseTopic.includes("analytics")) {
       return "analytics dashboard laptop interface";
     }
-    if (lowercaseTopic.includes('docker')) {
+    if (lowercaseTopic.includes("docker")) {
       return "docker terminal laptop development";
     }
-    if (lowercaseTopic.includes('react')) {
+    if (lowercaseTopic.includes("react")) {
       return "react code editor programming screen";
     }
-    if (lowercaseTopic.includes('vue')) {
+    if (lowercaseTopic.includes("vue")) {
       return "vue framework development laptop";
     }
-    if (lowercaseTopic.includes('typescript')) {
+    if (lowercaseTopic.includes("typescript")) {
       return "typescript code editor laptop screen";
     }
-    if (lowercaseTopic.includes('javascript')) {
+    if (lowercaseTopic.includes("javascript")) {
       return "javascript programming laptop screen";
     }
-    if (lowercaseTopic.includes('email') && lowercaseTopic.includes('marketing')) {
+    if (
+      lowercaseTopic.includes("email") &&
+      lowercaseTopic.includes("marketing")
+    ) {
       return "email marketing dashboard laptop screen";
     }
-    if (lowercaseTopic.includes('booking') || lowercaseTopic.includes('appointment')) {
+    if (
+      lowercaseTopic.includes("booking") ||
+      lowercaseTopic.includes("appointment")
+    ) {
       return "appointment booking app smartphone screen";
     }
-    if (lowercaseTopic.includes('payment')) {
+    if (lowercaseTopic.includes("payment")) {
       return "payment processing laptop interface";
     }
-    if (lowercaseTopic.includes('security')) {
+    if (lowercaseTopic.includes("security")) {
       return "cybersecurity dashboard computer screen";
     }
-    if (lowercaseTopic.includes('seo')) {
+    if (lowercaseTopic.includes("seo")) {
       return "seo analytics dashboard laptop";
     }
-    
+
     // Generic tech/business fallback
     const words = topic.toLowerCase().split(/\s+/);
-    const techTerms = words.filter(word => 
-      ['development', 'programming', 'coding', 'website', 'app', 'mobile', 
-       'digital', 'online', 'automation', 'ai', 'database'].includes(word)
+    const techTerms = words.filter((word) =>
+      [
+        "development",
+        "programming",
+        "coding",
+        "website",
+        "app",
+        "mobile",
+        "digital",
+        "online",
+        "automation",
+        "ai",
+        "database",
+      ].includes(word)
     );
-    
+
     if (techTerms.length > 0) {
       return `${techTerms[0]} laptop screen interface`;
     }
-    
+
     return "laptop computer screen interface";
   }
 }
@@ -942,34 +981,48 @@ async function fetchPexelsImage(topic, existingPosts = []) {
       query: smartKeywords,
       page: 1,
       per_page: 20,
-      orientation: 'landscape',
-      size: 'large'
+      orientation: "landscape",
+      size: "large",
     });
 
-    let uniqueImage = await findUniqueImageFromResults(result.photos, usedImageUrls, topic);
+    let uniqueImage = await findUniqueImageFromResults(
+      result.photos,
+      usedImageUrls,
+      topic
+    );
     if (uniqueImage) return uniqueImage;
 
     // Strategy 2: Topic-specific alternatives (avoid generic business terms)
     const alternativeKeywords = [
-      `${smartKeywords.split(' ')[0]} workspace setup`, // First word + workspace
-      `computer screen ${smartKeywords.split(' ').pop()}`, // Computer screen + last word  
-      `digital ${smartKeywords.replace(/business|meeting|office/g, 'technology')}`, // Replace generic terms
-      `creative ${smartKeywords.replace(/professional|business/g, 'workspace')}`, // More creative approach
-      `modern ${smartKeywords.split(' ').slice(-2).join(' ')}`  // Modern + last 2 words
+      `${smartKeywords.split(" ")[0]} workspace setup`, // First word + workspace
+      `computer screen ${smartKeywords.split(" ").pop()}`, // Computer screen + last word
+      `digital ${smartKeywords.replace(
+        /business|meeting|office/g,
+        "technology"
+      )}`, // Replace generic terms
+      `creative ${smartKeywords.replace(
+        /professional|business/g,
+        "workspace"
+      )}`, // More creative approach
+      `modern ${smartKeywords.split(" ").slice(-2).join(" ")}`, // Modern + last 2 words
     ];
 
     for (const altKeyword of alternativeKeywords) {
       console.log(`🔄 Strategy 2 - Trying alternative: "${altKeyword}"`);
-      
+
       result = await pexels.photos.search({
         query: altKeyword,
         page: Math.floor(Math.random() * 3) + 1, // Random page
         per_page: 15,
-        orientation: 'landscape',
-        size: 'large'
+        orientation: "landscape",
+        size: "large",
       });
 
-      uniqueImage = await findUniqueImageFromResults(result.photos, usedImageUrls, topic);
+      uniqueImage = await findUniqueImageFromResults(
+        result.photos,
+        usedImageUrls,
+        topic
+      );
       if (uniqueImage) return uniqueImage;
     }
 
@@ -978,25 +1031,29 @@ async function fetchPexelsImage(topic, existingPosts = []) {
       "laptop screen website design",
       "smartphone app interface",
       "computer dashboard analytics",
-      "tablet digital workspace", 
+      "tablet digital workspace",
       "keyboard coding development",
       "monitor web development",
       "phone digital marketing",
-      "workspace creative setup"
+      "workspace creative setup",
     ];
 
     for (const category of categoryTerms) {
       console.log(`🎯 Strategy 3 - Trying category: "${category}"`);
-      
+
       result = await pexels.photos.search({
         query: category,
         page: Math.floor(Math.random() * 5) + 1, // Random page 1-5
         per_page: 15,
-        orientation: 'landscape',
-        size: 'large'
+        orientation: "landscape",
+        size: "large",
       });
 
-      uniqueImage = await findUniqueImageFromResults(result.photos, usedImageUrls, topic);
+      uniqueImage = await findUniqueImageFromResults(
+        result.photos,
+        usedImageUrls,
+        topic
+      );
       if (uniqueImage) return uniqueImage;
     }
 
@@ -1019,7 +1076,7 @@ async function fetchFallbackImage(existingPosts = []) {
       "technology workspace minimal",
       "web development screen",
       "mobile app development",
-      "creative workspace setup"
+      "creative workspace setup",
     ];
 
     const usedImageUrls = existingPosts
@@ -1034,8 +1091,8 @@ async function fetchFallbackImage(existingPosts = []) {
         query,
         page: 1,
         per_page: 10,
-        orientation: 'landscape',
-        size: 'large'
+        orientation: "landscape",
+        size: "large",
       });
 
       const photos = result.photos;
@@ -1044,8 +1101,7 @@ async function fetchFallbackImage(existingPosts = []) {
         for (const photo of photos) {
           const isUsed = usedImageUrls.some(
             (usedUrl) =>
-              usedUrl.includes(photo.id) ||
-              photo.src.large.includes(photo.id)
+              usedUrl.includes(photo.id) || photo.src.large.includes(photo.id)
           );
 
           if (!isUsed) {
@@ -1066,8 +1122,10 @@ async function fetchFallbackImage(existingPosts = []) {
       }
     }
 
-    console.log("⚠️ Could not find any unique fallback images, trying more creative searches...");
-    
+    console.log(
+      "⚠️ Could not find any unique fallback images, trying more creative searches..."
+    );
+
     // Try more creative, specific searches with random elements
     const creativeQueries = [
       "abstract technology pattern",
@@ -1079,31 +1137,39 @@ async function fetchFallbackImage(existingPosts = []) {
       "startup office environment",
       "creative workspace design",
       "tech innovation concept",
-      "digital transformation visual"
+      "digital transformation visual",
     ];
-    
+
     // Shuffle the array and try a few random ones
-    const shuffledQueries = creativeQueries.sort(() => Math.random() - 0.5).slice(0, 5);
-    
+    const shuffledQueries = creativeQueries
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 5);
+
     for (const query of shuffledQueries) {
       console.log(`🎨 Trying creative search: "${query}"`);
-      
+
       const result = await pexels.photos.search({
         query,
         page: Math.floor(Math.random() * 3) + 1, // Random page 1-3
         per_page: 15,
-        orientation: 'landscape',
-        size: 'large'
+        orientation: "landscape",
+        size: "large",
       });
 
       if (result.photos && result.photos.length > 0) {
         // Try to find any unused image, be less strict
         for (const photo of result.photos) {
           const photoId = photo.id.toString();
-          const isStrictlyUsed = usedImageUrls.some(usedUrl => usedUrl.includes(photoId));
-          
+          const isStrictlyUsed = usedImageUrls.some((usedUrl) =>
+            usedUrl.includes(photoId)
+          );
+
           if (!isStrictlyUsed) {
-            console.log(`✅ Found creative unique image: ${photo.alt || "Creative professional image"}`);
+            console.log(
+              `✅ Found creative unique image: ${
+                photo.alt || "Creative professional image"
+              }`
+            );
             return {
               url: photo.src.large,
               alt: photo.alt || "Professional creative image",
@@ -1115,21 +1181,27 @@ async function fetchFallbackImage(existingPosts = []) {
         }
       }
     }
-    
-    console.log("⚠️ Still no unique images found, using guaranteed fallback...");
-    
+
+    console.log(
+      "⚠️ Still no unique images found, using guaranteed fallback..."
+    );
+
     // Final guaranteed fallback - use a very specific search that's unlikely to be used
     const guaranteedResult = await pexels.photos.search({
       query: `abstract gradient ${Math.random().toString(36).substring(7)}`, // Random search
       page: 1,
       per_page: 5,
-      orientation: 'landscape',
-      size: 'large'
+      orientation: "landscape",
+      size: "large",
     });
-    
+
     if (guaranteedResult.photos && guaranteedResult.photos.length > 0) {
       const photo = guaranteedResult.photos[0];
-      console.log(`✅ Using guaranteed fallback image: ${photo.alt || "Abstract professional image"}`);
+      console.log(
+        `✅ Using guaranteed fallback image: ${
+          photo.alt || "Abstract professional image"
+        }`
+      );
       return {
         url: photo.src.large,
         alt: photo.alt || "Professional abstract image",
@@ -1138,11 +1210,10 @@ async function fetchFallbackImage(existingPosts = []) {
         pexelsId: photo.id,
       };
     }
-    
   } catch (error) {
     console.error("❌ Fallback image error:", error);
   }
-  
+
   // Absolute final fallback - return null and let the system handle it
   console.log("❌ All image searches failed");
   return null;
@@ -1225,7 +1296,6 @@ async function uploadImageToContentful(imageData) {
   }
 }
 
-
 async function publishToContentful(blogData, topic, existingPosts = []) {
   try {
     const space = await contentfulManagement.getSpace(
@@ -1283,7 +1353,9 @@ if (process.env.NODE_ENV !== "test") {
   generateBlogPost()
     .then((result) => {
       if (result === null) {
-        console.log("⚠️ No blog post generated - all topics are duplicates or unavailable");
+        console.log(
+          "⚠️ No blog post generated - all topics are duplicates or unavailable"
+        );
         process.exit(0);
       } else {
         console.log("🎉 Blog post generated successfully:", result.title);
@@ -1373,103 +1445,127 @@ function extractKeywords(text) {
           "power",
           "your",
           "with",
-          "2025"
+          "2025",
         ].includes(word)
     );
 }
 
 function analyzeContentStructures(existingPosts) {
   const recentStructures = [];
-  
+
   // Analyze last 10 posts for structure patterns
   const recentPosts = existingPosts.slice(0, 10);
-  
-  recentPosts.forEach(post => {
+
+  recentPosts.forEach((post) => {
     if (!post.content) return;
-    
+
     // Convert Contentful rich text to plain text for analysis
     const textContent = extractTextFromRichText(post.content);
     const structure = detectContentStructure(textContent);
-    
+
     if (structure) {
       recentStructures.push({
         title: post.title,
         structure: structure.type,
         patterns: structure.patterns,
-        publishedDate: post.publishedDate
+        publishedDate: post.publishedDate,
       });
     }
   });
-  
+
   return recentStructures;
 }
 
 function extractTextFromRichText(richTextContent) {
-  if (typeof richTextContent === 'string') return richTextContent;
-  
+  if (typeof richTextContent === "string") return richTextContent;
+
   // Handle Contentful rich text format
   if (richTextContent && richTextContent.content) {
     return richTextContent.content
-      .map(node => extractTextFromNode(node))
-      .join('\n');
+      .map((node) => extractTextFromNode(node))
+      .join("\n");
   }
-  
-  return '';
+
+  return "";
 }
 
 function extractTextFromNode(node) {
-  if (node.nodeType === 'text') {
-    return node.value || '';
+  if (node.nodeType === "text") {
+    return node.value || "";
   }
-  
-  if (node.nodeType === 'heading-2') {
-    const text = node.content?.map(child => extractTextFromNode(child)).join('') || '';
+
+  if (node.nodeType === "heading-2") {
+    const text =
+      node.content?.map((child) => extractTextFromNode(child)).join("") || "";
     return `## ${text}`;
   }
-  
-  if (node.nodeType === 'paragraph') {
-    return node.content?.map(child => extractTextFromNode(child)).join('') || '';
+
+  if (node.nodeType === "paragraph") {
+    return (
+      node.content?.map((child) => extractTextFromNode(child)).join("") || ""
+    );
   }
-  
+
   if (node.content) {
-    return node.content.map(child => extractTextFromNode(child)).join('');
+    return node.content.map((child) => extractTextFromNode(child)).join("");
   }
-  
-  return '';
+
+  return "";
 }
 
 function detectContentStructure(textContent) {
   const headings = textContent.match(/^## (.+)$/gm) || [];
   if (headings.length < 2) return null;
-  
-  const headingTexts = headings.map(h => h.replace('## ', '').toLowerCase());
-  
+
+  const headingTexts = headings.map((h) => h.replace("## ", "").toLowerCase());
+
   // Detect structure patterns
-  if (headingTexts.some(h => h.includes('problem') || h.includes('challenge'))) {
-    return { type: 'problem-solution', patterns: headingTexts };
+  if (
+    headingTexts.some((h) => h.includes("problem") || h.includes("challenge"))
+  ) {
+    return { type: "problem-solution", patterns: headingTexts };
   }
-  
-  if (headingTexts.some(h => h.includes('step') || h.includes('phase'))) {
-    return { type: 'step-by-step', patterns: headingTexts };
+
+  if (headingTexts.some((h) => h.includes("step") || h.includes("phase"))) {
+    return { type: "step-by-step", patterns: headingTexts };
   }
-  
-  if (headingTexts.some(h => h.includes('vs') || h.includes('comparison') || h.includes('option'))) {
-    return { type: 'comparison', patterns: headingTexts };
+
+  if (
+    headingTexts.some(
+      (h) =>
+        h.includes("vs") || h.includes("comparison") || h.includes("option")
+    )
+  ) {
+    return { type: "comparison", patterns: headingTexts };
   }
-  
-  if (headingTexts.some(h => h.includes('myth') || h.includes('truth') || h.includes('misconception'))) {
-    return { type: 'myth-busting', patterns: headingTexts };
+
+  if (
+    headingTexts.some(
+      (h) =>
+        h.includes("myth") || h.includes("truth") || h.includes("misconception")
+    )
+  ) {
+    return { type: "myth-busting", patterns: headingTexts };
   }
-  
-  if (headingTexts.some(h => h.includes('trend') || h.includes('future') || h.includes('emerging'))) {
-    return { type: 'trend-analysis', patterns: headingTexts };
+
+  if (
+    headingTexts.some(
+      (h) =>
+        h.includes("trend") || h.includes("future") || h.includes("emerging")
+    )
+  ) {
+    return { type: "trend-analysis", patterns: headingTexts };
   }
-  
-  if (headingTexts.some(h => h.includes('case') || h.includes('study') || h.includes('result'))) {
-    return { type: 'case-study', patterns: headingTexts };
+
+  if (
+    headingTexts.some(
+      (h) => h.includes("case") || h.includes("study") || h.includes("result")
+    )
+  ) {
+    return { type: "case-study", patterns: headingTexts };
   }
-  
-  return { type: 'traditional', patterns: headingTexts };
+
+  return { type: "traditional", patterns: headingTexts };
 }
 
 async function checkTitleSimilarity(newTitle, existingPosts) {
