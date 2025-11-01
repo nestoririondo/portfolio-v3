@@ -7,6 +7,7 @@ import fetch from "node-fetch";
 
 import { blogPromptTemplate } from "./blog-prompt-template.js";
 import { validateAndCleanContent } from "./content-validator.js";
+import { createLock, removeLock } from "./blog-lock.js";
 
 const { createClient } = contentfulManagementPkg;
 const { createClient: createContentfulClient } = contentfulPkg;
@@ -63,9 +64,34 @@ const topics = [
 ];
 
 async function generateBlogPost(maxRetries = 3) {
-  // Always fetch existing posts for duplicate checking and image selection
-  console.log("🔍 Fetching existing posts to check for duplicates...");
-  const existingPosts = await fetchExistingPosts();
+  // Check for concurrent execution
+  if (!createLock()) {
+    return { 
+      title: 'Concurrent execution prevented', 
+      status: 'skipped',
+      reason: 'Another blog generation already running'
+    };
+  }
+  
+  try {
+    // Always fetch existing posts for duplicate checking and image selection
+    console.log("🔍 Fetching existing posts to check for duplicates...");
+    const existingPosts = await fetchExistingPosts();
+  
+  // Check for recent posts to prevent duplicate runs
+  const recentPosts = existingPosts.filter(post => {
+    const postDate = new Date(post.publishedDate || post.createdAt);
+    const now = new Date();
+    const diffMinutes = (now - postDate) / (1000 * 60);
+    return diffMinutes < 30; // Posts created in last 30 minutes
+  });
+  
+  if (recentPosts.length > 0) {
+    console.log(`⏰ Found ${recentPosts.length} recent posts (last 30 minutes). Checking for duplicates...`);
+    for (const recent of recentPosts) {
+      console.log(`   - "${recent.title}" (${new Date(recent.publishedDate || recent.createdAt).toISOString()})`);
+    }
+  }
 
   // Check for forced topic first (only if actually provided and not empty)
   const forceTopic = process.env.FORCE_TOPIC?.trim();
@@ -78,6 +104,26 @@ async function generateBlogPost(maxRetries = 3) {
     forceTopic !== "null"
   ) {
     console.log(`🎯 Using forced topic: "${forceTopic}"`);
+    
+    // Check if we already have a recent post about this topic
+    const topicKeywords = forceTopic.toLowerCase().split(/[\s-_]+/);
+    const duplicateByTopic = recentPosts.find(post => {
+      const titleLower = post.title.toLowerCase();
+      return topicKeywords.some(keyword => 
+        keyword.length > 3 && titleLower.includes(keyword)
+      );
+    });
+    
+    if (duplicateByTopic) {
+      console.log(`⚠️ Recent post about "${forceTopic}" already exists: "${duplicateByTopic.title}"`);
+      console.log('🚫 Skipping to avoid duplicate content');
+      return { 
+        title: duplicateByTopic.title, 
+        status: 'skipped',
+        reason: 'Recent duplicate topic found'
+      };
+    }
+    
     topic = forceTopic;
   } else {
     // No forced topic, select from available topics to avoid duplicates
@@ -154,6 +200,13 @@ async function generateBlogPost(maxRetries = 3) {
         throw error;
       }
     }
+  }
+  } catch (error) {
+    console.error('❌ Blog generation failed:', error);
+    throw error;
+  } finally {
+    // Always remove lock when function exits
+    removeLock();
   }
 }
 
