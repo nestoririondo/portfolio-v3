@@ -39,13 +39,16 @@ function validateAndCleanContent(content) {
     errors.push(`Title is missing`);
   }
 
-  if (
-    !metaDescription ||
-    metaDescription.length < 120 ||
-    metaDescription.length > 160
-  ) {
+  if (!metaDescription || metaDescription.length < 120) {
     errors.push(
-      `Meta description wrong length: ${metaDescription.length}/120-160 chars`
+      `Meta description too short: ${metaDescription.length}/120+ chars`
+    );
+  }
+  
+  // Allow longer descriptions if they are complete sentences
+  if (metaDescription && metaDescription.length > 200 && !metaDescription.endsWith('.')) {
+    errors.push(
+      `Meta description too long and incomplete: ${metaDescription.length} chars (should end with period)`
     );
   }
 

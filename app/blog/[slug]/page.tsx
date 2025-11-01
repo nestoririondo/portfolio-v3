@@ -18,7 +18,12 @@ interface BlogPostPageProps {
 const richTextOptions = {
   renderMark: {
     [MARKS.BOLD]: (text: React.ReactNode) => (
-      <strong className="font-black text-gray-900 dark:text-white" style={{ fontWeight: '900' }}>{text}</strong>
+      <strong
+        className="font-black text-gray-900 dark:text-white"
+        style={{ fontWeight: "900" }}
+      >
+        {text}
+      </strong>
     ),
   },
   renderNode: {
@@ -43,11 +48,14 @@ const richTextOptions = {
       </h3>
     ),
     [BLOCKS.UL_LIST]: (_: unknown, children: React.ReactNode) => (
-      <ul className="mb-6 space-y-3 ml-6 list-disc" style={{ 
-        listStyleType: 'disc !important',
-        paddingLeft: '1.5rem',
-        listStylePosition: 'outside'
-      }}>
+      <ul
+        className="mb-6 space-y-3 ml-6 list-disc"
+        style={{
+          listStyleType: "disc !important",
+          paddingLeft: "1.5rem",
+          listStylePosition: "outside",
+        }}
+      >
         {children}
       </ul>
     ),
@@ -60,10 +68,20 @@ const richTextOptions = {
       </li>
     ),
     [BLOCKS.EMBEDDED_ASSET]: (node: unknown) => {
-      const nodeData = node as { data: { target: { fields: { file: { url: string; description?: string }; title?: string } } } };
+      const nodeData = node as {
+        data: {
+          target: {
+            fields: {
+              file: { url: string; description?: string };
+              title?: string;
+            };
+          };
+        };
+      };
       const { url, description } = nodeData.data.target.fields.file;
-      const alt = nodeData.data.target.fields.title || description || 'Blog image';
-      
+      const alt =
+        nodeData.data.target.fields.title || description || "Blog image";
+
       return (
         <div className="my-8">
           <Image
@@ -96,7 +114,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
+    <div className="min-h-screen bg-background py-16">
       <div className="max-w-4xl mx-auto px-4">
         {/* Back to blog link */}
         <Link

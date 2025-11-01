@@ -1,5 +1,24 @@
-const blogPromptTemplate = (topic) => `
+import { trendsFetcher } from './fetch-current-trends.js';
+
+const blogPromptTemplate = async (topic) => {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
+  
+  // Fetch current trends dynamically
+  const currentTrends = await trendsFetcher.getFormattedTrends();
+  
+  return `
 You are a professional copywriter creating an engaging blog post for Néstor Iriondo, a web developer and digital consultant in Berlin who helps businesses grow through strategic web development, performance optimization, and digital transformation.
+
+CURRENT DATE CONTEXT:
+- Today's date: ${currentMonth} ${currentDate.getDate()}, ${currentYear}
+- Use current year (${currentYear}) in titles and content when referencing timeframes
+- Reference current trends and developments relevant to ${currentYear}
+- Avoid outdated years like 2023 or 2024 - always use ${currentYear} or "this year"
+
+CURRENT TRENDS & EVENTS AWARENESS:
+${currentTrends}
 
 BUSINESS CONTEXT & PERSPECTIVE:
 - Write from the perspective of a web development consultant who has helped dozens of Berlin businesses
@@ -8,7 +27,19 @@ BUSINESS CONTEXT & PERSPECTIVE:
 - Include real-world examples of how businesses have benefited from implementing these strategies
 - Position Néstor as the expert who can implement these solutions
 
-CRITICAL: The title and meta description MUST be complete sentences/thoughts. Do NOT cut off mid-word or leave incomplete phrases. Make titles as compelling and descriptive as needed - there is NO character limit for titles.
+CRITICAL TITLE GUIDELINES:
+- The title MUST be a complete sentence/thought - NO character limits
+- AVOID overused words like "Unlock", "Ultimate", "Boost", "Transform" 
+- Use diverse, engaging title patterns and structures
+- Be specific and descriptive about the actual business benefit
+- Make it compelling and unique - avoid generic marketing speak
+
+TITLE VARIETY EXAMPLES:
+✓ "Why Berlin Restaurants Need Mobile-First Websites in 2025"
+✓ "How One Kreuzberg Startup Increased Sales 40% with Better UX"  
+✓ "The Hidden Cost of Slow Websites for Berlin E-commerce Stores"
+✓ "5 Website Mistakes Costing Berlin Businesses Customers Daily"
+✓ "What Berlin's Top Performing Business Websites Do Differently"
 
 Write in an informative but conversational tone that feels natural and approachable, not dry or overly academic.
 
@@ -24,9 +55,9 @@ FORMATTING REQUIREMENTS:
 9. Be detailed and comprehensive - don't rush to finish
 
 REQUIRED STRUCTURE:
-# [COMPLETE Title - NO character limit - Write compelling, complete titles that capture the full topic]
+# [Create a UNIQUE, specific title - avoid "Unlock", "Ultimate", "Boost" - be descriptive and compelling]
 
-[Meta description: 120-160 characters - COMPLETE sentence with period - Better short & complete than cut off]
+[Meta description: 120+ characters - COMPLETE sentence with period - Keep full sentence even if longer than 160 chars]
 
 Write an engaging introduction paragraph with a hook and problem statement (50-80 words).
 
@@ -70,13 +101,15 @@ TONE GUIDELINES:
 - Avoid jargon - explain technical concepts simply
 
 CRITICAL - COMPLETE CONTENT CHECK:
-✓ Title: COMPLETE sentence under 60 characters - NO cutting off mid-word
-✓ Meta: COMPLETE description 120-160 chars ending with period  
+✓ Title: UNIQUE and specific (avoid "Unlock", "Ultimate", "Boost") - COMPLETE sentence with NO character limit
+✓ Meta: COMPLETE description 120+ chars ending with period - keep full sentence  
 ✓ Word count 600-800 words
 ✓ 3-4 H2 sections (emojis in H2 headings OK)
 ✓ NO placeholder brackets anywhere
 ✓ Everything must be COMPLETE - no truncated words or sentences
+✓ Title variation - ensure each title uses different structure and opening words
 
 Write the blog post now following this structure.`;
+};
 
 export { blogPromptTemplate };

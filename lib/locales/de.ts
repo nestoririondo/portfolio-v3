@@ -3,6 +3,7 @@ export const de = {
   "nav.home": "Startseite",
   "nav.contact": "Kontakt",
   "nav.approach": "Ansatz",
+  "nav.process": "Prozess",
 
   // Hero Section
   "hero.title": "Websites, die dein Berliner Business wachsen lassen",

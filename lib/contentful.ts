@@ -59,6 +59,26 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   }
 }
 
+export async function getBlogPostsPaginated(skip: number = 0, limit: number = 9): Promise<{ posts: BlogPost[], total: number, hasMore: boolean }> {
+  try {
+    const response = await contentfulClient.getEntries({
+      content_type: 'blogPost',
+      order: ['-fields.publishedDate'],
+      skip,
+      limit,
+    })
+
+    return {
+      posts: response.items as unknown as BlogPost[],
+      total: response.total,
+      hasMore: (skip + limit) < response.total
+    }
+  } catch (error) {
+    console.error('Error fetching paginated blog posts:', error)
+    return { posts: [], total: 0, hasMore: false }
+  }
+}
+
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   try {
     const response = await contentfulClient.getEntries({

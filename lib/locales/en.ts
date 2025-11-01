@@ -3,6 +3,7 @@ export const en = {
   "nav.home": "Home",
   "nav.contact": "Contact",
   "nav.approach": "Approach",
+  "nav.process": "Process",
 
   // Hero Section
   "hero.title": "Websites That Help Your Berlin Business Grow",
