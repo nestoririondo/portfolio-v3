@@ -14,6 +14,9 @@ importers:
       '@contentful/rich-text-react-renderer':
         specifier: ^16.1.5
         version: 16.1.5(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@contentful/rich-text-types':
+        specifier: ^17.2.4
+        version: 17.2.4
       '@gsap/react':
         specifier: ^2.1.2
         version: 2.1.2(gsap@3.13.0)(react@19.2.0)
