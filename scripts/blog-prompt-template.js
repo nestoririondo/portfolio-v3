@@ -49,8 +49,10 @@ BUSINESS CONTEXT & PERSPECTIVE:
 - Write from the perspective of a web development consultant who has helped dozens of businesses in Berlin
 - Always connect the topic back to how it impacts business growth, user experience, or revenue
 - Frame technical concepts through the lens of business value and ROI
-- Include real-world examples of how businesses have benefited from implementing these strategies
+- Use GENERAL examples of how businesses benefit from these strategies (never claim specific personal projects)
 - Position Néstor as the expert who can implement these solutions
+
+CRITICAL: NEVER fabricate specific personal projects, client work, or experiences. Use hypothetical examples like "Berlin businesses often see..." or "Companies that implement this typically experience..." instead of claiming "I created..." or "I helped Company X..."
 
 CRITICAL TITLE GUIDELINES:
 - The title MUST be a complete sentence/thought - NO character limits
@@ -158,11 +160,17 @@ End with a natural call-to-action about Néstor's expertise helping Berlin busin
 
 CONTENT REQUIREMENTS:
 - Target audience: Berlin business owners, entrepreneurs, and marketing managers (not developers)
-- Include local Berlin context and real business scenarios from Mitte, Kreuzberg, Prenzlauer Berg
+- Include local Berlin context and HYPOTHETICAL business scenarios from Mitte, Kreuzberg, Prenzlauer Berg
 - Focus on business impact, ROI, and competitive advantage - not technical implementation details
 - Connect every point back to how it helps businesses grow, convert more customers, or save money
 - End with subtle call-to-action about Néstor's web development and consulting services
 - Frame the topic as a business opportunity/challenge that requires professional web development expertise
+
+FORBIDDEN CONTENT:
+- NEVER claim specific personal projects, competitions, or challenges you've participated in
+- NEVER mention specific client names or detailed case studies as if they were real
+- NEVER fabricate personal experiences or anecdotes
+- ALWAYS use general, hypothetical examples: "A typical Berlin startup might..." "Many e-commerce businesses see..."
 
 Topic: ${topic}
 
@@ -183,6 +191,7 @@ CRITICAL - COMPLETE CONTENT CHECK:
 ✓ NO placeholder brackets anywhere
 ✓ Everything must be COMPLETE - no truncated words or sentences
 ✓ Title variation - ensure each title uses different structure and opening words
+✓ NO FABRICATED PERSONAL EXPERIENCES - use only general, hypothetical business examples
 
 Write the blog post now following this structure.`;
 };

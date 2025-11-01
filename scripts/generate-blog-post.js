@@ -8,6 +8,7 @@ import fetch from "node-fetch";
 import { blogPromptTemplate } from "./blog-prompt-template.js";
 import { validateAndCleanContent } from "./content-validator.js";
 import { createLock, removeLock } from "./blog-lock.js";
+import { contentLinkEnhancer } from "./content-link-enhancer.js";
 
 const { createClient } = contentfulManagementPkg;
 const { createClient: createContentfulClient } = contentfulPkg;
@@ -472,8 +473,10 @@ async function generateBlogPost(maxRetries = 3) {
 
           console.log("✅ Content validation passed");
 
-          // Content is ready (contextual images removed to prevent display issues)
-          const enhancedContent = validation.content;
+          // Enhance content with relevant links
+          console.log("🔗 Adding contextual links to content...");
+          const enhancedContent = contentLinkEnhancer.enhanceContent(validation.content);
+          console.log(`✅ Enhanced content with ${contentLinkEnhancer.getMappingsCount()} possible link mappings`);
           const enhancedValidation = {
             ...validation,
             content: enhancedContent,
@@ -492,8 +495,10 @@ async function generateBlogPost(maxRetries = 3) {
             console.log("⚠️ Publishing with automatic fixes");
             const fixed = applyAutomaticFixes(validation);
 
-            // Content is ready (contextual images removed to prevent display issues)  
-            const enhancedContent = fixed.content;
+            // Enhance content with relevant links
+            console.log("🔗 Adding contextual links to fixed content...");
+            const enhancedContent = contentLinkEnhancer.enhanceContent(fixed.content);
+            console.log(`✅ Enhanced content with ${contentLinkEnhancer.getMappingsCount()} possible link mappings`);
             const enhancedFixed = { ...fixed, content: enhancedContent };
 
             await publishToContentful(enhancedFixed, topic, existingPosts);
