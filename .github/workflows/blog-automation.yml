@@ -32,18 +32,20 @@ jobs:
       with:
         node-version: '20'
         cache: 'npm'
+        cache-dependency-path: 'my-app/package-lock.json'
         
     - name: Install dependencies
+      working-directory: my-app
       run: npm ci
         
     - name: Generate blog post
+      working-directory: my-app
       env:
         CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
         CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
         CONTENTFUL_MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
         CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
-        UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
-        UNSPLASH_SECRET_KEY: ${{ secrets.UNSPLASH_SECRET_KEY }}
+        PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         FORCE_TOPIC: ${{ inputs.force_topic }}
         USE_TRENDING: ${{ inputs.use_trending }}
       run: node scripts/auto-trending-blog.js

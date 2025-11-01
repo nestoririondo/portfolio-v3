@@ -34,8 +34,10 @@ jobs:
       with:
         node-version: '20'
         cache: 'npm'
+        cache-dependency-path: 'my-app/package-lock.json'
         
     - name: Install dependencies
+      working-directory: my-app
       run: npm ci
       
     - name: Prepare breaking news topic
@@ -183,12 +185,13 @@ jobs:
         EOF
         
     - name: Generate breaking news post
+      working-directory: my-app
       env:
         CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
         CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
         CONTENTFUL_MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
         CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
-        UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         BREAKING_TOPIC: ${{ steps.prepare-topic.outputs.enhanced_topic }}
         URGENCY: ${{ inputs.urgency }}
         CONTEXT: ${{ inputs.context }}
