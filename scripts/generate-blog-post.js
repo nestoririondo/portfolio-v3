@@ -64,9 +64,9 @@ const topics = [
 
 async function generateBlogPost(maxRetries = 3) {
   // Always fetch existing posts for duplicate checking and image selection
-  console.log('🔍 Fetching existing posts to check for duplicates...');
+  console.log("🔍 Fetching existing posts to check for duplicates...");
   const existingPosts = await fetchExistingPosts();
-  
+
   // Check for forced topic first (only if actually provided and not empty)
   const forceTopic = process.env.FORCE_TOPIC?.trim();
   let topic;
