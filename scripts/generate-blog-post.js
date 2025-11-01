@@ -353,17 +353,17 @@ async function generateBlogPost(maxRetries = 3) {
     console.log("🔍 Fetching existing posts to check for duplicates...");
     const existingPosts = await fetchExistingPosts();
 
-    // Check for recent posts to prevent duplicate runs
+    // Check for recent posts to prevent duplicate runs (3 days for twice-weekly posting)
     const recentPosts = existingPosts.filter((post) => {
       const postDate = new Date(post.publishedDate || post.createdAt);
       const now = new Date();
-      const diffMinutes = (now - postDate) / (1000 * 60);
-      return diffMinutes < 30; // Posts created in last 30 minutes
+      const diffHours = (now - postDate) / (1000 * 60 * 60);
+      return diffHours < 72; // Posts created in last 3 days (72 hours)
     });
 
     if (recentPosts.length > 0) {
       console.log(
-        `⏰ Found ${recentPosts.length} recent posts (last 30 minutes). Checking for duplicates...`
+        `⏰ Found ${recentPosts.length} recent posts (last 3 days). Checking for duplicates...`
       );
       for (const recent of recentPosts) {
         console.log(
@@ -387,12 +387,16 @@ async function generateBlogPost(maxRetries = 3) {
       console.log(`🎯 Using forced topic: "${forceTopic}"`);
 
       // Check if we already have a recent post about this topic
-      const topicKeywords = forceTopic.toLowerCase().split(/[\s-_]+/);
+      const topicKeywords = forceTopic.toLowerCase().split(/[\s-_]+/)
+        .filter(keyword => keyword.length > 3)
+        .filter(keyword => !['business', 'website', 'berlin', 'german', 'companies'].includes(keyword)); // Exclude common words
+      
       const duplicateByTopic = recentPosts.find((post) => {
         const titleLower = post.title.toLowerCase();
-        return topicKeywords.some(
-          (keyword) => keyword.length > 3 && titleLower.includes(keyword)
-        );
+        const matchingKeywords = topicKeywords.filter(keyword => titleLower.includes(keyword));
+        // Require at least 2 specific keywords to match, or 1 very specific keyword
+        return matchingKeywords.length >= 2 || 
+               (matchingKeywords.length === 1 && matchingKeywords[0].length > 8);
       });
 
       if (duplicateByTopic) {

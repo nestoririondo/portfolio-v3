@@ -19,8 +19,16 @@ class TrendingTopicSelector {
 
     // New Year period (January 1-15)
     if (month === 'January' && dayOfMonth <= 15) {
+      const newYearTopics = [
+        'New Year website resolutions for Berlin businesses',
+        'Q1 digital transformation strategies for German companies',
+        'Website refresh planning for the new year',
+        'Setting digital goals for Berlin startups in 2025'
+      ];
+      const topicIndex = dayOfMonth % newYearTopics.length;
+      
       return {
-        topic: 'New Year website resolutions for Berlin businesses',
+        topic: newYearTopics[topicIndex],
         priority: 50,
         category: 'seasonal'
       };
@@ -73,8 +81,21 @@ class TrendingTopicSelector {
 
     // Black Friday preparation (October-November)
     if (month === 'October' || month === 'November') {
+      // Rotate through different Black Friday topics to avoid duplicates
+      const blackFridayTopics = [
+        'E-commerce optimization for Black Friday in Germany',
+        'Payment gateway setup for Black Friday sales surge',
+        'Website loading speed crucial for holiday shopping',
+        'Customer service automation during Black Friday rush',
+        'GDPR compliance for Black Friday email campaigns',
+        'Analytics tracking for holiday season performance'
+      ];
+      
+      // Use day of month to select different topics
+      const topicIndex = (dayOfMonth + new Date().getHours()) % blackFridayTopics.length;
+      
       return {
-        topic: 'E-commerce optimization for Black Friday in Germany',
+        topic: blackFridayTopics[topicIndex],
         priority: 50,
         category: 'seasonal'
       };
@@ -82,8 +103,17 @@ class TrendingTopicSelector {
 
     // Holiday season (December)
     if (month === 'December') {
+      const holidayTopics = [
+        'Holiday season website performance for Berlin retailers',
+        'Christmas e-commerce optimization for German businesses',
+        'End-of-year website security checkup for Berlin companies',
+        'Holiday traffic management for online stores',
+        'Year-end analytics review for German websites'
+      ];
+      const topicIndex = dayOfMonth % holidayTopics.length;
+      
       return {
-        topic: 'Holiday season website performance for Berlin retailers',
+        topic: holidayTopics[topicIndex],
         priority: 48,
         category: 'seasonal'
       };
@@ -96,7 +126,6 @@ class TrendingTopicSelector {
    * Get current trending topics from tech landscape
    */
   getCurrentTrendingTopics() {
-    const currentMonth = new Date().getMonth() + 1;
     
     const trendingTopics = [
       { topic: 'AI integration for Berlin business websites', priority: 45 },
@@ -375,26 +404,38 @@ class TrendingTopicSelector {
     // Check for seasonal events first (highest priority)
     const seasonalEvent = this.detectSeasonalEvent();
     if (seasonalEvent && !this.usedTopics.has(seasonalEvent.topic)) {
-      console.log(`🎉 Using seasonal event topic: ${seasonalEvent.topic}`);
-      
-      this.usedTopics.add(seasonalEvent.topic);
-      this.topicHistory.push({
-        topic: seasonalEvent.topic,
-        timestamp: new Date().toISOString(),
-        source: 'seasonal-detection',
-        category: seasonalEvent.category,
-        priority: seasonalEvent.priority,
+      // Check if we've already used a seasonal topic today
+      const today = new Date().toDateString();
+      const todaysSeasonalTopics = this.topicHistory.filter(entry => {
+        const entryDate = new Date(entry.timestamp).toDateString();
+        return entryDate === today && entry.source === 'seasonal-detection';
       });
 
-      return {
-        topic: seasonalEvent.topic,
-        metadata: {
+      // Limit seasonal topics to 1 per day to avoid overwhelming seasonal content
+      if (todaysSeasonalTopics.length === 0) {
+        console.log(`🎉 Using seasonal event topic: ${seasonalEvent.topic}`);
+        
+        this.usedTopics.add(seasonalEvent.topic);
+        this.topicHistory.push({
+          topic: seasonalEvent.topic,
+          timestamp: new Date().toISOString(),
           source: 'seasonal-detection',
           category: seasonalEvent.category,
           priority: seasonalEvent.priority,
-          trendBased: false,
-        },
-      };
+        });
+
+        return {
+          topic: seasonalEvent.topic,
+          metadata: {
+            source: 'seasonal-detection',
+            category: seasonalEvent.category,
+            priority: seasonalEvent.priority,
+            trendBased: false,
+          },
+        };
+      } else {
+        console.log(`⏭️ Already used seasonal topic today, trying trending instead`);
+      }
     }
 
     // Check trending topics (second priority)
