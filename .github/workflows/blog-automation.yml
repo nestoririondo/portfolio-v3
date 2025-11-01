@@ -31,20 +31,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "pnpm"
-          cache-dependency-path: "my-app/pnpm-lock.yaml"
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+          cache: "npm"
+          cache-dependency-path: "package-lock.json"
 
       - name: Install dependencies
-        working-directory: my-app
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Generate blog post
-        working-directory: my-app
         env:
           CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
           CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
