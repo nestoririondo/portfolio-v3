@@ -433,7 +433,11 @@ async function generateBlogPost(maxRetries = 3) {
       try {
         console.log(`Attempt ${attempt}: Generating content for "${topic}"`);
 
-        const promptContent = await blogPromptTemplate(topic);
+        // Analyze recent content structures to ensure variety
+        const recentStructures = analyzeContentStructures(existingPosts);
+        console.log(`📊 Recent structures: ${recentStructures.map(s => s.structure).join(', ')}`);
+
+        const promptContent = await blogPromptTemplate(topic, recentStructures);
 
         const response = await anthropic.messages.create({
           model: "claude-3-haiku-20240307",
@@ -468,12 +472,8 @@ async function generateBlogPost(maxRetries = 3) {
 
           console.log("✅ Content validation passed");
 
-          // Enhance content with contextual images
-          const enhancedContent = await enhanceContentWithImages(
-            validation.content,
-            topic,
-            existingPosts
-          );
+          // Content is ready (contextual images removed to prevent display issues)
+          const enhancedContent = validation.content;
           const enhancedValidation = {
             ...validation,
             content: enhancedContent,
@@ -492,12 +492,8 @@ async function generateBlogPost(maxRetries = 3) {
             console.log("⚠️ Publishing with automatic fixes");
             const fixed = applyAutomaticFixes(validation);
 
-            // Enhance content with contextual images
-            const enhancedContent = await enhanceContentWithImages(
-              fixed.content,
-              topic,
-              existingPosts
-            );
+            // Content is ready (contextual images removed to prevent display issues)  
+            const enhancedContent = fixed.content;
             const enhancedFixed = { ...fixed, content: enhancedContent };
 
             await publishToContentful(enhancedFixed, topic, existingPosts);
@@ -884,92 +880,6 @@ async function uploadImageToContentful(imageData) {
   }
 }
 
-// Add contextual images to blog content for visual interest
-async function enhanceContentWithImages(content, topic, existingPosts = []) {
-  // Check if the content has the contextual image placeholder
-  if (content.includes("[CONTEXTUAL_IMAGE_PLACEHOLDER]")) {
-    // Generate contextual search terms
-    const contextualTerms = [
-      `${topic} workflow`,
-      `${topic} process`,
-      `${topic} implementation`,
-      `${topic} strategy`,
-      `business ${topic}`,
-      `professional ${topic}`,
-      `${topic} examples`,
-      `${topic} best practices`,
-    ];
-
-    const searchTerm =
-      contextualTerms[Math.floor(Math.random() * contextualTerms.length)];
-
-    console.log(`🖼️ Adding contextual image for: ${searchTerm}`);
-
-    try {
-      // Fetch contextual image URL
-      const imageUrl = await fetchContextualImage(searchTerm, existingPosts);
-
-      if (imageUrl) {
-        // Replace placeholder with image markdown
-        const imageMarkdown = `![${searchTerm}](${imageUrl})`;
-        content = content.replace(
-          "[CONTEXTUAL_IMAGE_PLACEHOLDER]",
-          imageMarkdown
-        );
-        console.log(`✅ Added contextual image: ${searchTerm}`);
-      } else {
-        // Remove placeholder if no image found
-        content = content.replace("[CONTEXTUAL_IMAGE_PLACEHOLDER]", "");
-        console.log(`⚠️ No contextual image found, removed placeholder`);
-      }
-    } catch (error) {
-      // Remove placeholder on error
-      content = content.replace("[CONTEXTUAL_IMAGE_PLACEHOLDER]", "");
-      console.log(`⚠️ Could not add contextual image: ${error.message}`);
-    }
-  }
-
-  return content;
-}
-
-// Fetch a contextual image that complements the main featured image
-async function fetchContextualImage(searchTerm, existingPosts = []) {
-  try {
-    const response = await unsplash.search.getPhotos({
-      query: searchTerm,
-      page: 1,
-      perPage: 20,
-      orientation: "landscape",
-    });
-
-    if (response.type === "success") {
-      const photos = response.response.results;
-
-      // Filter out images already used
-      const usedImageIds = existingPosts
-        .filter((post) => post.featuredImage)
-        .map((post) => post.featuredImage.split("/").pop()?.split("?")[0])
-        .filter(Boolean);
-
-      const availablePhotos = photos.filter(
-        (photo) => !usedImageIds.includes(photo.id)
-      );
-
-      if (availablePhotos.length > 0) {
-        const selectedPhoto = availablePhotos[0];
-        return `${selectedPhoto.urls.regular}?w=800&q=80`;
-      }
-    }
-
-    return null;
-  } catch (error) {
-    console.log(
-      `Could not fetch contextual image for "${searchTerm}":`,
-      error.message
-    );
-    return null;
-  }
-}
 
 async function publishToContentful(blogData, topic, existingPosts = []) {
   try {
@@ -1050,6 +960,7 @@ async function fetchExistingPosts() {
       slug: item.fields.slug,
       publishedDate: item.fields.publishedDate,
       featuredImageUrl: item.fields.featuredImage?.fields?.file?.url || null,
+      content: item.fields.content, // Include content for structure analysis
     }));
   } catch (error) {
     console.error("❌ Error fetching existing posts:", error);
@@ -1110,6 +1021,100 @@ function extractKeywords(text) {
           "strategies",
         ].includes(word)
     );
+}
+
+function analyzeContentStructures(existingPosts) {
+  const recentStructures = [];
+  
+  // Analyze last 10 posts for structure patterns
+  const recentPosts = existingPosts.slice(0, 10);
+  
+  recentPosts.forEach(post => {
+    if (!post.content) return;
+    
+    // Convert Contentful rich text to plain text for analysis
+    const textContent = extractTextFromRichText(post.content);
+    const structure = detectContentStructure(textContent);
+    
+    if (structure) {
+      recentStructures.push({
+        title: post.title,
+        structure: structure.type,
+        patterns: structure.patterns,
+        publishedDate: post.publishedDate
+      });
+    }
+  });
+  
+  return recentStructures;
+}
+
+function extractTextFromRichText(richTextContent) {
+  if (typeof richTextContent === 'string') return richTextContent;
+  
+  // Handle Contentful rich text format
+  if (richTextContent && richTextContent.content) {
+    return richTextContent.content
+      .map(node => extractTextFromNode(node))
+      .join('\n');
+  }
+  
+  return '';
+}
+
+function extractTextFromNode(node) {
+  if (node.nodeType === 'text') {
+    return node.value || '';
+  }
+  
+  if (node.nodeType === 'heading-2') {
+    const text = node.content?.map(child => extractTextFromNode(child)).join('') || '';
+    return `## ${text}`;
+  }
+  
+  if (node.nodeType === 'paragraph') {
+    return node.content?.map(child => extractTextFromNode(child)).join('') || '';
+  }
+  
+  if (node.content) {
+    return node.content.map(child => extractTextFromNode(child)).join('');
+  }
+  
+  return '';
+}
+
+function detectContentStructure(textContent) {
+  const headings = textContent.match(/^## (.+)$/gm) || [];
+  if (headings.length < 2) return null;
+  
+  const headingTexts = headings.map(h => h.replace('## ', '').toLowerCase());
+  
+  // Detect structure patterns
+  if (headingTexts.some(h => h.includes('problem') || h.includes('challenge'))) {
+    return { type: 'problem-solution', patterns: headingTexts };
+  }
+  
+  if (headingTexts.some(h => h.includes('step') || h.includes('phase'))) {
+    return { type: 'step-by-step', patterns: headingTexts };
+  }
+  
+  if (headingTexts.some(h => h.includes('vs') || h.includes('comparison') || h.includes('option'))) {
+    return { type: 'comparison', patterns: headingTexts };
+  }
+  
+  if (headingTexts.some(h => h.includes('myth') || h.includes('truth') || h.includes('misconception'))) {
+    return { type: 'myth-busting', patterns: headingTexts };
+  }
+  
+  if (headingTexts.some(h => h.includes('trend') || h.includes('future') || h.includes('emerging'))) {
+    return { type: 'trend-analysis', patterns: headingTexts };
+  }
+  
+  if (headingTexts.some(h => h.includes('case') || h.includes('study') || h.includes('result'))) {
+    return { type: 'case-study', patterns: headingTexts };
+  }
+  
+  return { type: 'traditional', patterns: headingTexts };
 }
 
 async function checkTitleSimilarity(newTitle, existingPosts) {

@@ -1,12 +1,38 @@
 import { trendsFetcher } from "./fetch-current-trends.js";
 
-const blogPromptTemplate = async (topic) => {
+const blogPromptTemplate = async (topic, recentStructures = []) => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
 
   // Fetch current trends dynamically
   const currentTrends = await trendsFetcher.getFormattedTrends();
+
+  // Analyze recently used structures to ensure variety
+  const structureFrequency = recentStructures.reduce((acc, post) => {
+    acc[post.structure] = (acc[post.structure] || 0) + 1;
+    return acc;
+  }, {});
+
+  const overusedStructures = Object.entries(structureFrequency)
+    .filter(([_, count]) => count >= 2)
+    .map(([structure, _]) => structure);
+
+  const recommendedStructures = ['problem-solution', 'step-by-step', 'case-study', 'comparison', 'myth-busting', 'trend-analysis']
+    .filter(structure => !overusedStructures.includes(structure));
+
+  console.log(`📈 Structure usage: ${JSON.stringify(structureFrequency)}`);
+  console.log(`🚫 Avoid these overused structures: ${overusedStructures.join(', ') || 'none'}`);
+  console.log(`✅ Recommended structures: ${recommendedStructures.join(', ') || 'any'}`);
+
+  const structureGuidance = recommendedStructures.length > 0 
+    ? `PRIORITY STRUCTURES: Use one of these LESS USED structures: ${recommendedStructures.join(', ')}. 
+       AVOID these overused ones: ${overusedStructures.join(', ') || 'none'}.`
+    : 'All structures have been used recently - pick any that fits the topic naturally.';
+
+  const structureReminder = recentStructures.length > 0
+    ? `RECENT POSTS USED THESE STRUCTURES: ${recentStructures.map(p => `"${p.title}" (${p.structure})`).join(', ')}`
+    : 'No recent structure data available.';
 
   return `
 You are a professional copywriter creating an engaging blog post for Néstor Iriondo, a web developer and digital consultant in Berlin who helps businesses grow through strategic web development, performance optimization, and digital transformation.
@@ -57,32 +83,78 @@ FORMATTING REQUIREMENTS:
 8. NO placeholder brackets - write actual content
 9. Be detailed and comprehensive - don't rush to finish
 
-REQUIRED STRUCTURE:
-# [Create a UNIQUE, specific title - avoid "Unlock", "Ultimate", "Boost" - be descriptive and compelling]
+CONTENT STRUCTURE OPTIONS (choose ONE format that best fits the topic):
 
-[Meta description: 120+ characters - COMPLETE sentence with period - Keep full sentence even if longer than 160 chars]
+**OPTION 1: Problem → Solution Deep Dive**
+# [Unique Title]
+[Meta description: 120+ characters with period]
+Introduction with problem statement (50-80 words)
+## The Real Problem Berlin Businesses Face
+## Why Current Approaches Fall Short  
+## The Complete Solution Strategy
+## Implementation Roadmap
+## Next Steps
 
-Write an engaging introduction paragraph with a hook and problem statement (50-80 words).
+**OPTION 2: Step-by-Step Guide**
+# [Unique Title]
+[Meta description: 120+ characters with period]
+Introduction explaining what they'll learn (50-80 words)
+## Step 1: [Specific Action]
+## Step 2: [Next Action]  
+## Step 3: [Implementation]
+## Step 4: [Optimization]
+## Common Mistakes to Avoid
 
-## [First Main Point]
-Write 100-150 words of actionable advice. No brackets or placeholders.
+**OPTION 3: Case Study Approach**
+# [Unique Title]
+[Meta description: 120+ characters with period]
+Introduction with compelling scenario (50-80 words)
+## The Challenge: What We Discovered
+## The Strategy: Our Approach
+## The Implementation: What We Built
+## The Results: Measurable Outcomes
+## How Your Business Can Apply This
 
-## [Second Main Point] 
-Write 100-150 words with concrete examples. No brackets or placeholders.
+**OPTION 4: Comparison/Analysis**
+# [Unique Title]
+[Meta description: 120+ characters with period]
+Introduction setting up the comparison (50-80 words)
+## Option A: [First approach and pros/cons]
+## Option B: [Second approach and pros/cons]
+## Option C: [Third approach and pros/cons]
+## The Clear Winner for Berlin Businesses
+## Making the Right Choice
 
-## [Third Main Point]
-Write 100-150 words with practical solutions. No brackets or placeholders.
+**OPTION 5: Myth-Busting Educational**
+# [Unique Title]
+[Meta description: 120+ characters with period]
+Introduction challenging common assumptions (50-80 words)
+## Myth #1: [Common belief and why it's wrong]
+## Myth #2: [Another misconception debunked]
+## Myth #3: [Third myth exposed]
+## The Truth: What Really Works
+## Putting This Knowledge to Work
 
-- **Actual actionable tip 1** - with brief explanation
-- **Specific strategy 2** - with concrete example  
-- **Practical step 3** - with clear benefit
+**OPTION 6: Trend Analysis & Future Focus**
+# [Unique Title]
+[Meta description: 120+ characters with period]
+Introduction about changing landscape (50-80 words)
+## What's Happening Now in Berlin
+## Emerging Trends to Watch
+## Opportunities for Early Adopters
+## Preparing for What's Next
+## Your Competitive Advantage
 
-[CONTEXTUAL_IMAGE_PLACEHOLDER]
+Choose the structure that BEST MATCHES your topic. Don't force every topic into the same format.
 
+STRUCTURE VARIETY REQUIREMENTS:
+${structureGuidance}
 
+${structureReminder}
 
-## Conclusion
-Write a conclusion that summarizes the business benefits and includes a natural call-to-action about how Néstor can help implement these strategies for Berlin businesses. Position him as the expert who can turn these insights into real results (50-80 words). Emojis are fine if naturally relevant.
+Write 100-150 words per section. Use natural, conversational language.
+Include specific Berlin examples and local business context where relevant.
+End with a natural call-to-action about Néstor's expertise helping Berlin businesses.
 
 CONTENT REQUIREMENTS:
 - Target audience: Berlin business owners, entrepreneurs, and marketing managers (not developers)

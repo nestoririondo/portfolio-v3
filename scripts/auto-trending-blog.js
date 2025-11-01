@@ -113,12 +113,12 @@ class AutoBlogGenerator {
             
             // If automatic also fails, try with trending disabled
             if (attempts === 2) {
-              const { topic: altTopic, metadata: altMetadata } = 
-                await trendingTopicSelector.selectTrendingTopic({ useTrending: false });
-              command = `cd "${process.cwd()}" && FORCE_TOPIC="${altTopic}" node scripts/generate-blog-post.js`;
-              console.log(`🔄 Trying fallback topic: "${altTopic}"`);
-              topic = altTopic;
-              metadata = altMetadata;
+              const altSelection = await trendingTopicSelector.selectTrendingTopic({ useTrending: false });
+              command = `cd "${process.cwd()}" && FORCE_TOPIC="${altSelection.topic}" node scripts/generate-blog-post.js`;
+              console.log(`🔄 Trying fallback topic: "${altSelection.topic}"`);
+              // Update variables for final return
+              topic = altSelection.topic;
+              metadata = altSelection.metadata;
               continue;
             }
           }
