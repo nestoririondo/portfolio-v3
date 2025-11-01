@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export const Footer = () => {
   const { t } = useLanguage();
@@ -26,30 +27,30 @@ export const Footer = () => {
           </div>
 
           <div className="text-sm flex flex-wrap gap-2 md:gap-4 items-center">
-            <a
-              href="#hero"
+            <Link
+              href="/#hero"
               className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95 active:bg-gray-200 dark:active:bg-gray-700"
             >
               {t("nav.home")}
-            </a>
-            <a
-              href="#process"
+            </Link>
+            <Link
+              href="/#process"
               className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95 active:bg-gray-200 dark:active:bg-gray-700"
             >
               Process
-            </a>
-            {/* <a
-              href="#about"
+            </Link>
+            <Link
+              href="/blog"
               className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95 active:bg-gray-200 dark:active:bg-gray-700"
             >
-              {t("footer.nav.about")}
-            </a> */}
-            <a
-              href="#contact"
+              Blog
+            </Link>
+            <Link
+              href="/#contact"
               className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95 active:bg-gray-200 dark:active:bg-gray-700"
             >
               {t("nav.contact")}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

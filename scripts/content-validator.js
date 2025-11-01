@@ -1,0 +1,81 @@
+export function validateAndCleanContent(content) {
+  // Extract title, meta description, and body
+  const lines = content.split('\n');
+  let title = '';
+  let metaDescription = '';
+  let body = '';
+  
+  let isParsingBody = false;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    
+    // Extract title (first # heading)
+    if (line.startsWith('# ') && !title) {
+      title = line.replace('# ', '').trim();
+      continue;
+    }
+    
+    // Extract meta description
+    if (line.startsWith('[Meta description:') && line.includes(']')) {
+      metaDescription = line.match(/\[Meta description:\s*(.+?)\]/)?.[1] || '';
+      continue;
+    }
+    
+    // Start collecting body after meta description
+    if (metaDescription && line && !line.startsWith('[')) {
+      isParsingBody = true;
+    }
+    
+    if (isParsingBody) {
+      body += lines[i] + '\n';
+    }
+  }
+  
+  // Validation checks
+  const errors = [];
+  
+  if (!title || title.length > 60) {
+    errors.push('Title missing or too long (>60 chars)');
+  }
+  
+  if (!metaDescription || metaDescription.length < 150 || metaDescription.length > 160) {
+    errors.push('Meta description must be 150-160 characters');
+  }
+  
+  const wordCount = body.split(/\s+/).length;
+  if (wordCount < 600 || wordCount > 800) {
+    errors.push(`Word count ${wordCount} outside 600-800 range`);
+  }
+  
+  const h2Count = (body.match(/^## /gm) || []).length;
+  if (h2Count < 3) {
+    errors.push('Need at least 3 H2 sections');
+  }
+  
+  const bulletPoints = (body.match(/^- \*\*/gm) || []).length;
+  if (bulletPoints < 3) {
+    errors.push('Need at least 3 bullet points with bold formatting');
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors,
+    title: title.trim(),
+    excerpt: metaDescription.trim(),
+    content: body.trim(),
+    slug: generateSlug(title),
+    wordCount
+  };
+}
+
+// Helper to generate URL-friendly slug from title
+function generateSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .substring(0, 60);
+}
