@@ -12,6 +12,22 @@ const { createClient } = contentfulManagementPkg;
 const { createClient: createContentfulClient } = contentfulPkg;
 const { createApi } = unsplashPkg;
 
+// Validate required environment variables
+const requiredEnvVars = [
+  'CLAUDE_API_KEY',
+  'CONTENTFUL_MANAGEMENT_TOKEN',
+  'CONTENTFUL_SPACE_ID', 
+  'CONTENTFUL_ACCESS_TOKEN',
+  'UNSPLASH_ACCESS_KEY'
+];
+
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+if (missingVars.length > 0) {
+  console.error('❌ Missing required environment variables:', missingVars.join(', '));
+  console.error('Please ensure all secrets are properly configured in GitHub Actions.');
+  process.exit(1);
+}
+
 const anthropic = new Anthropic({
   apiKey: process.env.CLAUDE_API_KEY,
 });
