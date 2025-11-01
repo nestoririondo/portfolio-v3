@@ -62,7 +62,7 @@ const topics = [
   "CDN implementation for European businesses",
   "Database query optimization for web applications",
   "Lazy loading best practices for modern websites",
-  
+
   // Frontend Development & Design
   "Mobile-first design trends in 2025",
   "CSS Grid vs Flexbox: When to use which layout system",
@@ -72,7 +72,7 @@ const topics = [
   "Responsive typography for better readability",
   "Animation performance optimization techniques",
   "Component-driven development workflows",
-  
+
   // Backend & Infrastructure
   "API design patterns for scalable applications",
   "Microservices architecture for growing startups",
@@ -82,7 +82,7 @@ const topics = [
   "Serverless functions for cost-effective scaling",
   "Real-time features with WebSockets and SSE",
   "GraphQL vs REST API design decisions",
-  
+
   // Business & Marketing
   "Local SEO strategies for Berlin companies",
   "E-commerce conversion optimization",
@@ -92,7 +92,7 @@ const topics = [
   "Email marketing best practices for SaaS products",
   "Customer retention through web personalization",
   "Landing page optimization for higher conversions",
-  
+
   // Security & Compliance
   "GDPR compliance for German small businesses",
   "Website accessibility requirements in Germany",
@@ -102,7 +102,7 @@ const topics = [
   "Authentication strategies: JWT vs OAuth vs Sessions",
   "Password security best practices for web apps",
   "XSS and CSRF protection techniques",
-  
+
   // E-commerce & Online Business
   "Headless commerce architecture advantages",
   "Payment gateway integration for European markets",
@@ -112,7 +112,7 @@ const topics = [
   "Abandoned cart recovery automation strategies",
   "Cross-border e-commerce compliance in EU",
   "Subscription billing model implementation",
-  
+
   // Technology & Innovation
   "AI integration in modern web applications",
   "Machine learning for personalized user experiences",
@@ -122,7 +122,7 @@ const topics = [
   "IoT device integration with web platforms",
   "Edge computing for faster web applications",
   "5G impact on web development strategies",
-  
+
   // Content Management & Workflow
   "Content management system selection guide",
   "Headless CMS vs traditional CMS comparison",
@@ -132,7 +132,7 @@ const topics = [
   "CI/CD pipelines for frontend deployments",
   "Code review best practices for development teams",
   "Documentation strategies for growing codebases",
-  
+
   // Analytics & Optimization
   "Web analytics setup for business insights",
   "A/B testing implementation without third-party tools",
@@ -142,7 +142,7 @@ const topics = [
   "User feedback collection and implementation",
   "Data-driven design decision making",
   "Growth hacking techniques for web platforms",
-  
+
   // Freelancing & Business Development
   "Client onboarding processes for web agencies",
   "Project management tools for remote development teams",
@@ -152,7 +152,7 @@ const topics = [
   "Networking strategies for Berlin tech professionals",
   "Time tracking and productivity tools for developers",
   "Legal considerations for freelance web developers",
-  
+
   // Emerging Trends & Future Technologies
   "Web3 development fundamentals for traditional developers",
   "No-code platforms: Threat or opportunity for developers",
@@ -161,44 +161,45 @@ const topics = [
   "Cross-platform development with web technologies",
   "WebAssembly applications in modern web development",
   "Quantum computing implications for web security",
-  "Metaverse development opportunities for web developers"
+  "Metaverse development opportunities for web developers",
 ];
 
 // Function to fetch trending topics from multiple sources
 async function fetchTrendingTopics() {
   const trendingTopics = [];
-  
+
   try {
     // Try to fetch trending topics from multiple sources
     const sources = [
       fetchHackerNewsTopics(),
       fetchDevToTopics(),
-      fetchGitHubTrendingTopics()
+      fetchGitHubTrendingTopics(),
     ];
-    
+
     const results = await Promise.allSettled(sources);
-    
+
     results.forEach((result) => {
-      if (result.status === 'fulfilled' && result.value.length > 0) {
+      if (result.status === "fulfilled" && result.value.length > 0) {
         trendingTopics.push(...result.value);
       }
     });
-    
+
     // If we got trending topics, filter and format them for web development context
     if (trendingTopics.length > 0) {
       const webDevTopics = trendingTopics
-        .filter(topic => isWebDevRelevant(topic))
-        .map(topic => formatTopicForBusiness(topic))
+        .filter((topic) => isWebDevRelevant(topic))
+        .map((topic) => formatTopicForBusiness(topic))
         .slice(0, 20); // Limit to top 20 trending topics
-      
-      console.log(`🔥 Found ${webDevTopics.length} trending web development topics`);
+
+      console.log(
+        `🔥 Found ${webDevTopics.length} trending web development topics`
+      );
       return webDevTopics;
     }
-    
   } catch (error) {
     console.log("⚠️ Could not fetch trending topics, using curated list");
   }
-  
+
   // Fallback to curated topics if trending fetch fails
   return topics;
 }
@@ -206,14 +207,46 @@ async function fetchTrendingTopics() {
 // Check if a topic is relevant to web development/business
 function isWebDevRelevant(topic) {
   const webDevKeywords = [
-    'web', 'javascript', 'react', 'vue', 'angular', 'node', 'api', 'css', 'html',
-    'frontend', 'backend', 'fullstack', 'database', 'security', 'performance',
-    'seo', 'ui', 'ux', 'design', 'mobile', 'responsive', 'ecommerce', 'cms',
-    'framework', 'library', 'typescript', 'next', 'nuxt', 'svelte', 'server',
-    'cloud', 'aws', 'vercel', 'netlify', 'deployment', 'docker', 'ci/cd'
+    "web",
+    "javascript",
+    "react",
+    "vue",
+    "angular",
+    "node",
+    "api",
+    "css",
+    "html",
+    "frontend",
+    "backend",
+    "fullstack",
+    "database",
+    "security",
+    "performance",
+    "seo",
+    "ui",
+    "ux",
+    "design",
+    "mobile",
+    "responsive",
+    "ecommerce",
+    "cms",
+    "framework",
+    "library",
+    "typescript",
+    "next",
+    "nuxt",
+    "svelte",
+    "server",
+    "cloud",
+    "aws",
+    "vercel",
+    "netlify",
+    "deployment",
+    "docker",
+    "ci/cd",
   ];
-  
-  return webDevKeywords.some(keyword => 
+
+  return webDevKeywords.some((keyword) =>
     topic.toLowerCase().includes(keyword)
   );
 }
@@ -222,22 +255,23 @@ function isWebDevRelevant(topic) {
 function formatTopicForBusiness(topic) {
   // Clean and shorten the topic first
   const cleanTopic = topic
-    .replace(/[^\w\s-]/g, '') // Remove special characters
-    .replace(/\s+/g, ' ') // Normalize whitespace
+    .replace(/[^\w\s-]/g, "") // Remove special characters
+    .replace(/\s+/g, " ") // Normalize whitespace
     .trim()
     .substring(0, 25); // Shorter length for better titles
-  
+
   // Create concise business-focused topics
   const businessFormats = [
     `${cleanTopic} for Berlin businesses`,
     `${cleanTopic} ROI optimization`,
     `${cleanTopic} business growth`,
     `${cleanTopic} web strategies`,
-    `${cleanTopic} digital advantage`
+    `${cleanTopic} digital advantage`,
   ];
-  
-  const formatted = businessFormats[Math.floor(Math.random() * businessFormats.length)];
-  
+
+  const formatted =
+    businessFormats[Math.floor(Math.random() * businessFormats.length)];
+
   // Return the shorter version to ensure titles don't get truncated
   return formatted.length > 40 ? cleanTopic : formatted;
 }
@@ -245,21 +279,24 @@ function formatTopicForBusiness(topic) {
 // Fetch trending topics from Hacker News
 async function fetchHackerNewsTopics() {
   try {
-    const response = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
+    const response = await fetch(
+      "https://hacker-news.firebaseio.com/v0/topstories.json"
+    );
     const storyIds = await response.json();
-    
+
     const topStories = await Promise.all(
       storyIds.slice(0, 10).map(async (id) => {
-        const storyResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
+        const storyResponse = await fetch(
+          `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+        );
         return await storyResponse.json();
       })
     );
-    
+
     return topStories
-      .filter(story => story.title && story.score > 100)
-      .map(story => story.title)
+      .filter((story) => story.title && story.score > 100)
+      .map((story) => story.title)
       .slice(0, 5);
-      
   } catch (error) {
     console.log("Could not fetch from Hacker News:", error.message);
     return [];
@@ -269,14 +306,13 @@ async function fetchHackerNewsTopics() {
 // Fetch trending topics from Dev.to
 async function fetchDevToTopics() {
   try {
-    const response = await fetch('https://dev.to/api/articles?top=7');
+    const response = await fetch("https://dev.to/api/articles?top=7");
     const articles = await response.json();
-    
+
     return articles
-      .filter(article => article.positive_reactions_count > 50)
-      .map(article => article.title)
+      .filter((article) => article.positive_reactions_count > 50)
+      .map((article) => article.title)
       .slice(0, 5);
-      
   } catch (error) {
     console.log("Could not fetch from Dev.to:", error.message);
     return [];
@@ -286,15 +322,16 @@ async function fetchDevToTopics() {
 // Fetch trending repos from GitHub (tech topics)
 async function fetchGitHubTrendingTopics() {
   try {
-    const response = await fetch('https://api.github.com/search/repositories?q=language:javascript+language:typescript&sort=stars&order=desc&per_page=10');
+    const response = await fetch(
+      "https://api.github.com/search/repositories?q=language:javascript+language:typescript&sort=stars&order=desc&per_page=10"
+    );
     const data = await response.json();
-    
+
     return data.items
-      .filter(repo => repo.stargazers_count > 1000)
-      .map(repo => repo.description || repo.name)
-      .filter(desc => desc && desc.length > 10)
+      .filter((repo) => repo.stargazers_count > 1000)
+      .map((repo) => repo.description || repo.name)
+      .filter((desc) => desc && desc.length > 10)
       .slice(0, 5);
-      
   } catch (error) {
     console.log("Could not fetch from GitHub:", error.message);
     return [];
@@ -424,8 +461,13 @@ async function generateBlogPost(maxRetries = 3) {
           }
 
           console.log("✅ Content validation passed");
-          await publishToContentful(validation, topic, existingPosts);
-          return validation;
+          
+          // Enhance content with contextual images
+          const enhancedContent = await enhanceContentWithImages(validation.content, topic, existingPosts);
+          const enhancedValidation = { ...validation, content: enhancedContent };
+          
+          await publishToContentful(enhancedValidation, topic, existingPosts);
+          return enhancedValidation;
         } else {
           console.log(
             `❌ Attempt ${attempt} failed validation:`,
@@ -436,8 +478,13 @@ async function generateBlogPost(maxRetries = 3) {
             // Last attempt - publish anyway with fixes
             console.log("⚠️ Publishing with automatic fixes");
             const fixed = applyAutomaticFixes(validation);
-            await publishToContentful(fixed, topic, existingPosts);
-            return fixed;
+            
+            // Enhance content with contextual images
+            const enhancedContent = await enhanceContentWithImages(fixed.content, topic, existingPosts);
+            const enhancedFixed = { ...fixed, content: enhancedContent };
+            
+            await publishToContentful(enhancedFixed, topic, existingPosts);
+            return enhancedFixed;
           }
         }
       } catch (error) {
@@ -460,45 +507,36 @@ async function generateBlogPost(maxRetries = 3) {
 function applyAutomaticFixes(validation) {
   let { title, excerpt, content } = validation;
 
-  // Fix title length - ensure it's complete and under 55 chars
-  if (!title || title.length > 55) {
-    if (title.length > 55) {
-      // Try to find a natural break point (last complete word before 52 chars)
-      let cutPoint = title.lastIndexOf(" ", 52);
-      if (cutPoint < 25) {
-        // If no good break point, create a complete short title
-        title = "Berlin Web Development Solutions";
-      } else {
-        title = title.substring(0, cutPoint).trim();
-      }
-    } else if (!title) {
-      title = "Berlin Web Development Services";
-    }
-    
-    // Remove incomplete words or punctuation at the end
-    title = title.replace(/[^\w\s]$/, '').trim();
+  // Ensure title exists - NO length restrictions
+  if (!title) {
+    title = "Professional Web Development Services for Berlin";
   }
 
-  // Fix excerpt length - must be 140-150 characters
-  if (!excerpt || excerpt.length < 140 || excerpt.length > 150) {
-    if (excerpt && excerpt.length > 150) {
-      // Try to cut at last period before 147 chars
-      let cutPoint = excerpt.lastIndexOf(".", 147);
-      if (cutPoint > 140) {
+  // Clean up title but keep full length
+  title = title.trim();
+
+  // Fix excerpt length - must be 120-160 characters
+  if (!excerpt || excerpt.length < 120 || excerpt.length > 160) {
+    if (excerpt && excerpt.length > 160) {
+      // Try to cut at last period before 157 chars
+      let cutPoint = excerpt.lastIndexOf(".", 157);
+      if (cutPoint > 120) {
         excerpt = excerpt.substring(0, cutPoint + 1);
       } else {
-        // If no period, try to cut at last complete word before 147 chars
-        cutPoint = excerpt.lastIndexOf(" ", 147);
-        if (cutPoint < 140) {
-          // Create a new complete excerpt (145 chars)
-          excerpt = "Learn how Berlin businesses boost revenue and growth through professional web development and strategic digital optimization.";
+        // If no period, try to cut at last complete word before 157 chars
+        cutPoint = excerpt.lastIndexOf(" ", 157);
+        if (cutPoint < 120) {
+          // Create a new complete excerpt (140 chars)
+          excerpt =
+            "Discover how Berlin businesses boost revenue and conversions through professional web development and strategic optimization.";
         } else {
           excerpt = excerpt.substring(0, cutPoint) + ".";
         }
       }
     } else {
-      // Create a new complete excerpt of proper length (145 chars)
-      excerpt = "Learn how Berlin businesses boost revenue and growth through professional web development and strategic digital optimization.";
+      // Create a new complete excerpt of proper length (140 chars)
+      excerpt =
+        "Discover how Berlin businesses boost revenue and conversions through professional web development and strategic optimization.";
     }
   }
 
@@ -844,6 +882,86 @@ async function uploadImageToContentful(imageData) {
   }
 }
 
+// Add contextual images to blog content for visual interest
+async function enhanceContentWithImages(content, topic, existingPosts = []) {
+  // Check if the content has the contextual image placeholder
+  if (content.includes('[CONTEXTUAL_IMAGE_PLACEHOLDER]')) {
+    // Generate contextual search terms
+    const contextualTerms = [
+      `${topic} workflow`,
+      `${topic} process`, 
+      `${topic} implementation`,
+      `${topic} strategy`,
+      `business ${topic}`,
+      `professional ${topic}`,
+      `${topic} examples`,
+      `${topic} best practices`
+    ];
+    
+    const searchTerm = contextualTerms[Math.floor(Math.random() * contextualTerms.length)];
+    
+    console.log(`🖼️ Adding contextual image for: ${searchTerm}`);
+    
+    try {
+      // Fetch contextual image URL
+      const imageUrl = await fetchContextualImage(searchTerm, existingPosts);
+      
+      if (imageUrl) {
+        // Replace placeholder with image markdown
+        const imageMarkdown = `![${searchTerm}](${imageUrl})`;
+        content = content.replace('[CONTEXTUAL_IMAGE_PLACEHOLDER]', imageMarkdown);
+        console.log(`✅ Added contextual image: ${searchTerm}`);
+      } else {
+        // Remove placeholder if no image found
+        content = content.replace('[CONTEXTUAL_IMAGE_PLACEHOLDER]', '');
+        console.log(`⚠️ No contextual image found, removed placeholder`);
+      }
+    } catch (error) {
+      // Remove placeholder on error
+      content = content.replace('[CONTEXTUAL_IMAGE_PLACEHOLDER]', '');
+      console.log(`⚠️ Could not add contextual image: ${error.message}`);
+    }
+  }
+  
+  return content;
+}
+
+// Fetch a contextual image that complements the main featured image
+async function fetchContextualImage(searchTerm, existingPosts = []) {
+  try {
+    const response = await unsplash.search.getPhotos({
+      query: searchTerm,
+      page: 1,
+      perPage: 20,
+      orientation: 'landscape',
+    });
+
+    if (response.type === 'success') {
+      const photos = response.response.results;
+      
+      // Filter out images already used
+      const usedImageIds = existingPosts
+        .filter(post => post.featuredImage)
+        .map(post => post.featuredImage.split('/').pop()?.split('?')[0])
+        .filter(Boolean);
+
+      const availablePhotos = photos.filter(
+        photo => !usedImageIds.includes(photo.id)
+      );
+
+      if (availablePhotos.length > 0) {
+        const selectedPhoto = availablePhotos[0];
+        return `${selectedPhoto.urls.regular}?w=800&q=80`;
+      }
+    }
+    
+    return null;
+  } catch (error) {
+    console.log(`Could not fetch contextual image for "${searchTerm}":`, error.message);
+    return null;
+  }
+}
+
 async function publishToContentful(blogData, topic, existingPosts = []) {
   try {
     const space = await contentfulManagement.getSpace(
@@ -936,7 +1054,7 @@ async function getAvailableTopics(existingPosts) {
   // Fetch trending topics (fallback to curated if needed)
   console.log("🔍 Fetching trending web development topics...");
   const currentTopics = await fetchTrendingTopics();
-  
+
   return currentTopics.filter((topic) => {
     const topicKeywords = extractKeywords(topic);
 

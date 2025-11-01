@@ -8,7 +8,7 @@ BUSINESS CONTEXT & PERSPECTIVE:
 - Include real-world examples of how businesses have benefited from implementing these strategies
 - Position Néstor as the expert who can implement these solutions
 
-CRITICAL: The title and meta description MUST be complete sentences/thoughts. Do NOT cut off mid-word or leave incomplete phrases. Write shorter if needed to ensure completion.
+CRITICAL: The title and meta description MUST be complete sentences/thoughts. Do NOT cut off mid-word or leave incomplete phrases. Make titles as compelling and descriptive as needed - there is NO character limit for titles.
 
 Write in an informative but conversational tone that feels natural and approachable, not dry or overly academic.
 
@@ -24,9 +24,9 @@ FORMATTING REQUIREMENTS:
 9. Be detailed and comprehensive - don't rush to finish
 
 REQUIRED STRUCTURE:
-# [COMPLETE Title - Under 55 characters - Write shorter but COMPLETE rather than cutting off]
+# [COMPLETE Title - NO character limit - Write compelling, complete titles that capture the full topic]
 
-[Meta description: 140-150 characters - COMPLETE sentence with period - Better short & complete than cut off]
+[Meta description: 120-160 characters - COMPLETE sentence with period - Better short & complete than cut off]
 
 Write an engaging introduction paragraph with a hook and problem statement (50-80 words).
 
@@ -42,6 +42,10 @@ Write 100-150 words with practical solutions. No brackets or placeholders.
 - **Actual actionable tip 1** - with brief explanation
 - **Specific strategy 2** - with concrete example  
 - **Practical step 3** - with clear benefit
+
+[CONTEXTUAL_IMAGE_PLACEHOLDER]
+
+
 
 ## Conclusion
 Write a conclusion that summarizes the business benefits and includes a natural call-to-action about how Néstor can help implement these strategies for Berlin businesses. Position him as the expert who can turn these insights into real results (50-80 words). Emojis are fine if naturally relevant.
@@ -67,7 +71,7 @@ TONE GUIDELINES:
 
 CRITICAL - COMPLETE CONTENT CHECK:
 ✓ Title: COMPLETE sentence under 60 characters - NO cutting off mid-word
-✓ Meta: COMPLETE description 140-155 chars ending with period  
+✓ Meta: COMPLETE description 120-160 chars ending with period  
 ✓ Word count 600-800 words
 ✓ 3-4 H2 sections (emojis in H2 headings OK)
 ✓ NO placeholder brackets anywhere

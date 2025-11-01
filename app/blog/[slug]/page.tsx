@@ -1,6 +1,6 @@
 import { getBlogPost, getBlogPosts } from "@/lib/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { BLOCKS, MARKS, Document } from "@contentful/rich-text-types";
+import { BLOCKS, MARKS, INLINES, Document } from "@contentful/rich-text-types";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -18,7 +18,7 @@ interface BlogPostPageProps {
 const richTextOptions = {
   renderMark: {
     [MARKS.BOLD]: (text: React.ReactNode) => (
-      <strong className="font-semibold">{text}</strong>
+      <strong className="font-black text-gray-900 dark:text-white" style={{ fontWeight: '900' }}>{text}</strong>
     ),
   },
   renderNode: {
@@ -43,14 +43,39 @@ const richTextOptions = {
       </h3>
     ),
     [BLOCKS.UL_LIST]: (_: unknown, children: React.ReactNode) => (
-      <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>
+      <ul className="mb-6 space-y-3 ml-6 list-disc" style={{ 
+        listStyleType: 'disc !important',
+        paddingLeft: '1.5rem',
+        listStylePosition: 'outside'
+      }}>
+        {children}
+      </ul>
     ),
     [BLOCKS.OL_LIST]: (_: unknown, children: React.ReactNode) => (
-      <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>
+      <ol className="list-decimal pl-6 mb-6 space-y-3">{children}</ol>
     ),
     [BLOCKS.LIST_ITEM]: (_: unknown, children: React.ReactNode) => (
-      <li className="text-gray-700 dark:text-gray-300">{children}</li>
+      <li className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed pl-2">
+        {children}
+      </li>
     ),
+    [BLOCKS.EMBEDDED_ASSET]: (node: unknown) => {
+      const nodeData = node as { data: { target: { fields: { file: { url: string; description?: string }; title?: string } } } };
+      const { url, description } = nodeData.data.target.fields.file;
+      const alt = nodeData.data.target.fields.title || description || 'Blog image';
+      
+      return (
+        <div className="my-8">
+          <Image
+            src={`https:${url}`}
+            alt={alt}
+            width={800}
+            height={400}
+            className="rounded-lg shadow-lg w-full h-auto"
+          />
+        </div>
+      );
+    },
   },
 };
 
@@ -147,7 +172,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </header>
 
           {/* Content */}
-          <div className="prose prose-lg max-w-none prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6 prose-strong:text-gray-900 dark:prose-strong:text-white prose-ul:text-gray-700 dark:prose-ul:text-gray-300 prose-ol:text-gray-700 dark:prose-ol:text-gray-300 prose-headings:mb-6 prose-headings:mt-8">
+          <div className="blog-content prose prose-lg max-w-none prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6 prose-ul:text-gray-700 dark:prose-ul:text-gray-300 prose-ol:text-gray-700 dark:prose-ol:text-gray-300 prose-headings:mb-6 prose-headings:mt-8 prose-li:text-lg prose-li:leading-relaxed prose-li:mb-3">
             {post.fields.content &&
               documentToReactComponents(
                 post.fields.content as Document,
