@@ -35,16 +35,16 @@ function validateAndCleanContent(content) {
   // Validation checks
   const errors = [];
 
-  if (!title || title.length > 65) {
-    errors.push("Title missing or too long (>65 chars)");
+  if (!title || title.length > 55) {
+    errors.push(`Title too long: ${title.length}/55 chars`);
   }
 
   if (
     !metaDescription ||
-    metaDescription.length < 100 ||
-    metaDescription.length > 160
+    metaDescription.length < 140 ||
+    metaDescription.length > 150
   ) {
-    errors.push("Meta description must be 100-160 characters");
+    errors.push(`Meta description wrong length: ${metaDescription.length}/140-150 chars`);
   }
 
   const wordCount = body.split(/\s+/).length;

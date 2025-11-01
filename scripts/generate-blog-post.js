@@ -53,15 +53,253 @@ const unsplash = createApi({
 });
 
 const topics = [
+  // Web Development & Performance
   "Website speed optimization for Berlin restaurants",
-  "GDPR compliance for German small businesses",
+  "Progressive Web Apps: The future of mobile experiences",
+  "Core Web Vitals optimization strategies for 2025",
+  "Server-side rendering vs client-side rendering performance",
+  "Image optimization techniques for faster websites",
+  "CDN implementation for European businesses",
+  "Database query optimization for web applications",
+  "Lazy loading best practices for modern websites",
+  
+  // Frontend Development & Design
   "Mobile-first design trends in 2025",
+  "CSS Grid vs Flexbox: When to use which layout system",
+  "Modern JavaScript frameworks comparison: React vs Vue vs Svelte",
+  "Micro-interactions that boost user engagement",
+  "Dark mode implementation best practices",
+  "Responsive typography for better readability",
+  "Animation performance optimization techniques",
+  "Component-driven development workflows",
+  
+  // Backend & Infrastructure
+  "API design patterns for scalable applications",
+  "Microservices architecture for growing startups",
+  "Docker containerization for web developers",
+  "Cloud deployment strategies: AWS vs Vercel vs Netlify",
+  "Database selection guide: SQL vs NoSQL for web apps",
+  "Serverless functions for cost-effective scaling",
+  "Real-time features with WebSockets and SSE",
+  "GraphQL vs REST API design decisions",
+  
+  // Business & Marketing
   "Local SEO strategies for Berlin companies",
   "E-commerce conversion optimization",
-  "Website accessibility requirements in Germany",
+  "Digital marketing automation for small businesses",
+  "Content marketing strategies for tech companies",
   "Social media integration for business websites",
+  "Email marketing best practices for SaaS products",
+  "Customer retention through web personalization",
+  "Landing page optimization for higher conversions",
+  
+  // Security & Compliance
+  "GDPR compliance for German small businesses",
+  "Website accessibility requirements in Germany",
+  "Cybersecurity essentials for business websites",
+  "SSL certificate implementation and management",
+  "Data privacy regulations across European markets",
+  "Authentication strategies: JWT vs OAuth vs Sessions",
+  "Password security best practices for web apps",
+  "XSS and CSRF protection techniques",
+  
+  // E-commerce & Online Business
+  "Headless commerce architecture advantages",
+  "Payment gateway integration for European markets",
+  "Multi-currency support for international sales",
+  "Inventory management system integration",
+  "Customer reviews and rating system implementation",
+  "Abandoned cart recovery automation strategies",
+  "Cross-border e-commerce compliance in EU",
+  "Subscription billing model implementation",
+  
+  // Technology & Innovation
+  "AI integration in modern web applications",
+  "Machine learning for personalized user experiences",
+  "Blockchain integration for web developers",
+  "Voice interface development for websites",
+  "Augmented reality features for e-commerce sites",
+  "IoT device integration with web platforms",
+  "Edge computing for faster web applications",
+  "5G impact on web development strategies",
+  
+  // Content Management & Workflow
   "Content management system selection guide",
+  "Headless CMS vs traditional CMS comparison",
+  "JAMstack architecture for content-heavy sites",
+  "Version control workflows for design teams",
+  "Automated testing strategies for web projects",
+  "CI/CD pipelines for frontend deployments",
+  "Code review best practices for development teams",
+  "Documentation strategies for growing codebases",
+  
+  // Analytics & Optimization
+  "Web analytics setup for business insights",
+  "A/B testing implementation without third-party tools",
+  "Heatmap analysis for user behavior optimization",
+  "Conversion funnel optimization techniques",
+  "Performance monitoring and alerting systems",
+  "User feedback collection and implementation",
+  "Data-driven design decision making",
+  "Growth hacking techniques for web platforms",
+  
+  // Freelancing & Business Development
+  "Client onboarding processes for web agencies",
+  "Project management tools for remote development teams",
+  "Pricing strategies for web development services",
+  "Building long-term client relationships in tech",
+  "Portfolio optimization for attracting ideal clients",
+  "Networking strategies for Berlin tech professionals",
+  "Time tracking and productivity tools for developers",
+  "Legal considerations for freelance web developers",
+  
+  // Emerging Trends & Future Technologies
+  "Web3 development fundamentals for traditional developers",
+  "No-code platforms: Threat or opportunity for developers",
+  "Sustainable web development practices for climate impact",
+  "Accessibility-first design methodology",
+  "Cross-platform development with web technologies",
+  "WebAssembly applications in modern web development",
+  "Quantum computing implications for web security",
+  "Metaverse development opportunities for web developers"
 ];
+
+// Function to fetch trending topics from multiple sources
+async function fetchTrendingTopics() {
+  const trendingTopics = [];
+  
+  try {
+    // Try to fetch trending topics from multiple sources
+    const sources = [
+      fetchHackerNewsTopics(),
+      fetchDevToTopics(),
+      fetchGitHubTrendingTopics()
+    ];
+    
+    const results = await Promise.allSettled(sources);
+    
+    results.forEach((result) => {
+      if (result.status === 'fulfilled' && result.value.length > 0) {
+        trendingTopics.push(...result.value);
+      }
+    });
+    
+    // If we got trending topics, filter and format them for web development context
+    if (trendingTopics.length > 0) {
+      const webDevTopics = trendingTopics
+        .filter(topic => isWebDevRelevant(topic))
+        .map(topic => formatTopicForBusiness(topic))
+        .slice(0, 20); // Limit to top 20 trending topics
+      
+      console.log(`🔥 Found ${webDevTopics.length} trending web development topics`);
+      return webDevTopics;
+    }
+    
+  } catch (error) {
+    console.log("⚠️ Could not fetch trending topics, using curated list");
+  }
+  
+  // Fallback to curated topics if trending fetch fails
+  return topics;
+}
+
+// Check if a topic is relevant to web development/business
+function isWebDevRelevant(topic) {
+  const webDevKeywords = [
+    'web', 'javascript', 'react', 'vue', 'angular', 'node', 'api', 'css', 'html',
+    'frontend', 'backend', 'fullstack', 'database', 'security', 'performance',
+    'seo', 'ui', 'ux', 'design', 'mobile', 'responsive', 'ecommerce', 'cms',
+    'framework', 'library', 'typescript', 'next', 'nuxt', 'svelte', 'server',
+    'cloud', 'aws', 'vercel', 'netlify', 'deployment', 'docker', 'ci/cd'
+  ];
+  
+  return webDevKeywords.some(keyword => 
+    topic.toLowerCase().includes(keyword)
+  );
+}
+
+// Format trending topic for business context
+function formatTopicForBusiness(topic) {
+  // Clean and shorten the topic first
+  const cleanTopic = topic
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim()
+    .substring(0, 25); // Shorter length for better titles
+  
+  // Create concise business-focused topics
+  const businessFormats = [
+    `${cleanTopic} for Berlin businesses`,
+    `${cleanTopic} ROI optimization`,
+    `${cleanTopic} business growth`,
+    `${cleanTopic} web strategies`,
+    `${cleanTopic} digital advantage`
+  ];
+  
+  const formatted = businessFormats[Math.floor(Math.random() * businessFormats.length)];
+  
+  // Return the shorter version to ensure titles don't get truncated
+  return formatted.length > 40 ? cleanTopic : formatted;
+}
+
+// Fetch trending topics from Hacker News
+async function fetchHackerNewsTopics() {
+  try {
+    const response = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
+    const storyIds = await response.json();
+    
+    const topStories = await Promise.all(
+      storyIds.slice(0, 10).map(async (id) => {
+        const storyResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
+        return await storyResponse.json();
+      })
+    );
+    
+    return topStories
+      .filter(story => story.title && story.score > 100)
+      .map(story => story.title)
+      .slice(0, 5);
+      
+  } catch (error) {
+    console.log("Could not fetch from Hacker News:", error.message);
+    return [];
+  }
+}
+
+// Fetch trending topics from Dev.to
+async function fetchDevToTopics() {
+  try {
+    const response = await fetch('https://dev.to/api/articles?top=7');
+    const articles = await response.json();
+    
+    return articles
+      .filter(article => article.positive_reactions_count > 50)
+      .map(article => article.title)
+      .slice(0, 5);
+      
+  } catch (error) {
+    console.log("Could not fetch from Dev.to:", error.message);
+    return [];
+  }
+}
+
+// Fetch trending repos from GitHub (tech topics)
+async function fetchGitHubTrendingTopics() {
+  try {
+    const response = await fetch('https://api.github.com/search/repositories?q=language:javascript+language:typescript&sort=stars&order=desc&per_page=10');
+    const data = await response.json();
+    
+    return data.items
+      .filter(repo => repo.stargazers_count > 1000)
+      .map(repo => repo.description || repo.name)
+      .filter(desc => desc && desc.length > 10)
+      .slice(0, 5);
+      
+  } catch (error) {
+    console.log("Could not fetch from GitHub:", error.message);
+    return [];
+  }
+}
 
 async function generateBlogPost(maxRetries = 3) {
   // Check for concurrent execution
@@ -222,35 +460,45 @@ async function generateBlogPost(maxRetries = 3) {
 function applyAutomaticFixes(validation) {
   let { title, excerpt, content } = validation;
 
-  // Fix title length
-  if (title.length > 65) {
-    title = title.substring(0, 65);
+  // Fix title length - ensure it's complete and under 55 chars
+  if (!title || title.length > 55) {
+    if (title.length > 55) {
+      // Try to find a natural break point (last complete word before 52 chars)
+      let cutPoint = title.lastIndexOf(" ", 52);
+      if (cutPoint < 25) {
+        // If no good break point, create a complete short title
+        title = "Berlin Web Development Solutions";
+      } else {
+        title = title.substring(0, cutPoint).trim();
+      }
+    } else if (!title) {
+      title = "Berlin Web Development Services";
+    }
+    
+    // Remove incomplete words or punctuation at the end
+    title = title.replace(/[^\w\s]$/, '').trim();
   }
 
-  // Fix excerpt length - but try to end at complete words or sentences
-  if (excerpt.length > 140) {
-    // First try to cut at last period before 140 chars
-    let cutPoint = excerpt.lastIndexOf(".", 135);
-    if (cutPoint > 120) {
-      excerpt = excerpt.substring(0, cutPoint + 1);
-    } else {
-      // If no period, try to cut at last complete word before 137 chars
-      cutPoint = excerpt.lastIndexOf(" ", 137);
-      if (cutPoint < 120) cutPoint = 137; // Fallback if no good word break
-      excerpt = excerpt.substring(0, cutPoint) + ".";
-    }
-  } else if (excerpt.length < 120) {
-    excerpt += " Learn more about improving your business website.";
-    if (excerpt.length > 140) {
-      // First try to cut at last period
-      let cutPoint = excerpt.lastIndexOf(".", 135);
-      if (cutPoint > 120) {
+  // Fix excerpt length - must be 140-150 characters
+  if (!excerpt || excerpt.length < 140 || excerpt.length > 150) {
+    if (excerpt && excerpt.length > 150) {
+      // Try to cut at last period before 147 chars
+      let cutPoint = excerpt.lastIndexOf(".", 147);
+      if (cutPoint > 140) {
         excerpt = excerpt.substring(0, cutPoint + 1);
       } else {
-        cutPoint = excerpt.lastIndexOf(" ", 137);
-        if (cutPoint < 120) cutPoint = 137;
-        excerpt = excerpt.substring(0, cutPoint) + ".";
+        // If no period, try to cut at last complete word before 147 chars
+        cutPoint = excerpt.lastIndexOf(" ", 147);
+        if (cutPoint < 140) {
+          // Create a new complete excerpt (145 chars)
+          excerpt = "Learn how Berlin businesses boost revenue and growth through professional web development and strategic digital optimization.";
+        } else {
+          excerpt = excerpt.substring(0, cutPoint) + ".";
+        }
       }
+    } else {
+      // Create a new complete excerpt of proper length (145 chars)
+      excerpt = "Learn how Berlin businesses boost revenue and growth through professional web development and strategic digital optimization.";
     }
   }
 
@@ -685,7 +933,11 @@ async function fetchExistingPosts() {
 async function getAvailableTopics(existingPosts) {
   const usedKeywords = extractKeywordsFromTitles(existingPosts);
 
-  return topics.filter((topic) => {
+  // Fetch trending topics (fallback to curated if needed)
+  console.log("🔍 Fetching trending web development topics...");
+  const currentTopics = await fetchTrendingTopics();
+  
+  return currentTopics.filter((topic) => {
     const topicKeywords = extractKeywords(topic);
 
     // Check if any keyword from the topic is already heavily used

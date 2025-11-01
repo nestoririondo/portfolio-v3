@@ -131,7 +131,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 By{" "}
                 {typeof post.fields.author === "string"
                   ? post.fields.author
-                  : "Anonymous"}
+                  : "Néstor"}
               </span>
             </div>
 
