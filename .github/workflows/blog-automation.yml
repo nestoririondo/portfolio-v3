@@ -1,0 +1,259 @@
+name: Automated Blog Generation
+
+on:
+  # Scheduled posts - Tuesday 9 AM and Friday 2 PM CET (Berlin time)
+  schedule:
+    - cron: '0 7 * * 2'  # Tuesday 9 AM CET (7 AM UTC)
+    - cron: '0 12 * * 5' # Friday 2 PM CET (12 PM UTC)
+  
+  # Manual trigger for on-demand posts
+  workflow_dispatch:
+    inputs:
+      force_topic:
+        description: 'Force a specific topic (optional)'
+        required: false
+        type: string
+      check_events:
+        description: 'Check for current events and special dates'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  generate-blog-post:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Check current date and events
+      id: date-check
+      run: |
+        # Get current date info
+        CURRENT_DATE=$(date '+%Y-%m-%d')
+        DAY_OF_WEEK=$(date '+%A')
+        MONTH=$(date '+%B')
+        DAY_OF_MONTH=$(date '+%d')
+        
+        echo "current_date=$CURRENT_DATE" >> $GITHUB_OUTPUT
+        echo "day_of_week=$DAY_OF_WEEK" >> $GITHUB_OUTPUT
+        echo "month=$MONTH" >> $GITHUB_OUTPUT
+        echo "day_of_month=$DAY_OF_MONTH" >> $GITHUB_OUTPUT
+        
+        # Check for special events
+        SPECIAL_TOPIC=""
+        
+        # New Year period
+        if [[ "$MONTH" == "January" && "$DAY_OF_MONTH" -le 15 ]]; then
+          SPECIAL_TOPIC="New Year website resolutions for Berlin businesses"
+        fi
+        
+        # Valentine's Day period (February)
+        if [[ "$MONTH" == "February" && "$DAY_OF_MONTH" -ge 10 && "$DAY_OF_MONTH" -le 20 ]]; then
+          SPECIAL_TOPIC="Valentine's Day marketing strategies for Berlin retailers"
+        fi
+        
+        # Spring period (March-April)
+        if [[ "$MONTH" == "March" || "$MONTH" == "April" ]]; then
+          SPECIAL_TOPIC="Spring website refresh for Berlin businesses"
+        fi
+        
+        # GDPR Anniversary (May 25)
+        if [[ "$MONTH" == "May" && "$DAY_OF_MONTH" -ge 20 && "$DAY_OF_MONTH" -le 30 ]]; then
+          SPECIAL_TOPIC="GDPR compliance updates for German businesses"
+        fi
+        
+        # Summer preparation (June-July)
+        if [[ "$MONTH" == "June" || "$MONTH" == "July" ]]; then
+          SPECIAL_TOPIC="Summer mobile optimization for Berlin tourism businesses"
+        fi
+        
+        # Back to school (August-September)
+        if [[ "$MONTH" == "August" || "$MONTH" == "September" ]]; then
+          SPECIAL_TOPIC="Back-to-business website strategies for Berlin companies"
+        fi
+        
+        # Black Friday preparation (October-November)
+        if [[ "$MONTH" == "October" || "$MONTH" == "November" ]]; then
+          SPECIAL_TOPIC="E-commerce optimization for Black Friday in Germany"
+        fi
+        
+        # Holiday season (December)
+        if [[ "$MONTH" == "December" ]]; then
+          SPECIAL_TOPIC="Holiday season website performance for Berlin retailers"
+        fi
+        
+        echo "special_topic=$SPECIAL_TOPIC" >> $GITHUB_OUTPUT
+        
+        # Log the detected information
+        echo "📅 Current date: $CURRENT_DATE ($DAY_OF_WEEK)"
+        echo "🗓️ Month: $MONTH, Day: $DAY_OF_MONTH"
+        if [[ -n "$SPECIAL_TOPIC" ]]; then
+          echo "🎯 Special topic detected: $SPECIAL_TOPIC"
+        else
+          echo "📝 No special events detected, using regular topics"
+        fi
+        
+    - name: Check trending tech topics
+      id: trending-check
+      if: inputs.check_events == true || inputs.check_events == ''
+      run: |
+        # Create a simple trending topics check based on current tech trends
+        CURRENT_MONTH=$(date '+%m')
+        CURRENT_YEAR=$(date '+%Y')
+        
+        TRENDING_TOPIC=""
+        
+        # AI trends (ongoing)
+        if [[ "$CURRENT_MONTH" -ge 1 && "$CURRENT_MONTH" -le 12 ]]; then
+          TRENDING_TOPICS=("AI integration for Berlin business websites" "Sustainable web development practices in Germany" "Web3 and blockchain for German startups" "Progressive Web Apps for Berlin retailers" "Voice search optimization for German businesses")
+          RANDOM_INDEX=$((RANDOM % ${#TRENDING_TOPICS[@]}))
+          TRENDING_TOPIC="${TRENDING_TOPICS[$RANDOM_INDEX]}"
+        fi
+        
+        echo "trending_topic=$TRENDING_TOPIC" >> $GITHUB_OUTPUT
+        echo "🔥 Trending topic suggestion: $TRENDING_TOPIC"
+        
+    - name: Create enhanced blog generation script
+      run: |
+        cat > scripts/enhanced-blog-generation.js << 'EOF'
+        import 'dotenv/config';
+        import { generateBlogPost } from './generate-blog-post.js';
+        
+        // Get GitHub Actions inputs
+        const forceTopic = process.env.FORCE_TOPIC;
+        const specialTopic = process.env.SPECIAL_TOPIC;
+        const trendingTopic = process.env.TRENDING_TOPIC;
+        const currentDate = process.env.CURRENT_DATE;
+        const dayOfWeek = process.env.DAY_OF_WEEK;
+        
+        console.log('🤖 Enhanced Blog Generation Started');
+        console.log(`📅 Date: ${currentDate} (${dayOfWeek})`);
+        
+        // Determine topic selection strategy
+        let selectedTopic = null;
+        
+        if (forceTopic) {
+          console.log(`🎯 Using forced topic: ${forceTopic}`);
+          selectedTopic = forceTopic;
+        } else if (specialTopic) {
+          console.log(`🎉 Using special event topic: ${specialTopic}`);
+          selectedTopic = specialTopic;
+        } else if (trendingTopic && Math.random() > 0.5) {
+          console.log(`🔥 Using trending topic: ${trendingTopic}`);
+          selectedTopic = trendingTopic;
+        } else {
+          console.log('📝 Using regular topic selection');
+        }
+        
+        try {
+          // If we have a specific topic, temporarily modify the topics array
+          if (selectedTopic) {
+            const fs = await import('fs');
+            
+            // Read the original script to modify the topics array
+            let scriptContent = fs.readFileSync('./scripts/generate-blog-post.js', 'utf8');
+            
+            // Create a backup and modify the topics array
+            const topicsRegex = /const topics = \[([\s\S]*?)\];/;
+            const newTopicsArray = `const topics = [
+              '${selectedTopic}',
+              'Website speed optimization for Berlin restaurants',
+              'GDPR compliance for German small businesses',
+              'Mobile-first design trends in 2025',
+              'Local SEO strategies for Berlin companies',
+              'E-commerce conversion optimization',
+              'Website accessibility requirements in Germany',
+              'Social media integration for business websites',
+              'Content management system selection guide',
+            ];`;
+            
+            // Backup original script
+            fs.writeFileSync('./scripts/generate-blog-post-backup.js', scriptContent);
+            
+            // Write modified script
+            scriptContent = scriptContent.replace(topicsRegex, newTopicsArray);
+            fs.writeFileSync('./scripts/generate-blog-post.js', scriptContent);
+          }
+          
+          // Generate the blog post (will use our special topic if provided)
+          const result = await generateBlogPost();
+          
+          // Restore original script if we modified it
+          if (selectedTopic) {
+            const fs = await import('fs');
+            const originalContent = fs.readFileSync('./scripts/generate-blog-post-backup.js', 'utf8');
+            fs.writeFileSync('./scripts/generate-blog-post.js', originalContent);
+            fs.unlinkSync('./scripts/generate-blog-post-backup.js');
+          }
+          
+          if (result) {
+            console.log('✅ Blog post generated successfully!');
+            console.log(`📝 Title: ${result.title}`);
+          } else {
+            console.log('⚠️ No blog post was generated (possibly due to duplicates)');
+          }
+          
+        } catch (error) {
+          // Restore original script on error
+          if (selectedTopic) {
+            try {
+              const fs = await import('fs');
+              const originalContent = fs.readFileSync('./scripts/generate-blog-post-backup.js', 'utf8');
+              fs.writeFileSync('./scripts/generate-blog-post.js', originalContent);
+              fs.unlinkSync('./scripts/generate-blog-post-backup.js');
+            } catch (restoreError) {
+              console.error('❌ Failed to restore original script:', restoreError);
+            }
+          }
+          
+          console.error('❌ Blog generation failed:', error);
+          process.exit(1);
+        }
+        EOF
+        
+    - name: Generate blog post
+      env:
+        CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+        CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
+        CONTENTFUL_MANAGEMENT_TOKEN: ${{ secrets.CONTENTFUL_MANAGEMENT_TOKEN }}
+        CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+        UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        UNSPLASH_SECRET_KEY: ${{ secrets.UNSPLASH_SECRET_KEY }}
+        FORCE_TOPIC: ${{ inputs.force_topic }}
+        SPECIAL_TOPIC: ${{ steps.date-check.outputs.special_topic }}
+        TRENDING_TOPIC: ${{ steps.trending-check.outputs.trending_topic }}
+        CURRENT_DATE: ${{ steps.date-check.outputs.current_date }}
+        DAY_OF_WEEK: ${{ steps.date-check.outputs.day_of_week }}
+      run: node scripts/enhanced-blog-generation.js
+      
+    - name: Clean up temporary files
+      run: |
+        rm -f scripts/enhanced-blog-generation.js
+        rm -f scripts/generate-blog-post-backup.js
+        
+    - name: Create summary
+      run: |
+        echo "## 📝 Blog Generation Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Date**: ${{ steps.date-check.outputs.current_date }} (${{ steps.date-check.outputs.day_of_week }})" >> $GITHUB_STEP_SUMMARY
+        echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        if [[ -n "${{ steps.date-check.outputs.special_topic }}" ]]; then
+          echo "- **Special Event**: ${{ steps.date-check.outputs.special_topic }}" >> $GITHUB_STEP_SUMMARY
+        fi
+        if [[ -n "${{ steps.trending-check.outputs.trending_topic }}" ]]; then
+          echo "- **Trending Topic**: ${{ steps.trending-check.outputs.trending_topic }}" >> $GITHUB_STEP_SUMMARY
+        fi
+        if [[ -n "${{ inputs.force_topic }}" ]]; then
+          echo "- **Forced Topic**: ${{ inputs.force_topic }}" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "- **Status**: ✅ Blog post generated and published to Contentful" >> $GITHUB_STEP_SUMMARY
