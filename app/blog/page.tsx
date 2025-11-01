@@ -1,9 +1,12 @@
-import { getBlogPosts } from '@/lib/contentful'
-import Link from 'next/link'
-import Image from 'next/image'
+import { getBlogPosts } from "@/lib/contentful";
+import Link from "next/link";
+import Image from "next/image";
+
+// Force dynamic rendering to show new posts immediately
+export const dynamic = "force-dynamic";
 
 export default async function BlogPage() {
-  const posts = await getBlogPosts()
+  const posts = await getBlogPosts();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
@@ -13,7 +16,8 @@ export default async function BlogPage() {
             Web Development Insights
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Tips, trends, and insights for Berlin businesses looking to grow through better web presence
+            Tips, trends, and insights for Berlin businesses looking to grow
+            through better web presence
           </p>
         </div>
 
@@ -34,35 +38,43 @@ export default async function BlogPage() {
                   <div className="aspect-video relative">
                     <Image
                       src={`https:${post.fields.featuredImage.fields.file.url}`}
-                      alt={post.fields.featuredImage.fields.title || post.fields.title}
+                      alt={
+                        post.fields.featuredImage.fields.title ||
+                        post.fields.title
+                      }
                       fill
                       className="object-cover"
                     />
                   </div>
                 )}
-                
+
                 <div className="p-6">
                   <div className="mb-3">
                     <time
                       dateTime={post.fields.publishedDate}
                       className="text-sm text-gray-500 dark:text-gray-400"
                     >
-                      {new Date(post.fields.publishedDate).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
+                      {new Date(post.fields.publishedDate).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
                     </time>
                   </div>
-                  
+
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                     {post.fields.title}
                   </h2>
-                  
+
                   <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                    {post.fields.excerpt || post.fields.subtitle || 'No description available'}
+                    {post.fields.excerpt ||
+                      post.fields.subtitle ||
+                      "No description available"}
                   </p>
-                  
+
                   <Link
                     href={`/blog/${post.fields.slug}`}
                     className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors"
@@ -89,5 +101,5 @@ export default async function BlogPage() {
         )}
       </div>
     </div>
-  )
+  );
 }
