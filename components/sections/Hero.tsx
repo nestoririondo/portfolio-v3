@@ -9,14 +9,15 @@ import { useTheme } from "@/lib/contexts/ThemeContext";
 import BlurText from "../ui/BlurText";
 import { useAnimation } from "@/lib/contexts/AnimationContext";
 import { trackEvent } from "@/lib/posthog";
+import { getThemeColors } from "@/lib/utils/theme";
+import { Container } from "@/components/layout/Container";
 
 export function Hero() {
   const { t } = useLanguage();
   const { heroComplete, setHeroComplete } = useAnimation();
   const { theme } = useTheme();
-
-  const baseColor = theme === "dark" ? "#2b3142" : "#ededed";
-  const activeColor = theme === "dark" ? "#00FFF7" : "#0022ff";
+  
+  const themeColors = getThemeColors(theme);
 
   const handleHeroContactClick = () => {
     trackEvent("hero_contact_button_clicked", {
@@ -30,8 +31,8 @@ export function Hero() {
       <DotGrid
         dotSize={8}
         gap={15}
-        baseColor={baseColor}
-        activeColor={activeColor}
+        baseColor={themeColors.dotGrid.base}
+        activeColor={themeColors.dotGrid.active}
         proximity={300}
         shockRadius={400}
         shockStrength={5}
@@ -39,10 +40,8 @@ export function Hero() {
         returnDuration={2.5}
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
       />
-      <section
-        id="hero"
-        className="absolute inset-0 h-full flex flex-col justify-center items-start max-w-6xl mx-auto px-4 md:px-4 z-20"
-      >
+      <section id="hero" className="absolute inset-0 h-full flex flex-col justify-center items-start z-20">
+        <Container size="xl" className="h-full flex flex-col justify-center items-start">
         <div className="w-full relative z-30">
           <h1>
             <BlurText
@@ -77,6 +76,7 @@ export function Hero() {
             </button>
           </motion.div>
         </div>
+        </Container>
       </section>
     </div>
   );

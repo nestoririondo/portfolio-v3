@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Container } from "@/components/layout/Container";
 
 const processSteps = [
   {
@@ -30,22 +32,12 @@ export function Process() {
   const { t } = useLanguage();
 
   return (
-    <section id="process" className="py-20 px-4 overflow-hidden">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            {t("process.title")}
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            {t("process.subtitle")}
-          </p>
-        </motion.div>
+    <section id="process" className="py-20 overflow-hidden">
+      <Container size="md">
+        <SectionHeader 
+          title={t("process.title")}
+          subtitle={t("process.subtitle")}
+        />
 
         <div className="space-y-8 md:space-y-12">
           {processSteps.map((step, index) => {
@@ -165,7 +157,7 @@ export function Process() {
             );
           })}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

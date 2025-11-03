@@ -5,6 +5,9 @@ import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { useContactForm } from "@/lib/hooks/useContactForm";
 import { WhatsAppButton } from "@/components/forms/WhatsAppButton";
 import { FormField } from "@/components/forms/FormField";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Container } from "@/components/layout/Container";
+import { useRevealAnimation } from "@/lib/hooks/useRevealAnimation";
 
 export function Contact() {
   const { t } = useLanguage();
@@ -17,41 +20,26 @@ export function Contact() {
     handleChange,
   } = useContactForm();
 
+  const sectionAnimation = useRevealAnimation({ 
+    distance: 50, 
+    duration: 0.8 
+  });
+  const dividerAnimation = useRevealAnimation({ delay: 0.3 });
+  const formAnimation = useRevealAnimation({ delay: 0.4 });
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
-    >
+    <motion.div {...sectionAnimation}>
       <section id="contact" className="pt-8">
-        <div className="max-w-4xl mx-auto px-4">
-          {/* Section Header */}
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-8">
-              {t("contact.title")}
-            </h2>
-          </motion.div>
+        <Container size="md">
+          <SectionHeader title={t("contact.title")} />
 
           {/* WhatsApp Quick Contact */}
           <WhatsAppButton source="contact_section" delay={0.2} />
 
           {/* Divider */}
           <motion.div
+            {...dividerAnimation}
             className="flex items-center my-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
           >
             <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
             <span className="px-6 text-gray-500 dark:text-gray-400 text-sm font-medium">
@@ -62,13 +50,10 @@ export function Contact() {
 
           {/* Contact Form */}
           <motion.form
+            {...formAnimation}
             onSubmit={handleSubmit}
             className="space-y-6"
             noValidate
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
           >
             {/* Name Field */}
             <FormField
@@ -141,7 +126,7 @@ export function Contact() {
               </button>
             </div>
           </motion.form>
-        </div>
+        </Container>
       </section>
     </motion.div>
   );
