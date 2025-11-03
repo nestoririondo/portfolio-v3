@@ -35,18 +35,30 @@ jobs:
     - name: Check for outdated packages
       id: outdated
       run: |
-        # Check for outdated packages and capture output
-        OUTDATED=$(npm outdated --json 2>/dev/null || echo '{}')
+        # Check for outdated packages without JSON to avoid parsing issues
+        npm outdated > outdated.txt 2>/dev/null || true
         
-        # Count outdated packages more safely
-        if [ "$OUTDATED" = "{}" ]; then
-          OUTDATED_COUNT=0
+        # Count lines (excluding header if present)
+        if [ -s outdated.txt ]; then
+          OUTDATED_COUNT=$(wc -l < outdated.txt | tr -d ' ')
+          # Subtract 1 for header line if it exists
+          if [ "$OUTDATED_COUNT" -gt 0 ]; then
+            OUTDATED_COUNT=$((OUTDATED_COUNT - 1))
+          fi
         else
-          OUTDATED_COUNT=$(echo "$OUTDATED" | jq -r 'keys | length' 2>/dev/null || echo "0")
+          OUTDATED_COUNT=0
         fi
         
-        echo "outdated_count=${OUTDATED_COUNT}" >> $GITHUB_OUTPUT
-        echo "📦 Found ${OUTDATED_COUNT} outdated packages"
+        # Ensure we don't have negative counts
+        if [ "$OUTDATED_COUNT" -lt 0 ]; then
+          OUTDATED_COUNT=0
+        fi
+        
+        echo "outdated_count=$OUTDATED_COUNT" >> $GITHUB_OUTPUT
+        echo "📦 Found $OUTDATED_COUNT outdated packages"
+        
+        # Clean up
+        rm -f outdated.txt
         
     - name: Update dependencies
       if: steps.outdated.outputs.outdated_count > 0
