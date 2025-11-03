@@ -3,7 +3,6 @@ import Anthropic from "@anthropic-ai/sdk";
 import contentfulManagementPkg from "contentful-management";
 import * as contentfulPkg from "contentful";
 import { createClient as createPexelsClient } from "pexels";
-import fetch from "node-fetch";
 
 import { blogPromptTemplate } from "./blog-prompt-template.js";
 import { validateAndCleanContent } from "./content-validator.js";
@@ -386,12 +385,8 @@ async function generateBlogPost(maxRetries = 3) {
           console.log("✅ Content validation passed");
 
           // Use content as-is without link enhancement
-          const enhancedValidation = {
-            ...validation,
-          };
-
-          await publishToContentful(enhancedValidation, topic, existingPosts);
-          return enhancedValidation;
+          await publishToContentful(validation, topic, existingPosts);
+          return validation;
         } else {
           console.log(
             `❌ Attempt ${attempt} failed validation:`,
@@ -1042,7 +1037,6 @@ async function fetchFallbackImage(existingPosts = []) {
 
   // Absolute final fallback - return null and let the system handle it
   console.log("❌ All image searches failed");
-  return null;
   return null;
 }
 
