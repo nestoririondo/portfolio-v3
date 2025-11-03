@@ -37,10 +37,9 @@ jobs:
       run: |
         # Check for outdated packages and capture output
         OUTDATED=$(npm outdated --json || echo '{}')
-        echo "outdated_packages=$OUTDATED" >> $GITHUB_OUTPUT
         
-        # Count outdated packages
-        OUTDATED_COUNT=$(echo "$OUTDATED" | jq 'length')
+        # Count outdated packages more safely
+        OUTDATED_COUNT=$(echo "$OUTDATED" | jq -r 'if type == "object" then keys | length else 0 end' 2>/dev/null || echo "0")
         echo "outdated_count=$OUTDATED_COUNT" >> $GITHUB_OUTPUT
         
         echo "📦 Found $OUTDATED_COUNT outdated packages"
