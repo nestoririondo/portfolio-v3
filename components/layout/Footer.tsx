@@ -3,9 +3,16 @@
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { trackEvent } from "@/lib/posthog";
 
 export const Footer = () => {
   const { t } = useLanguage();
+
+  const handleFooterContactClick = () => {
+    trackEvent("footer_contact_link_clicked", {
+      source: "footer_navigation",
+    });
+  };
 
   return (
     <motion.footer
@@ -47,6 +54,7 @@ export const Footer = () => {
             </Link>
             <Link
               href="/#contact"
+              onClick={handleFooterContactClick}
               className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95 active:bg-gray-200 dark:active:bg-gray-700"
             >
               {t("nav.contact")}

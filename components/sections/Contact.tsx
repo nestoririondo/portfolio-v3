@@ -6,6 +6,7 @@ import { CheckCircle } from "lucide-react";
 import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { scrollToContact } from "@/lib/utils/scroll";
+import { trackEvent } from "@/lib/posthog";
 
 const DEFAULT_STATE = {
   name: "",
@@ -96,6 +97,14 @@ export function Contact() {
       });
 
       if (response.ok) {
+        // Track successful form submission
+        trackEvent("contact_form_submitted", {
+          project_type: formData.projectType,
+          has_company: !!formData.company,
+          has_budget: !!formData.price,
+          budget: formData.price ? t(formData.price) : null,
+        });
+
         toast.custom(() => (
           <div className="flex items-center gap-3 bg-white dark:bg-gray-800 p-4 rounded-lg border border-green-200 dark:border-green-800 shadow-lg">
             <div className="shrink-0">
@@ -182,6 +191,13 @@ export function Contact() {
 
   const whatsAppNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
+  const handleWhatsAppClick = () => {
+    trackEvent("whatsapp_button_clicked", {
+      source: "contact_section",
+      whatsapp_number: whatsAppNumber,
+    });
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -218,6 +234,7 @@ export function Contact() {
               href={`https://wa.me/${whatsAppNumber}?text=Hi%20Néstor!%20I%27d%20like%20to%20discuss%20a%20web%20project.`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleWhatsAppClick}
               className="btn-whatsapp-animated group inline-flex items-center gap-3 bg-[#25d366] border-2 border-[#1C1E21] dark:border-gray-500 text-black hover:text-white dark:hover:text-black px-8 py-4 rounded-lg transition-all duration-300 font-medium shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-lg"
             >
               <svg

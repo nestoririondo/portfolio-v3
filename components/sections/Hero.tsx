@@ -8,6 +8,7 @@ import DotGrid from "../ui/DotGrid";
 import { useTheme } from "@/lib/contexts/ThemeContext";
 import BlurText from "../ui/BlurText";
 import { useAnimation } from "@/lib/contexts/AnimationContext";
+import { trackEvent } from "@/lib/posthog";
 
 export function Hero() {
   const { t } = useLanguage();
@@ -16,6 +17,13 @@ export function Hero() {
 
   const baseColor = theme === "dark" ? "#2b3142" : "#ededed";
   const activeColor = theme === "dark" ? "#00FFF7" : "#0022ff";
+
+  const handleHeroContactClick = () => {
+    trackEvent("hero_contact_button_clicked", {
+      hero_animation_complete: heroComplete,
+    });
+    scrollToContact();
+  };
 
   return (
     <div className="relative h-screen">
@@ -56,7 +64,7 @@ export function Hero() {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
           >
             <button
-              onClick={scrollToContact}
+              onClick={handleHeroContactClick}
               className={`btn-primary-animated group ${
                 heroComplete ? "opacity-100" : "opacity-0"
               }`}

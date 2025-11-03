@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { scrollToContact } from "@/lib/utils/scroll";
 import { useAnimation } from "@/lib/contexts/AnimationContext";
 import { ShinyButton } from "./shiny-button";
+import { trackEvent } from "@/lib/posthog";
 
 export function FloatingContactButton() {
   const { heroComplete } = useAnimation();
@@ -16,6 +17,12 @@ export function FloatingContactButton() {
   const shouldShow = isBlogPage || heroComplete;
 
   const handleContactClick = () => {
+    // Track PostHog event
+    trackEvent("floating_contact_button_clicked", {
+      page_type: isBlogPage ? "blog" : "homepage",
+      current_path: pathname,
+    });
+
     if (isBlogPage) {
       // Navigate to homepage with contact hash
       router.push("/#contact");

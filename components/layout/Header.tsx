@@ -5,6 +5,7 @@ import { useLanguage } from "@/lib/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { CircleBlurThemeToggle } from "../ui/CircleBlurThemeToggle";
 import { scrollToContact, scrollToTop } from "@/lib/utils/scroll";
+import { trackEvent } from "@/lib/posthog";
 
 export function Header() {
   const { language, setLanguage, t } = useLanguage();
@@ -14,6 +15,13 @@ export function Header() {
     const currentIndex = languages.indexOf(language);
     const nextIndex = (currentIndex + 1) % languages.length;
     setLanguage(languages[nextIndex]);
+  };
+
+  const handleHeaderContactClick = () => {
+    trackEvent("header_contact_button_clicked", {
+      current_language: language,
+    });
+    scrollToContact();
   };
 
   return (
@@ -53,7 +61,7 @@ export function Header() {
           />
 
           <button
-            onClick={scrollToContact}
+            onClick={handleHeaderContactClick}
             className="!px-4 md:!px-6 md:!min-w-[120px]"
           >
             <MessageCircle className="w-3.5 h-3.5 md:w-[1.125rem] md:h-[1.125rem]" />
