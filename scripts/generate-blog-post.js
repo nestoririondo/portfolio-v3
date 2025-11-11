@@ -277,35 +277,71 @@ async function generateBlogPost(maxRetries = 3) {
     ) {
       console.log(`🎯 Using forced topic: "${forceTopic}"`);
 
-      // Check if we already have a recent post about this topic (more lenient)
-      const topicKeywords = forceTopic
-        .toLowerCase()
-        .split(/[\s-_]+/)
-        .filter((keyword) => keyword.length > 4)
-        .filter(
-          (keyword) =>
-            ![
-              "business",
-              "website",
-              "berlin",
-              "german",
-              "companies",
-              "guide",
-              "strategies",
-            ].includes(keyword)
-        ); // Exclude common words
+      // Check if we already have a recent post about this topic
+      // Special handling for seasonal events (Black Friday, Christmas, etc.)
+      const topicLower = forceTopic.toLowerCase();
+      const isSeasonalTopic = 
+        topicLower.includes("black friday") ||
+        topicLower.includes("christmas") ||
+        topicLower.includes("holiday") ||
+        topicLower.includes("new year") ||
+        topicLower.includes("valentine") ||
+        topicLower.includes("easter") ||
+        topicLower.includes("summer") ||
+        topicLower.includes("winter");
 
-      const duplicateByTopic = recentPosts.find((post) => {
-        const titleLower = post.title.toLowerCase();
-        const matchingKeywords = topicKeywords.filter((keyword) =>
-          titleLower.includes(keyword)
-        );
-        // Require at least 3 specific keywords to match, or 1 very specific keyword (10+ chars)
-        return (
-          matchingKeywords.length >= 3 ||
-          (matchingKeywords.length === 1 && matchingKeywords[0].length > 10)
-        );
-      });
+      let duplicateByTopic = null;
+
+      if (isSeasonalTopic) {
+        // For seasonal topics, check for exact phrase matches or very similar topics
+        // Extract the main seasonal keyword (e.g., "black friday", "christmas")
+        const seasonalKeywords = [];
+        if (topicLower.includes("black friday")) seasonalKeywords.push("black friday");
+        if (topicLower.includes("christmas")) seasonalKeywords.push("christmas");
+        if (topicLower.includes("holiday")) seasonalKeywords.push("holiday");
+        if (topicLower.includes("new year")) seasonalKeywords.push("new year");
+        if (topicLower.includes("valentine")) seasonalKeywords.push("valentine");
+        if (topicLower.includes("easter")) seasonalKeywords.push("easter");
+        if (topicLower.includes("summer")) seasonalKeywords.push("summer");
+        if (topicLower.includes("winter")) seasonalKeywords.push("winter");
+
+        // Check if any recent post contains the same seasonal keyword
+        duplicateByTopic = recentPosts.find((post) => {
+          const titleLower = post.title.toLowerCase();
+          // If the seasonal keyword appears in both, it's likely a duplicate
+          return seasonalKeywords.some(keyword => titleLower.includes(keyword));
+        });
+      } else {
+        // For non-seasonal topics, use the original keyword matching logic
+        const topicKeywords = forceTopic
+          .toLowerCase()
+          .split(/[\s-_]+/)
+          .filter((keyword) => keyword.length > 4)
+          .filter(
+            (keyword) =>
+              ![
+                "business",
+                "website",
+                "berlin",
+                "german",
+                "companies",
+                "guide",
+                "strategies",
+              ].includes(keyword)
+          ); // Exclude common words
+
+        duplicateByTopic = recentPosts.find((post) => {
+          const titleLower = post.title.toLowerCase();
+          const matchingKeywords = topicKeywords.filter((keyword) =>
+            titleLower.includes(keyword)
+          );
+          // Require at least 3 specific keywords to match, or 1 very specific keyword (10+ chars)
+          return (
+            matchingKeywords.length >= 3 ||
+            (matchingKeywords.length === 1 && matchingKeywords[0].length > 10)
+          );
+        });
+      }
 
       if (duplicateByTopic) {
         console.log(

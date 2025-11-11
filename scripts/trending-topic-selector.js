@@ -10,9 +10,86 @@ class TrendingTopicSelector {
   }
 
   /**
-   * Detect seasonal events and special dates
+   * Check if a topic is a duplicate based on existing posts
    */
-  detectSeasonalEvent() {
+  isTopicDuplicate(topic, existingPosts = []) {
+    if (!existingPosts || existingPosts.length === 0) return false;
+
+    const topicLower = topic.toLowerCase();
+    const isSeasonalTopic = 
+      topicLower.includes("black friday") ||
+      topicLower.includes("christmas") ||
+      topicLower.includes("holiday") ||
+      topicLower.includes("new year") ||
+      topicLower.includes("valentine") ||
+      topicLower.includes("easter") ||
+      topicLower.includes("summer") ||
+      topicLower.includes("winter");
+
+    // Check recent posts (last 7 days for seasonal topics to be more strict)
+    const daysToCheck = isSeasonalTopic ? 7 : 3;
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - daysToCheck);
+
+    const recentPosts = existingPosts.filter((post) => {
+      const postDate = new Date(post.publishedDate || post.createdAt);
+      return postDate > cutoffDate;
+    });
+
+    if (recentPosts.length === 0) return false;
+
+    if (isSeasonalTopic) {
+      // For seasonal topics, check for exact phrase matches
+      const seasonalKeywords = [];
+      if (topicLower.includes("black friday")) seasonalKeywords.push("black friday");
+      if (topicLower.includes("christmas")) seasonalKeywords.push("christmas");
+      if (topicLower.includes("holiday")) seasonalKeywords.push("holiday");
+      if (topicLower.includes("new year")) seasonalKeywords.push("new year");
+      if (topicLower.includes("valentine")) seasonalKeywords.push("valentine");
+      if (topicLower.includes("easter")) seasonalKeywords.push("easter");
+      if (topicLower.includes("summer")) seasonalKeywords.push("summer");
+      if (topicLower.includes("winter")) seasonalKeywords.push("winter");
+
+      return recentPosts.some((post) => {
+        const titleLower = post.title.toLowerCase();
+        return seasonalKeywords.some(keyword => titleLower.includes(keyword));
+      });
+    }
+
+    // For non-seasonal topics, use keyword matching
+    const topicKeywords = topicLower
+      .split(/[\s-_]+/)
+      .filter((keyword) => keyword.length > 4)
+      .filter(
+        (keyword) =>
+          ![
+            "business",
+            "website",
+            "berlin",
+            "german",
+            "companies",
+            "guide",
+            "strategies",
+          ].includes(keyword)
+      );
+
+    return recentPosts.some((post) => {
+      const titleLower = post.title.toLowerCase();
+      const matchingKeywords = topicKeywords.filter((keyword) =>
+        titleLower.includes(keyword)
+      );
+      return (
+        matchingKeywords.length >= 3 ||
+        (matchingKeywords.length === 1 && matchingKeywords[0].length > 10)
+      );
+    });
+  }
+
+  /**
+   * Detect seasonal events and special dates
+   * @param {Array} existingPosts - Array of existing blog posts to check for duplicates
+   */
+  detectSeasonalEvent(existingPosts = []) {
     const now = new Date();
     const month = now.toLocaleString('default', { month: 'long' });
     const dayOfMonth = now.getDate();
@@ -91,11 +168,22 @@ class TrendingTopicSelector {
         'Analytics tracking for holiday season performance'
       ];
       
-      // Use day of month to select different topics
-      const topicIndex = (dayOfMonth + new Date().getHours()) % blackFridayTopics.length;
+      // Filter out topics that are already used in recent posts
+      const availableTopics = blackFridayTopics.filter(topic => 
+        !this.isTopicDuplicate(topic, existingPosts)
+      );
+
+      if (availableTopics.length === 0) {
+        // All Black Friday topics are duplicates, return null to skip seasonal
+        console.log('⚠️ All Black Friday topics already used recently, skipping seasonal topic');
+        return null;
+      }
+
+      // Use day of month to select from available topics
+      const topicIndex = dayOfMonth % availableTopics.length;
       
       return {
-        topic: blackFridayTopics[topicIndex],
+        topic: availableTopics[topicIndex],
         priority: 50,
         category: 'seasonal'
       };
@@ -110,10 +198,22 @@ class TrendingTopicSelector {
         'Holiday traffic management for online stores',
         'Year-end analytics review for German websites'
       ];
-      const topicIndex = dayOfMonth % holidayTopics.length;
+      
+      // Filter out topics that are already used in recent posts
+      const availableTopics = holidayTopics.filter(topic => 
+        !this.isTopicDuplicate(topic, existingPosts)
+      );
+
+      if (availableTopics.length === 0) {
+        // All holiday topics are duplicates, return null to skip seasonal
+        console.log('⚠️ All holiday topics already used recently, skipping seasonal topic');
+        return null;
+      }
+
+      const topicIndex = dayOfMonth % availableTopics.length;
       
       return {
-        topic: holidayTopics[topicIndex],
+        topic: availableTopics[topicIndex],
         priority: 48,
         category: 'seasonal'
       };
@@ -383,6 +483,7 @@ class TrendingTopicSelector {
   /**
    * Select the best trending topic for blog generation
    * Now includes seasonal event detection and priority handling
+   * @param {Object} options - Options including forceTopic, useTrending, and existingPosts
    */
   async selectTrendingTopic(options = {}) {
     console.log("🔍 Analyzing current trends for blog topics...");
@@ -402,7 +503,8 @@ class TrendingTopicSelector {
     }
 
     // Check for seasonal events first (highest priority)
-    const seasonalEvent = this.detectSeasonalEvent();
+    // Pass existing posts to check for duplicates
+    const seasonalEvent = this.detectSeasonalEvent(options.existingPosts || []);
     if (seasonalEvent && !this.usedTopics.has(seasonalEvent.topic)) {
       // Check if we've already used a seasonal topic today
       const today = new Date().toDateString();

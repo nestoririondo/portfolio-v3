@@ -1,6 +1,48 @@
+import "dotenv/config";
 import { trendingTopicSelector } from "./trending-topic-selector.js";
 import { execSync } from "child_process";
 import fs from "fs";
+import * as contentfulPkg from "contentful";
+
+const { createClient: createContentfulClient } = contentfulPkg;
+
+// Initialize Contentful client if credentials are available
+let contentful = null;
+if (process.env.CONTENTFUL_SPACE_ID && process.env.CONTENTFUL_ACCESS_TOKEN) {
+  contentful = createContentfulClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+  });
+}
+
+/**
+ * Fetch existing blog posts from Contentful
+ */
+async function fetchExistingPosts() {
+  if (!contentful) {
+    console.log("⚠️ Contentful not configured, skipping duplicate check");
+    return [];
+  }
+
+  try {
+    const entries = await contentful.getEntries({
+      content_type: "blogPost",
+      limit: 100,
+      order: "-fields.publishedDate",
+    });
+
+    return entries.items.map((item) => ({
+      title: item.fields.title,
+      slug: item.fields.slug,
+      publishedDate: item.fields.publishedDate,
+      featuredImageUrl: item.fields.featuredImage?.fields?.file?.url || null,
+      content: item.fields.content,
+    }));
+  } catch (error) {
+    console.error("❌ Error fetching existing posts:", error);
+    return [];
+  }
+}
 
 /**
  * Auto-generate blog posts using trending topics
@@ -64,9 +106,15 @@ class AutoBlogGenerator {
       const forceTopic = process.env.FORCE_TOPIC;
       const useTrending = process.env.USE_TRENDING !== 'false';
 
+      // Fetch existing posts to check for duplicates
+      console.log("🔍 Fetching existing posts to check for duplicates...");
+      const existingPosts = await fetchExistingPosts();
+      console.log(`📊 Found ${existingPosts.length} existing posts`);
+
       const options = {
         forceTopic,
         useTrending,
+        existingPosts, // Pass existing posts to topic selector
       };
 
       // Select trending topic with options
