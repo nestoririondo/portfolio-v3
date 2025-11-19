@@ -312,32 +312,52 @@ async function generateBlogPost(maxRetries = 3) {
           return seasonalKeywords.some(keyword => titleLower.includes(keyword));
         });
       } else {
-        // For non-seasonal topics, use the original keyword matching logic
-        const topicKeywords = forceTopic
-          .toLowerCase()
-          .split(/[\s-_]+/)
-          .filter((keyword) => keyword.length > 4)
-          .filter(
-            (keyword) =>
-              ![
-                "business",
-                "website",
-                "berlin",
-                "german",
-                "companies",
-                "guide",
-                "strategies",
-              ].includes(keyword)
-          ); // Exclude common words
+        // For non-seasonal topics, use improved keyword matching with compound terms
+        const topicKeywords = extractKeywords(forceTopic);
+        
+        // Check if this is a technical topic (contains compound technical terms)
+        const technicalTerms = ["web_vitals", "core_web_vitals", "pwa", "api", "seo", "gdpr", "react", "vue", "nextjs", "docker", "graphql"];
+        const isTechnicalTopic = topicKeywords.some(kw => technicalTerms.some(term => kw.includes(term) || term.includes(kw)));
+        
+        // For technical topics, check against a longer time window (7 days instead of 3)
+        const postsToCheck = isTechnicalTopic 
+          ? existingPosts.filter((post) => {
+              const postDate = new Date(post.publishedDate || post.createdAt);
+              const now = new Date();
+              const diffHours = (now - postDate) / (1000 * 60 * 60);
+              return diffHours < 168; // 7 days for technical topics
+            })
+          : recentPosts;
 
-        duplicateByTopic = recentPosts.find((post) => {
-          const titleLower = post.title.toLowerCase();
+        duplicateByTopic = postsToCheck.find((post) => {
+          const postKeywords = extractKeywords(post.title);
+          
+          // For technical topics, check for compound term matches first
+          if (isTechnicalTopic) {
+            const topicCompounds = topicKeywords.filter(kw => technicalTerms.some(term => kw.includes(term) || term.includes(kw)));
+            const postCompounds = postKeywords.filter(kw => technicalTerms.some(term => kw.includes(term) || term.includes(kw)));
+            
+            // If both have the same compound technical term, it's a duplicate
+            if (topicCompounds.length > 0 && postCompounds.length > 0) {
+              const matchingCompounds = topicCompounds.filter(tc => 
+                postCompounds.some(pc => tc === pc || tc.includes(pc) || pc.includes(tc))
+              );
+              if (matchingCompounds.length > 0) {
+                return true; // Same technical term found
+              }
+            }
+          }
+          
+          // Regular keyword matching
           const matchingKeywords = topicKeywords.filter((keyword) =>
-            titleLower.includes(keyword)
+            postKeywords.some(pk => pk.includes(keyword) || keyword.includes(pk))
           );
-          // Require at least 3 specific keywords to match, or 1 very specific keyword (10+ chars)
+          
+          // For technical topics, require fewer matches (2 instead of 3) since they're more specific
+          // For regular topics, require at least 3 specific keywords to match, or 1 very specific keyword (10+ chars)
+          const requiredMatches = isTechnicalTopic ? 2 : 3;
           return (
-            matchingKeywords.length >= 3 ||
+            matchingKeywords.length >= requiredMatches ||
             (matchingKeywords.length === 1 && matchingKeywords[0].length > 10)
           );
         });
@@ -1282,9 +1302,69 @@ function extractKeywordsFromTitles(posts) {
 }
 
 function extractKeywords(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z\s]/g, "")
+  const textLower = text.toLowerCase();
+  
+  // First, extract compound technical terms that should be kept together
+  const compoundTerms = [
+    "core web vitals",
+    "web vitals",
+    "progressive web app",
+    "progressive web apps",
+    "pwa",
+    "api",
+    "seo",
+    "gdpr",
+    "ci/cd",
+    "cicd",
+    "next.js",
+    "nextjs",
+    "react",
+    "vue",
+    "angular",
+    "typescript",
+    "javascript",
+    "node.js",
+    "nodejs",
+    "docker",
+    "kubernetes",
+    "github actions",
+    "graphql",
+    "rest api",
+    "oauth",
+    "webauthn",
+    "xss",
+    "csrf",
+    "sql injection",
+    "content security policy",
+    "csp",
+    "http/2",
+    "http2",
+    "ssl",
+    "tls",
+    "cdn",
+    "jamstack",
+    "headless cms",
+    "microservices",
+    "serverless",
+    "edge computing",
+    "webassembly",
+    "wasm",
+  ];
+  
+  // Check for compound terms and replace them with a single token
+  let processedText = textLower;
+  const foundCompounds = [];
+  compoundTerms.forEach((term) => {
+    const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    if (regex.test(processedText)) {
+      foundCompounds.push(term.replace(/\s+/g, '_')); // Replace spaces with underscores
+      processedText = processedText.replace(regex, ` ${term.replace(/\s+/g, '_')} `);
+    }
+  });
+  
+  // Now extract individual keywords
+  const keywords = processedText
+    .replace(/[^a-z\s_]/g, "")
     .split(/\s+/)
     .filter(
       (word) =>
@@ -1302,8 +1382,19 @@ function extractKeywords(text) {
           "your",
           "with",
           "2025",
+          "optimization",
+          "optimize",
+          "improve",
+          "better",
+          "best",
+          "practices",
+          "implementation",
+          "development",
         ].includes(word)
     );
+  
+  // Add compound terms to keywords
+  return [...foundCompounds, ...keywords];
 }
 
 function analyzeContentStructures(existingPosts) {

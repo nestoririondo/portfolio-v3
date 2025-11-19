@@ -56,30 +56,143 @@ class TrendingTopicSelector {
       });
     }
 
-    // For non-seasonal topics, use keyword matching
-    const topicKeywords = topicLower
-      .split(/[\s-_]+/)
-      .filter((keyword) => keyword.length > 4)
-      .filter(
-        (keyword) =>
-          ![
-            "business",
-            "website",
-            "berlin",
-            "german",
-            "companies",
-            "guide",
-            "strategies",
-          ].includes(keyword)
-      );
+    // For non-seasonal topics, use improved keyword extraction
+    // Import the extractKeywords function logic (inline version)
+    const extractKeywordsInline = (text) => {
+      const textLower = text.toLowerCase();
+      
+      // Compound technical terms
+      const compoundTerms = [
+        "core web vitals",
+        "web vitals",
+        "progressive web app",
+        "progressive web apps",
+        "pwa",
+        "api",
+        "seo",
+        "gdpr",
+        "ci/cd",
+        "cicd",
+        "next.js",
+        "nextjs",
+        "react",
+        "vue",
+        "angular",
+        "typescript",
+        "javascript",
+        "node.js",
+        "nodejs",
+        "docker",
+        "kubernetes",
+        "github actions",
+        "graphql",
+        "rest api",
+        "oauth",
+        "webauthn",
+        "xss",
+        "csrf",
+        "sql injection",
+        "content security policy",
+        "csp",
+        "http/2",
+        "http2",
+        "ssl",
+        "tls",
+        "cdn",
+        "jamstack",
+        "headless cms",
+        "microservices",
+        "serverless",
+        "edge computing",
+        "webassembly",
+        "wasm",
+      ];
+      
+      let processedText = textLower;
+      const foundCompounds = [];
+      compoundTerms.forEach((term) => {
+        const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+        if (regex.test(processedText)) {
+          foundCompounds.push(term.replace(/\s+/g, '_'));
+          processedText = processedText.replace(regex, ` ${term.replace(/\s+/g, '_')} `);
+        }
+      });
+      
+      const keywords = processedText
+        .replace(/[^a-z\s_]/g, "")
+        .split(/\s+/)
+        .filter(
+          (word) =>
+            word.length > 4 &&
+            ![
+              "website",
+              "berlin",
+              "business",
+              "company",
+              "guide",
+              "tips",
+              "strategies",
+              "unlock",
+              "power",
+              "your",
+              "with",
+              "2025",
+              "optimization",
+              "optimize",
+              "improve",
+              "better",
+              "best",
+              "practices",
+              "implementation",
+              "development",
+            ].includes(word)
+        );
+      
+      return [...foundCompounds, ...keywords];
+    };
+    
+    const topicKeywords = extractKeywordsInline(topic);
+    const technicalTerms = ["web_vitals", "core_web_vitals", "pwa", "api", "seo", "gdpr", "react", "vue", "nextjs", "docker", "graphql"];
+    const isTechnicalTopic = topicKeywords.some(kw => technicalTerms.some(term => kw.includes(term) || term.includes(kw)));
+    
+    // For technical topics, check against a longer time window (7 days)
+    const daysToCheck = isTechnicalTopic ? 7 : 3;
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - daysToCheck);
+    
+    const postsToCheck = existingPosts.filter((post) => {
+      const postDate = new Date(post.publishedDate || post.createdAt);
+      return postDate > cutoffDate;
+    });
 
-    return recentPosts.some((post) => {
-      const titleLower = post.title.toLowerCase();
+    if (postsToCheck.length === 0) return false;
+
+    return postsToCheck.some((post) => {
+      const postKeywords = extractKeywordsInline(post.title);
+      
+      // For technical topics, check for compound term matches first
+      if (isTechnicalTopic) {
+        const topicCompounds = topicKeywords.filter(kw => technicalTerms.some(term => kw.includes(term) || term.includes(kw)));
+        const postCompounds = postKeywords.filter(kw => technicalTerms.some(term => kw.includes(term) || term.includes(kw)));
+        
+        if (topicCompounds.length > 0 && postCompounds.length > 0) {
+          const matchingCompounds = topicCompounds.filter(tc => 
+            postCompounds.some(pc => tc === pc || tc.includes(pc) || pc.includes(tc))
+          );
+          if (matchingCompounds.length > 0) {
+            return true; // Same technical term found
+          }
+        }
+      }
+      
+      // Regular keyword matching
       const matchingKeywords = topicKeywords.filter((keyword) =>
-        titleLower.includes(keyword)
+        postKeywords.some(pk => pk.includes(keyword) || keyword.includes(pk))
       );
+      
+      const requiredMatches = isTechnicalTopic ? 2 : 3;
       return (
-        matchingKeywords.length >= 3 ||
+        matchingKeywords.length >= requiredMatches ||
         (matchingKeywords.length === 1 && matchingKeywords[0].length > 10)
       );
     });
