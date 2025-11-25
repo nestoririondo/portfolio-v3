@@ -26,20 +26,19 @@ class TrendingTopicSelector {
       topicLower.includes("summer") ||
       topicLower.includes("winter");
 
-    // Check recent posts (last 7 days for seasonal topics to be more strict)
-    const daysToCheck = isSeasonalTopic ? 7 : 3;
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - daysToCheck);
-
-    const recentPosts = existingPosts.filter((post) => {
-      const postDate = new Date(post.publishedDate || post.createdAt);
-      return postDate > cutoffDate;
-    });
-
-    if (recentPosts.length === 0) return false;
-
     if (isSeasonalTopic) {
-      // For seasonal topics, check for exact phrase matches
+      // For seasonal topics, check for exact phrase matches (7 day window)
+      const daysToCheck = 7;
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - daysToCheck);
+
+      const recentPosts = existingPosts.filter((post) => {
+        const postDate = new Date(post.publishedDate || post.createdAt);
+        return postDate > cutoffDate;
+      });
+
+      if (recentPosts.length === 0) return false;
+
       const seasonalKeywords = [];
       if (topicLower.includes("black friday")) seasonalKeywords.push("black friday");
       if (topicLower.includes("christmas")) seasonalKeywords.push("christmas");
@@ -156,7 +155,8 @@ class TrendingTopicSelector {
     const isTechnicalTopic = topicKeywords.some(kw => technicalTerms.some(term => kw.includes(term) || term.includes(kw)));
     
     // For technical topics, check against a longer time window (7 days)
-    const daysToCheck = isTechnicalTopic ? 7 : 3;
+    // For seasonal topics, also use 7 days. For regular topics, use 3 days
+    const daysToCheck = (isSeasonalTopic || isTechnicalTopic) ? 7 : 3;
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - daysToCheck);
     
