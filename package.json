@@ -26,7 +26,7 @@
     "next": "^16.0.1",
     "pexels": "^1.4.0",
     "posthog-js": "^1.284.0",
-    "posthog-node": "^5.10.4",
+    "posthog-node": "^5.14.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "sonner": "^2.0.7",
